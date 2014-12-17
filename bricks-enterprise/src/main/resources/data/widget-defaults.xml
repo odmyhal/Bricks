@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE preferences SYSTEM "http://java.sun.com/dtd/preferences.dtd">
+<preferences EXTERNAL_XML_VERSION="1.0">
+    <root type="user">
+        <map/>
+        <node name="touchpad.defaults">
+            <map>
+                <entry key="touchpad.background.color" value="7f7f7f4c"/>
+				<entry key="touchpad.border.color" value="7f7f00ff"/>
+				<entry key="knob.background.color" value="ff0000ff"/>
+            </map>
+        </node>
+        <node name="panel.defaults">
+            <map>
+                <entry key="panel.relative.width" value="1.0"/>
+				<entry key="panel.relative.height" value="0.3"/>
+				<entry key="panel.padding" value="10"/>
+				<entry key="panel.background.color" value="99bf334c"/>
+				<entry key="panel.border.color" value="ffff00ff"/>
+            </map>
+        </node>
+    </root>
+</preferences>
