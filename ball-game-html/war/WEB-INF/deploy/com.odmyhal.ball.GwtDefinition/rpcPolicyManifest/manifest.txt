@@ -1,0 +1,2 @@
+# Module com.odmyhal.ball.GwtDefinition
+# RPC service class, partial path of RPC policy file

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="libs/gdx.jar" sourcepath="libs/gdx-sources.jar"/>
+	<classpathentry kind="lib" path="/shoot/target/shoot-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/bricks-enterprise/target/bricks-enterprise-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/bricks/bricks-engine/target/bricks-engine-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/bricks/bricks-extent/target/bricks-extent-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
