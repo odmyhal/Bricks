@@ -1,0 +1,2 @@
+org.bricks.annotation.processor.EventHandleProcessor
+org.bricks.annotation.processor.ModelConstructProcessor

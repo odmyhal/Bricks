@@ -1,0 +1,6 @@
+org/bricks/annotation/EventHandle.class
+org/bricks/annotation/processor/App.class
+org/bricks/annotation/processor/EventHandleProcessor.class
+org/bricks/annotation/processor/ModelConstructProcessor.class
+org/bricks/annotation/processor/CreateSourceProcessor.class
+org/bricks/annotation/ConstructModel.class

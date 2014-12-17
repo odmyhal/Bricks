@@ -1,0 +1,10 @@
+package ${packageName};
+
+import ${eventClassName};
+import ${targetClassName};
+
+public class ${handlerName} implements EventHandler<${targetSimpleName}, ${eventSimpleName}> {
+	public void processEvent(${targetSimpleName} target, ${eventSimpleName} event) {
+		target.${handleMethod}(event);
+	}
+}

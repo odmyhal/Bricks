@@ -1,0 +1,12 @@
+package ${constructToolPackage};
+
+import org.bircks.entierprise.model.ModelConstructTool;
+
+public class ${constructToolName} extends ModelConstructTool{
+	
+	protected void constructModels(){
+		#foreach( $cName in $calls.keySet() )
+		${cName}.instance().construct(this#foreach( $arg in $calls.get($cName) ), "$arg"#end);
+		#end
+	}
+}

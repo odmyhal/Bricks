@@ -1,0 +1,14 @@
+package ${packageName};
+
+public class ${className} implements EventHandleRegistrator{
+
+	public void registerEventHandlers() {
+	#foreach( $handlerData in $handlers )
+		#set($tcn = $handlerData.get("targetClassName"))
+		#set($ecn = $handlerData.get("eventClassName"))
+		#set($et = $handlerData.get("eventType"))
+		#set($hcn = $handlerData.get("handlerName"))
+		EventHandlerManager.registerHandler(${tcn}.class, ${ecn}.class, "${et}", new ${hcn}());
+	#end
+	}
+}
