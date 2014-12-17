@@ -1,0 +1,9 @@
+Exception in thread "LWJGL Application" java.util.ConcurrentModificationException
+	at java.util.HashMap$HashIterator.nextEntry(HashMap.java:894)
+	at java.util.HashMap$KeyIterator.next(HashMap.java:928)
+	at java.util.AbstractCollection.addAll(AbstractCollection.java:333)
+	at org.bricks.engine.view.EntitiesPool.addAll(EntitiesPool.java:18)
+	at org.bricks.engine.pool.World.getAllEntities(World.java:109)
+	at com.odmyhal.ball.BallGame.render(BallGame.java:176)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication.mainLoop(LwjglApplication.java:206)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication$1.run(LwjglApplication.java:114)
