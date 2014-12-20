@@ -37,8 +37,7 @@ public abstract class StackPanel extends BaseControlPanel{
 	
 	protected void initStage(){
 		stack.clear();
-		stack.setWidth(width);
-		stack.setHeight(height);
+		stack.setSize(width, height);
 		layer = new Table();
 		Image im = new Image(Skinner.instance().getFrame((int)width, (int)height, padding, background, border));
 		
@@ -55,8 +54,6 @@ public abstract class StackPanel extends BaseControlPanel{
 	public void setPosition(float x, float y){
 		super.setPosition(x, y);
 		stack.setPosition(x, y);
-//		stack.setOrigin(x, y);
-//		stage.stageToScreenCoordinates(getPosition());
 		
 	}
 

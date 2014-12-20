@@ -32,6 +32,10 @@ public abstract class RotationDependAction<T, W extends Widget> extends FlowMuta
 		public float provideRotation();
 	}
 	
+	public interface RotationConsumer{
+		public void consumeRotation(float rotation);
+	}
+	
 	private static final class StaticRotationProvider implements RotationProvider{
 		
 		private float rotation;

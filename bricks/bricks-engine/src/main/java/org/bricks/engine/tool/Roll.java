@@ -4,8 +4,11 @@ import org.bricks.exception.Validate;
 
 public class Roll {
 	
-	private static final float rotationCicle = (float) (Math.PI * 2);
+	public static final float rotationCycle = (float) (Math.PI * 2);
 
+	/**
+	 * Rotation stored in range [0; 2*PI)
+	 */
 	private float rotation;
 	private float rotationSpeed;
 	private float rotationBuff = (float) (Math.PI / 180);
@@ -50,10 +53,11 @@ public class Roll {
 			res = true;
 			lastRotation = rMult * rotationBuff;
 			rotation += lastRotation;
-			if(rotation > rotationCicle){
-				rotation -= rotationCicle;
-			}else if(rotation < 0){
-				rotation += rotationCicle;
+			while(rotation >= rotationCycle){
+				rotation -= rotationCycle;
+			}
+			while(rotation < 0){
+				rotation += rotationCycle;
 			}
 			rotateTime += (int) (lastRotation * 1000 / rSpeed);
 		}else{

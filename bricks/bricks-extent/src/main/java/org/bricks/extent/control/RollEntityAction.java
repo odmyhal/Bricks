@@ -1,26 +1,28 @@
 package org.bricks.extent.control;
 
-import org.bricks.engine.event.RotationSpeedEvent;
 import org.bricks.engine.event.check.RollToMarkChecker;
 import org.bricks.engine.staff.Roller;
-import org.bricks.engine.view.RollView;
 import org.bricks.enterprise.control.widget.tool.FlowTouchPad;
+import org.bricks.enterprise.control.widget.tool.RotationDependAction.RotationProvider;
 import org.bricks.enterprise.d3.help.AlgebraUtils;
-import org.bricks.extent.event.ExtentEventGroups;
 
 import com.badlogic.gdx.math.Vector2;
 
 public class RollEntityAction extends EventCheckRegAction<Roller, FlowTouchPad>{
 	
-	private static final float rotationCicle = (float) (Math.PI * 2);
+	private static final float rotationCycle = (float) (Math.PI * 2);
+	private static float halfPI = (float) Math.PI / 2;
 	
+	protected RotationProvider rotationProvider;
 	private float rotationSpeed;
-	
 	private Vector2 touchPercentile = new Vector2();
+	
+	protected float curSpeedRad, curTargetRad;
 
-	public RollEntityAction(Roller target, float rotationSpeed) {
+	public RollEntityAction(Roller target, RotationProvider rotationProvider, float rotationSpeed) {
 		super(target);
 		setRotationSpeed(rotationSpeed);
+		this.rotationProvider = rotationProvider;
 	}
 	
 	public void setRotationSpeed(float rotationSpeed){
@@ -32,22 +34,30 @@ public class RollEntityAction extends EventCheckRegAction<Roller, FlowTouchPad>{
 		touchPercentile.set(widget.getKnobPercentX(), widget.getKnobPercentY());
 		touchPercentile.nor();
 		float targetRad = (float) AlgebraUtils.trigToRadians(touchPercentile.x, touchPercentile.y);
-		float curSpeed = rotationSpeed;
-		float diffRad = targetRad - getEntityRotation();
-		if( diffRad > Math.PI || (diffRad < 0 && diffRad > - Math.PI)){
-			curSpeed *= -1;
-		}
-		addEvent(new RotationSpeedEvent(curSpeed));
-		addChecker(new RollToMarkChecker(targetRad));
+		
+		initNewRotation(targetRad, rotationProvider.provideRotation());
 	}
 
-	private float getEntityRotation(){
-		RollView rollView = (RollView) target.getCurrentView();
-		float rotation = rollView.getRotation();
-		rollView.free();
-		while(rotation > rotationCicle){
-			rotation -= rotationCicle;
+	protected void initNewRotation(float targetRad, float currentRad){
+		curSpeedRad = rotationSpeed;
+		float curDiffRad = targetRad - halfPI;
+		while(curDiffRad < 0){
+			curDiffRad += rotationCycle;
 		}
-		return rotation;
+		while(curDiffRad >= rotationCycle){
+			curDiffRad -= rotationCycle;
+		}
+		curTargetRad = currentRad + curDiffRad;
+		if( curDiffRad > Math.PI ){
+			curSpeedRad *= -1;
+			while(curTargetRad > currentRad){
+				curTargetRad -= rotationCycle;
+			}
+		}else{
+			while(curTargetRad < currentRad){
+				curTargetRad += rotationCycle;
+			}
+		}
+		addChecker(new RollToMarkChecker(curTargetRad, curSpeedRad));
 	}
 }

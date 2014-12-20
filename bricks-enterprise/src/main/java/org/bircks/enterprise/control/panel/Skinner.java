@@ -37,7 +37,11 @@ public class Skinner {
 	public void putFrame(int width, int height, int padding, Color background, Color border, String fName){
 		skin.add(fName, produceFrame(width, height, padding, background, border));
 	}
-	
+/*	
+	public void putFrame(int width, int height, int padding, Color background, Color border, String fName, Class cls){
+		skin.add(fName, produceFrame(width, height, padding, background, border), cls);
+	}
+*/	
 	public boolean hasFrame(String name){
 		return skin.has(name, Texture.class);
 	}
@@ -47,7 +51,6 @@ public class Skinner {
 		pixmap.setColor(background);
 		pixmap.fillRectangle(padding, padding, width - padding * 2, height - padding * 2);
 		pixmap.setColor(border);
-//		pixmap.fillRectangle(padding, padding, height - padding * 2, height - padding * 2);
 		pixmap.drawRectangle(padding, padding, width - padding * 2, height - padding * 2);
 		return new Texture(pixmap);
 	}

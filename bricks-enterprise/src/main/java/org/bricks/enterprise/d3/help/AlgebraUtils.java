@@ -2,6 +2,12 @@ package org.bricks.enterprise.d3.help;
 
 public class AlgebraUtils {
 
+	/**
+	 * the returned angle is in the range [0; 2*pi).
+	 * @param cos
+	 * @param sin
+	 * @return
+	 */
 	public static double trigToRadians(double cos, double sin){
 		if(cos >= 0){
 			if(sin >= 0){

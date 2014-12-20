@@ -5,10 +5,14 @@ import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
 
 import org.bircks.enterprise.control.panel.Skinner;
+import org.bricks.enterprise.control.widget.draw.CompoundDrawable;
+import org.bricks.enterprise.control.widget.draw.DrawableRoll;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad.TouchpadStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class FlowWidgetProvider {
 
@@ -62,5 +66,27 @@ public class FlowWidgetProvider {
 			Skinner.instance().putFrame(kRadius, kRadius, 0, background, background, knobName);
 		}
 		return Skinner.instance().skin().getDrawable(knobName);
+	}
+
+	//TouchPads with defined textures
+	public static final <T> FlowTouchPad produceFlowTouchPad(FlowMutableAction<T, FlowTouchPad> action, Drawable... background){
+		TouchpadStyle tps = new TouchpadStyle(new CompoundDrawable(background), null);
+		FlowTouchListener<FlowTouchPad> listener = new FlowTouchListener<FlowTouchPad>(action);
+		return new FlowTouchPad(tps, listener);
+	}
+	
+	public static final <T> FlowTouchPad produceFlowTouchPad(FlowMutableAction<T, FlowTouchPad> action, String... name){
+		TouchpadStyle tps = new TouchpadStyle(produceCompoundDrawable(name), null);
+		FlowTouchListener<FlowTouchPad> listener = new FlowTouchListener<FlowTouchPad>(action);
+		return new FlowTouchPad(tps, listener);
+	}
+	
+	private static final Drawable produceCompoundDrawable(String... pName){
+		Drawable[] drawables = new Drawable[pName.length];
+		for(int i = 0; i<pName.length; i++){
+			TextureRegion tr = Skinner.instance().skin().getRegion(pName[i]);
+			drawables[i] = new DrawableRoll(tr);
+		}
+		return new CompoundDrawable(drawables);
 	}
 }
