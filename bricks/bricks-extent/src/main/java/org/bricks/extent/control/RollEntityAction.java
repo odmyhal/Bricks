@@ -5,6 +5,7 @@ import org.bricks.engine.staff.Roller;
 import org.bricks.enterprise.control.widget.tool.FlowTouchPad;
 import org.bricks.enterprise.control.widget.tool.RotationDependAction.RotationProvider;
 import org.bricks.enterprise.d3.help.AlgebraUtils;
+import org.bricks.extent.entity.DefaultRotationProvider;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -19,6 +20,10 @@ public class RollEntityAction extends EventCheckRegAction<Roller, FlowTouchPad>{
 	
 	protected float curSpeedRad, curTargetRad;
 
+	public RollEntityAction(Roller target, float rotationSpeed) {
+		this(target, new DefaultRotationProvider(target), rotationSpeed);
+	}
+	
 	public RollEntityAction(Roller target, RotationProvider rotationProvider, float rotationSpeed) {
 		super(target);
 		setRotationSpeed(rotationSpeed);

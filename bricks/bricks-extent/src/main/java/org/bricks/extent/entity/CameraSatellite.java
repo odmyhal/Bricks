@@ -7,6 +7,7 @@ import org.bricks.engine.item.MultiWalker;
 import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.view.WalkView;
 import org.bricks.enterprise.control.widget.tool.RotationDependAction;
+import org.bricks.exception.Validate;
 
 import com.badlogic.gdx.graphics.Camera;
 
@@ -74,9 +75,7 @@ public class CameraSatellite implements Satellite, RotationDependAction.Rotation
 			int translateX = 0;
 			int translateY = 0;
 			do{
-				if(q[lastIndex] == 0){
-					throw new RuntimeException("Unpdate indentificator should equal 1 or 2 here");
-				}
+				Validate.isFalse(q[lastIndex] == 0, "Unpdate indentificator should equal 1 or 2 here");
 				if(rotate[lastIndex] == 0){
 					translateX += trX[lastIndex];
 					translateY += trY[lastIndex];
