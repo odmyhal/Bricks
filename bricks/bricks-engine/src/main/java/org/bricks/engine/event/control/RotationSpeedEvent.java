@@ -1,8 +1,11 @@
-package org.bricks.engine.event;
+package org.bricks.engine.event.control;
 
+import org.bricks.engine.event.BaseEvent;
+import org.bricks.engine.event.EventSource;
 import org.bricks.engine.event.handler.EventHandler;
 import org.bricks.engine.event.handler.EventHandlerManager;
 import org.bricks.engine.item.MultiRoller;
+import org.bricks.engine.staff.Roller;
 
 public class RotationSpeedEvent extends BaseEvent{
 	
@@ -12,8 +15,10 @@ public class RotationSpeedEvent extends BaseEvent{
 	static{
 		EventHandler<MultiRoller, RotationSpeedEvent> handler = new EventHandler<MultiRoller, RotationSpeedEvent>(){
 			public void processEvent(MultiRoller target, RotationSpeedEvent event) {
-				target.setRotationSpeed(event.getRotationSpeed());
-				target.flushTimer(event.getEventTime());
+				changeRollerRotationSpeed(target, event.getEventTime(), event.getRotationSpeed());
+//				target.setRotationSpeed(event.getRotationSpeed());
+//				target.flushTimer(event.getEventTime());
+//				target.adjustCurrentView();
 			}
 		};
 		EventHandlerManager.registerHandler(MultiRoller.class, RotationSpeedEvent.class, ROTATION_EV_SOURCE, handler);
@@ -49,5 +54,9 @@ public class RotationSpeedEvent extends BaseEvent{
 		return rotationSpeed;
 	}
 
-	
+	public static void changeRollerRotationSpeed(Roller target, long changeTime, float newSpeed){
+		target.setRotationSpeed(newSpeed);
+		target.flushTimer(changeTime);
+		target.adjustCurrentView();
+	}
 }

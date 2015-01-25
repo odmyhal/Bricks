@@ -45,7 +45,7 @@ public class OverlapChecker extends EventChecker{
 		return instance;
 	}
 	
-	protected Event popEvent(Liver targetP){
+	protected Event popEvent(Liver targetP, long eventTime){
 		EventCheckState curState = localCheckState.get();
 		if(curState.checkNew(targetP)){
 			Subject last = checkLast(targetP);

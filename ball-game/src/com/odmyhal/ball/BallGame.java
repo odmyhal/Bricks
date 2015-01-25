@@ -171,8 +171,8 @@ public class BallGame implements ApplicationListener {
 		cannonPanel.inputControl();
 		panelManager.addPanel(cannonPanel);
 		
-		bp.produceShield(1075, 100).applyEngine(engine);
-		bp.produceShield(775, 100).applyEngine(engine);
+//		bp.produceShield(1075, 100).applyEngine(engine);
+//		bp.produceShield(775, 100).applyEngine(engine);
 		
 		
 //		Gdx.input.setInputProcessor(new BallAdapter(cann, cameraMove));

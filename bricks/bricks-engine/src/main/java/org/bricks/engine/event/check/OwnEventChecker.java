@@ -16,7 +16,7 @@ public class OwnEventChecker extends EventChecker{
 	private OwnEventChecker(){}
 	
 	@Override
-	protected Event popEvent(Liver target) {
+	protected Event popEvent(Liver target, long eventTime) {
 		return null;
 	}
 	

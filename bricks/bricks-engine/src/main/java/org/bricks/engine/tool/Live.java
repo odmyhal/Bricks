@@ -49,6 +49,9 @@ public class Live {
 			tmpDelCheckers.clear();
 		}
 		if(!tmpAddCheckers.isEmpty()){
+			for(EventChecker checker : tmpAddCheckers){
+				checker.activate();
+			}
 			checkers.addAll(tmpAddCheckers);
 			tmpAddCheckers.clear();
 		}

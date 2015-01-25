@@ -21,18 +21,15 @@ public abstract class MultiRoller<S extends Subject> extends MultiLiver<S> imple
 		super.init();
 	}
 
-//	@Override
 	public float getRotationSpeed() {
 		return roll.getRotationSpeed();
 	}
 
-//	@Override
 	public void setRotationSpeed(float rotationSpeed) {
 		roll.setRotationSpeed(rotationSpeed);
 		this.adjustCurrentView();
 	}
 
-//	@Override
 	public float getRotation() {
 		return roll.getRotation();
 	}
@@ -73,11 +70,6 @@ public abstract class MultiRoller<S extends Subject> extends MultiLiver<S> imple
 				satellite.rotate(roll.getRotation(), getOrigin());
 				satellite.update();
 			}
-/*			for(S subject : getStaff()){
-				subject.rotate(roll.getRotation(), getOrigin());
-				SectorMonitor.monitor(subject);
-				subject.adjustCurrentView();
-			}*/
 		}
 	}
 
@@ -85,9 +77,6 @@ public abstract class MultiRoller<S extends Subject> extends MultiLiver<S> imple
 		for(Satellite satellite : getSatellites()){
 			satellite.rotate(roll.getRotation(), getOrigin());
 		}
-/*		for(S subject : getStaff()){
-			subject.rotate(roll.getRotation(), getOrigin());
-		}*/
 	}
 	
 	protected boolean rotateBack(long currentTime){
@@ -101,11 +90,6 @@ public abstract class MultiRoller<S extends Subject> extends MultiLiver<S> imple
 				satellite.rotate(roll.getRotation(), getOrigin());
 				satellite.update();
 			}
-/*			for(S subject : getStaff()){
-				subject.rotate(roll.getRotation(), getOrigin());
-				SectorMonitor.monitor(subject);
-				subject.adjustCurrentView();
-			}*/
 		}
 	}
 	

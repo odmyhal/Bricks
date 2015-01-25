@@ -2,11 +2,17 @@ package org.bricks.engine.event.check;
 
 import org.bricks.engine.event.Event;
 import org.bricks.engine.staff.Roller;
-import org.bricks.engine.event.RotationSpeedEvent;
+import org.bricks.engine.event.control.RotationSpeedEvent;
 
+/**
+ * @deprecated use RollToMarkProcessorChecker instead...
+ * @author oleh
+ *
+ */
+@Deprecated
 public class RollToMarkChecker extends DoubleEventChecker<Roller>{
 
-	public static final CheckerType CHECKER_TYPE = CheckerType.registerCheckerType();
+//	public static final CheckerType CHECKER_TYPE = CheckerType.registerCheckerType();
 	private static final float rotationCycle = (float) (Math.PI * 2);
 	
 	private float startSpeed, finishSpeed, targetRotation;
@@ -30,14 +36,19 @@ public class RollToMarkChecker extends DoubleEventChecker<Roller>{
 	}
 	
 	public RollToMarkChecker(float targetRotation, float startSpeed, float finishSpeed, String eventSource){
-		super(CHECKER_TYPE);
+		super(RollToMarkProcessorChecker.CHECKER_TYPE);
 		this.startSpeed = startSpeed;
 		this.finishSpeed = finishSpeed;
 		this.targetRotation = targetRotation;
 		this.eventSource = eventSource;
-		this.supplant(CHECKER_TYPE);
+		this.supplant(RollToMarkProcessorChecker.CHECKER_TYPE);
 	}
 	
+	/**
+	 * currentRotaion value is [0, 2pi)
+	 * if (curSpeed > 0) targetRotation should be bigger than currentRotation, otherwise checker stops
+	 * if (curSpeed < 0) targetRotation should be smaller than currentRotation, otherwise checker stops
+	 */
 	@Override
 	protected boolean ready(Roller target) {
 		boolean stopAction = false;

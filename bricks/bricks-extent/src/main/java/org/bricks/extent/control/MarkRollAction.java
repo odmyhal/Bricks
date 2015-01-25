@@ -5,7 +5,7 @@ import org.bricks.engine.item.MultiRoller;
 import org.bricks.engine.view.RollView;
 import org.bricks.enterprise.control.widget.tool.FlowTouchPad;
 import org.bricks.enterprise.d3.help.AlgebraUtils;
-import org.bricks.engine.event.RotationSpeedEvent;
+import org.bricks.engine.event.control.RotationSpeedEvent;
 
 import com.badlogic.gdx.math.Vector2;
 

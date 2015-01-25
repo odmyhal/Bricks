@@ -8,7 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 
 /** Use this action if you want to turn on some effect on Liver with Event,
  *  and then on some condition to turn it off with other Event.
- * @author Oleh Myhal */
+ * @author Oleh Myhal 
+ * @deprecated use appropriate event checker instead
+ * */
+@Deprecated
 public abstract class DoubleEventAction<T extends Liver, W extends Widget> extends FlowMutableAction<T, W>{
 
 	public DoubleEventAction(T target) {

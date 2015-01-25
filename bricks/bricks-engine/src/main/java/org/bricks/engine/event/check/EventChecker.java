@@ -11,6 +11,7 @@ import org.bricks.engine.staff.Liver;
 public abstract class EventChecker<T extends Liver> {
 	
 	private CheckerType type;
+	private boolean active = true;
 	/**
 	 * When current checker added to entity, all checkers with types from this supplant list should be removed from entity
 	 * @author Oleh Myhal
@@ -25,12 +26,27 @@ public abstract class EventChecker<T extends Liver> {
 		this.type = type;
 	}
 	
-	protected abstract Event popEvent(T target);
+	protected abstract Event popEvent(T target, long eventTime);
 	
-	private Event fetchEvent(T target){
+	public boolean isActive(){
+		return active;
+	}
+	
+	public void disable(){
+		this.active = false;
+	}
+	
+	public void activate(){
+		this.active = true;
+	}
+/*	public void setActive(boolean active){
+		this.active = active;
+	}
+	*/
+	private Event fetchEvent(T target, long eventTime){
 		Event res = target.popEvent();
 		if(res == null){
-			res = popEvent(target);
+			res = popEvent(target, eventTime);
 		}
 		return res;
 	}
@@ -39,7 +55,7 @@ public abstract class EventChecker<T extends Liver> {
 		while(target.alive()){
 			//Synchronize with OverlapChecker.popEvent()
 			synchronized(target){
-				Event e = fetchEvent(target);
+				Event e = fetchEvent(target, currentTime);
 				if(e == null){
 					break;
 				}

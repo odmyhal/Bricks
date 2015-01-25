@@ -13,8 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad.TouchpadStyle;
 
 public class CameraAltitudeSlider extends FlowSlider{
 	
-	private static final float minAltitude = -200f;
-	private static final float maxAltitude = 8000f;//2000f;
+//	private static final float minAltitude = -200f;
+//	private static final float maxAltitude = 8000f;//2000f;
 
 	private CameraAltitudeSlider(float minVal, float maxVal, SliderStyle style, FlowTouchListener<CameraAltitudeSlider> listener) {
 		super(minVal, maxVal, true, style, listener);

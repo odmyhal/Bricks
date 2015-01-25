@@ -33,7 +33,7 @@ public class BorderTouchChecker extends EventChecker{
 	}
 
 	@Override
-	protected Event popEvent(Liver targetP) {
+	protected Event popEvent(Liver targetP, long eventTime) {
 		EventCheckState eventState = localCheckState.get();
 		eventState.checkNew(targetP);
 		int entityNum = eventState.getEntityState();

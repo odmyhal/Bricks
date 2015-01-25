@@ -6,41 +6,33 @@ import org.bricks.engine.staff.Walker;
 
 public class Walk {
 
-	private Fpoint vector;
 	private long moveXTime = System.currentTimeMillis();
 	private long moveYTime = moveXTime;
 	private Walker owner;
 	private int lastMoveX, lastMoveY;
-	private final int moveLimit = 14;
+	private static final int moveLimit = 14;
 	
 	public Walk(Walker walker){
 		this.owner = walker;
-		vector = new Fpoint(0f, 0f);
 	}
 
-	public void setVector(Fpoint vector) {
-		this.vector.setX(vector.getFX());
-		this.vector.setY(vector.getFY());
-	}
 	
-	public void setVector(float x, float y){
-		this.vector.setX(x);
-		this.vector.setY(y);
-	}
-
-	public Fpoint getVector() {
-		return vector;
-	}
 	
 	public void flushTimer(long nTime){
 		moveXTime = moveYTime = nTime;
 	}
-	
+/*	
 	public boolean move(long checkTime){
 		return move(checkTime, vector.getFX(), vector.getFY());
 	}
 	
-	private boolean move(long checkTime, float x, float y){
+	private void updateAcceleration(){
+		if(acceleration != 0){
+			float rotation = walker.get
+		}
+	}
+*/	
+	public boolean move(long checkTime, float x, float y){
 		boolean res = false;
 		long diffX = checkTime - moveXTime;
 		lastMoveX = (int) /*Math.round*/(x * diffX / 1000);

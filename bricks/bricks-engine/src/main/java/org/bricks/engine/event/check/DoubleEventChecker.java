@@ -3,9 +3,16 @@ package org.bricks.engine.event.check;
 import org.bricks.engine.event.Event;
 import org.bricks.engine.staff.Liver;
 
+/**
+ * 
+ * @author oleh
+ * @deprecated use ChunkEventChecker instead...
+ * @param <T>
+ */
+@Deprecated
 public abstract class DoubleEventChecker<T extends Liver> extends EventChecker<T>{
 	
-	private boolean start, finish;
+	private boolean needStart;
 	
 	public DoubleEventChecker(){
 		super();
@@ -18,17 +25,17 @@ public abstract class DoubleEventChecker<T extends Liver> extends EventChecker<T
 	}
 	
 	public void init(){
-		start = true;
-		finish = true;
+		needStart = true;
+		activate();
 	}
 
 	@Override
-	protected Event popEvent(T target) {
-		if(start){
-			start = false;
+	protected Event popEvent(T target, long eventTime) {
+		if(needStart){
+			needStart = false;
 			return produceStartEvent(target);
-		}else if(finish && ready(target)){
-			finish = false;
+		}else if(isActive() && ready(target)){
+			disable();
 			target.unregisterEventChecker(this);
 			return produceFinishEvent(target);
 		}

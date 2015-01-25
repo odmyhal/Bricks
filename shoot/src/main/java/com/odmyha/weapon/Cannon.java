@@ -15,6 +15,7 @@ import org.bricks.core.help.PointHelper;
 import org.bricks.engine.event.BaseEvent;
 import org.bricks.engine.event.OverlapEvent;
 import org.bricks.engine.event.check.OverlapChecker;
+import org.bricks.engine.event.control.RotationSpeedEvent;
 import org.bricks.engine.event.overlap.OverlapStrategy;
 import org.bricks.engine.event.overlap.SmallEventStrategy;
 import org.bricks.engine.item.MultiRoller;
@@ -24,7 +25,6 @@ import org.bricks.engine.view.SubjectView;
 import org.bricks.extent.entity.subject.ModelSubject;
 import org.bricks.extent.event.ExtentEventGroups;
 import org.bricks.extent.event.FireEvent;
-import org.bricks.engine.event.RotationSpeedEvent;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Renderable;

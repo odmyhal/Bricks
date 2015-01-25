@@ -5,8 +5,6 @@ import org.bricks.engine.staff.Liver;
 
 public abstract class SingleEventChecker<T extends Liver> extends EventChecker<T>{
 	
-	private boolean alive = true;
-	
 	public SingleEventChecker(){
 		super();
 	}
@@ -16,9 +14,9 @@ public abstract class SingleEventChecker<T extends Liver> extends EventChecker<T
 	}
 
 	@Override
-	protected Event popEvent(T target) {
-		if(alive && ready(target)){
-			alive = false;
+	protected Event popEvent(T target, long eventTime) {
+		if(isActive() && ready(target)){
+			disable();
 			target.unregisterEventChecker(this);
 			return produceEvent(target);
 		}

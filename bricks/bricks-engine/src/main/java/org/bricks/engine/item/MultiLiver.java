@@ -82,7 +82,9 @@ public abstract class MultiLiver<S extends Subject> extends MultiSubjectEntity<S
 		refreshCheckers();
 		if(hasChekers()){
 			for(EventChecker checker : getCheckers()){
-				checker.checkEvents(this, currentTime);
+				if(checker.isActive()){
+					checker.checkEvents(this, currentTime);
+				}
 			}
 		}
 	}
