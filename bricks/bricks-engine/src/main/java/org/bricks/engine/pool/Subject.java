@@ -15,8 +15,9 @@ public class Subject<E extends Entity> extends BrickWrap implements Satellite{
 	private final Map<AreaBase, Integer> pools = new HashMap<AreaBase, Integer>();
 	private District<?, E> district;
 	private int sectorMask;
-	private SubjectView currentView;
 	protected E entity;
+
+	private SubjectView currentView;
 	private final LinkedList<SubjectView> viewCache = new LinkedList<SubjectView>();
 
 	public Subject(Brick brick) {

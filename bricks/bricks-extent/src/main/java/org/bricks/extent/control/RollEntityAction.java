@@ -1,6 +1,7 @@
 package org.bricks.extent.control;
 
 import org.bricks.engine.event.check.RollToMarkProcessorChecker;
+import org.bricks.engine.help.RotationHelper;
 import org.bricks.engine.staff.Roller;
 import org.bricks.enterprise.control.widget.tool.FlowTouchPad;
 import org.bricks.enterprise.control.widget.tool.RotationDependAction.RotationProvider;
@@ -47,17 +48,9 @@ public class RollEntityAction extends EventCheckRegAction<Roller, FlowTouchPad>{
 	}
 	
 	protected void initNewRotation(float targetRad, float currentRad){
-		curSpeedRad = rotationSpeed;
-		float curDiffRad = targetRad - currentRad;
-		curTargetRad = targetRad;
-		if( curDiffRad > Math.PI || (curDiffRad < 0 && curDiffRad >= -Math.PI)){
-			curSpeedRad *= -1;
-			if(curTargetRad > currentRad){
-				curTargetRad -= rotationCycle;
-			}
-		}else if(curTargetRad < currentRad){
-			curTargetRad += rotationCycle;
-		}
+		RotationHelper.calculateRotationData(currentRad, targetRad, rotationSpeed);
+		curTargetRad = RotationHelper.getCalculatedTargetRotation();
+		curSpeedRad = RotationHelper.getCalculatedRotationSpeed();
 		rollToMarkProcessor.init(curTargetRad, curSpeedRad, 0f);
 		addChecker(rollToMarkProcessor);
 	}

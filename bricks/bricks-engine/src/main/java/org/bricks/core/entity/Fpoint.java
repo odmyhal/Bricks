@@ -25,6 +25,11 @@ private float x, y;
 		this.y = y;
 	}
 	
+	public void set(float x, float y){
+		this.x = x;
+		this.y = y;
+	}
+	
 	public int getX(){
 		return (int) Math.round(x);
 	}

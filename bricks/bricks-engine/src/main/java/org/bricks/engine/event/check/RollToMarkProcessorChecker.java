@@ -4,7 +4,9 @@ import org.bricks.engine.event.control.RotationSpeedEvent;
 import org.bricks.engine.event.processor.ChangeRotationSpeedProcessor;
 import org.bricks.engine.event.processor.ImmediateActProcessor;
 import org.bricks.engine.event.processor.SingleActProcessor;
+import org.bricks.engine.help.RotationHelper;
 import org.bricks.engine.staff.Roller;
+import org.bricks.exception.Validate;
 
 public class RollToMarkProcessorChecker<T extends Roller> extends ChunkEventChecker<T>{
 
@@ -13,7 +15,11 @@ public class RollToMarkProcessorChecker<T extends Roller> extends ChunkEventChec
 	
 	private ChangeRotationSpeedProcessor<T> rotationSpeedProcessor;
 	private ConditionalRotationProcessor conditionalRotationProcessor;
-	private volatile float startSpeed, finishSpeed, targetRotation;
+//	private volatile boolean inited = false;
+	
+	private float finishSpeed, targetRotation;
+	//one of startSpeed, finishSpeed, targetRotation should be volatile
+	private volatile float startSpeed;
 	
 	public RollToMarkProcessorChecker(){
 		this(0f, 0f, 0f);
@@ -35,24 +41,47 @@ public class RollToMarkProcessorChecker<T extends Roller> extends ChunkEventChec
 		conditionalRotationProcessor = new ConditionalRotationProcessor();
 		this.addProcessor(conditionalRotationProcessor);
 		
-		System.out.println(this.getClass().getCanonicalName() + " created...");
 	}
 	
+	/*
+	 * Usually called from action in render thread
+	 * inited is volatile to be read in motor thread
+	 */
 	public void init(float targetRotation, float startSpeed, float finishSpeed){
 		this.targetRotation = targetRotation;
-		this.startSpeed = startSpeed;
 		this.finishSpeed = finishSpeed;
+		/*
+		 * Flush cached values via volatile
+		 */
+		this.startSpeed = startSpeed;
+//		inited = true;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.bricks.engine.event.check.ChunkEventChecker#activate()
+	 * Called in motor thread
+	 * inited is volatile because of it is changed in render thread
+	 */
 	@Override
-	public void activate(){
+	public void activate(T target, long curTime){
+//		Validate.isTrue(inited, "Volatile inited must be true");
+//		inited = false;
+		/*
+		 * Flush cached values via volatile
+		 */
 		rotationSpeedProcessor.setRotationSpeed(startSpeed);
 		conditionalRotationProcessor.initialize(targetRotation, finishSpeed);
-		super.activate();
+		super.activate(target, curTime);
 	}
 	
 	private class ConditionalRotationProcessor extends SingleActProcessor<T>{
 		
+		public ConditionalRotationProcessor() {
+			super(CheckerType.NO_SUPLANT);
+			// TODO Auto-generated constructor stub
+		}
+
 		private float tRotation, fSpeed;
 		
 		private void initialize(float tRotation, float fSpeed){
@@ -67,13 +96,14 @@ public class RollToMarkProcessorChecker<T extends Roller> extends ChunkEventChec
 		 */
 		@Override
 		protected boolean ready(T target, long processTime) {
-			boolean stopAction = false;
+//			boolean stopAction = false;
 			float curSpeed = target.getRotationSpeed();
 			if(curSpeed == 0f){
 				System.out.println("WARN: " + this.getClass().getCanonicalName() + " checker will never provide event");
 				target.unregisterEventChecker(this);
 			}
-			float diffRad = tRotation - target.getRotation();
+			return RotationHelper.isRotationFinished(curSpeed, target.getRotation(), tRotation);
+/*			float diffRad = tRotation - target.getRotation();
 			if(curSpeed >= 0){
 				if(diffRad >= Math.PI){
 					diffRad -= rotationCycle;
@@ -90,7 +120,7 @@ public class RollToMarkProcessorChecker<T extends Roller> extends ChunkEventChec
 					stopAction = true;
 				}
 			}
-			return stopAction;
+			return stopAction;*/
 		}
 
 		@Override

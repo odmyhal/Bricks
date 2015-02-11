@@ -19,6 +19,12 @@ public class Live {
 	private final Set<EventChecker> tmpAddCheckers = new HashSet<EventChecker>();
 	private final Set<EventChecker> tmpDelCheckers = new HashSet<EventChecker>();
 	private final Map<Integer, Event> eventHistory = new HashMap<Integer, Event>();
+	
+	private final Liver liver;
+	
+	public Live(Liver liver){
+		this.liver = liver;
+	}
 
 	public synchronized void registerEventChecker(EventChecker<? extends Liver> checker) {
 		for(CheckerType cht : checker.supplants()){
@@ -43,14 +49,14 @@ public class Live {
 		return checkers.contains(checker);
 	}
 	
-	public synchronized void refreshCheckers(){
+	public synchronized void refreshCheckers(long currentTime){
 		if(!tmpDelCheckers.isEmpty()){
 			checkers.removeAll(tmpDelCheckers);
 			tmpDelCheckers.clear();
 		}
 		if(!tmpAddCheckers.isEmpty()){
 			for(EventChecker checker : tmpAddCheckers){
-				checker.activate();
+				checker.activate(liver, currentTime);
 			}
 			checkers.addAll(tmpAddCheckers);
 			tmpAddCheckers.clear();

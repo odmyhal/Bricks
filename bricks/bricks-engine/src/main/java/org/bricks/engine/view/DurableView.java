@@ -2,6 +2,11 @@ package org.bricks.engine.view;
 
 import java.util.LinkedList;
 
+/**
+ * TODO	rewrite this class without synchronization using AtomicInteger and Concurrent collection
+ * @author oleh
+ *
+ */
 public abstract class DurableView {
 	
 	private LinkedList backet;

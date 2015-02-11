@@ -19,8 +19,9 @@ public abstract class MultiSubjectEntity<S extends Subject> implements Entity{
 	private Ipoint orign = new Ipoint(0, 0);
 //	protected Ipoint constructOrigin;
 	private float weight = 0;
-	protected EntityView view;
 	private Engine engine;
+
+	protected EntityView view;
 	protected final LinkedList<EntityView> viewCache = new LinkedList<EntityView>();
 	
 	protected MultiSubjectEntity(){
@@ -32,21 +33,27 @@ public abstract class MultiSubjectEntity<S extends Subject> implements Entity{
 		adjustCurrentView();
 	}
 	
-//	@Override
 	public void applyEngine(Engine engine){
 		Validate.isTrue(this.engine == null);
 		this.engine = engine;
 	}
 	
-//	@Override
 	public Engine getEngine(){
 		return this.engine;
 	}
 	
-//	@Override
 	public void outOfWorld(){
 		for(Subject subject : getStaff()){
 			subject.leaveDistrict();
+		}
+	}
+	
+	public void setToRotation(float radians){
+		for(Satellite satellite : getSatellites()){
+			satellite.rotate(radians, getOrigin());
+		}
+		for(S subject : staff){
+			subject.adjustCurrentView();
 		}
 	}
 	
@@ -116,8 +123,8 @@ public abstract class MultiSubjectEntity<S extends Subject> implements Entity{
 	
 //	public static final AtomicLong createdViews = new AtomicLong(0);
 //	public static final AtomicLong reusedViews = new AtomicLong(0);
-	
-	protected void adjustCurrentView(boolean adjustSubjects){
+//TODO need refuse of synchronization use Concurrent collection and volatile modificator for this.view	
+	protected final void adjustCurrentView(boolean adjustSubjects){
 		synchronized(viewCache){
 			EntityView nView = viewCache.pollFirst();
 			if(nView == null){

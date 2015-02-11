@@ -18,7 +18,7 @@ import org.bricks.engine.tool.Logger;
 
 public abstract class MultiLiver<S extends Subject> extends MultiSubjectEntity<S> implements Liver{
 	
-	private Live live = new Live();
+	private Live live;
 	private Logger logger = new Logger();
 	protected Map<String, OverlapStrategy> overlapStrategy;
 	private Motor motor;
@@ -26,6 +26,7 @@ public abstract class MultiLiver<S extends Subject> extends MultiSubjectEntity<S
 
 	protected MultiLiver() {
 		overlapStrategy = initOverlapStrategy();
+		live = new Live(this);
 	}
 
 	public void registerEventChecker(EventChecker checker){
@@ -40,8 +41,8 @@ public abstract class MultiLiver<S extends Subject> extends MultiSubjectEntity<S
 	public boolean checkerRegistered(EventChecker checker){
 		return live.checkerRegistered(checker);
 	}
-	public void refreshCheckers(){
-		live.refreshCheckers();
+	public void refreshCheckers(long currentTime){
+		live.refreshCheckers(currentTime);
 	}
 	public boolean hasChekers(){
 		return live.hasChekers();
@@ -79,7 +80,7 @@ public abstract class MultiLiver<S extends Subject> extends MultiSubjectEntity<S
 	}
 	
 	public void processEvents(long currentTime){
-		refreshCheckers();
+		refreshCheckers(currentTime);
 		if(hasChekers()){
 			for(EventChecker checker : getCheckers()){
 				if(checker.isActive()){

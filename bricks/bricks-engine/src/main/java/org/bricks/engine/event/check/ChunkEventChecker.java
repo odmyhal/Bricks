@@ -21,11 +21,11 @@ public abstract class ChunkEventChecker<T extends Liver> extends EventChecker<T>
 	private List<EventChecker<T>> checkers = new ArrayList<EventChecker<T>>();
 	private int nextIndex = 0;
 	private EventChecker<T> currentChecker;
-	
+/*	
 	public ChunkEventChecker(EventChecker<T>...chrs){
 		checkers.addAll(Arrays.asList(chrs));
 	}
-	
+*/	
 	public ChunkEventChecker(CheckerType checkerType, EventChecker<T>...chrs){
 		super(checkerType);
 		checkers.addAll(Arrays.asList(chrs));
@@ -46,13 +46,13 @@ public abstract class ChunkEventChecker<T extends Liver> extends EventChecker<T>
 	}
 	
 	@Override
-	public void activate(){
+	public void activate(T target, long curTime){
 		for(EventChecker<T> checker : checkers){
-			checker.activate();
+			checker.activate(target, curTime);
 		}
 		currentChecker = null;
 		nextIndex = 0;
-		super.activate();
+		super.activate(target, curTime);
 	}
 	
 	public boolean addChecker(EventChecker<T> checker){

@@ -15,14 +15,17 @@ public class AccelerateToSpeedProcessorChecker<T extends Walker> extends ChunkEv
 	private ChangeAccelerationProcessor<T> changeAccelerationProcessor;
 	private ChangeSpeedProcessor<T> changeSpeedProcessor;
 	private ConditionalAccDisableProcessor accDisableProcessor;
-	private volatile float acceleration, speed;
+	private float speed;
+	//One of speed & acceleration should be volatile
+	private volatile float acceleration;
+//	private volatile boolean inited = false;
 	
 	public AccelerateToSpeedProcessorChecker(){
 		this(1f, 0f);
 	}
 
 	public AccelerateToSpeedProcessorChecker(final float accelerate, final float targetSpeed){
-		
+		super(CHECKER_TYPE);
 		init(accelerate, targetSpeed);
 		
 		this.supplant(CHECKER_TYPE);
@@ -36,24 +39,37 @@ public class AccelerateToSpeedProcessorChecker<T extends Walker> extends ChunkEv
 		changeSpeedProcessor = new ChangeSpeedProcessor(targetSpeed);
 		this.addProcessor(changeSpeedProcessor);
 		
-		System.out.println(this.getClass().getCanonicalName() + " created...");
 	}
 	
 	public void init(final float accelerate, final float targetSpeed){
 		Validate.isFalse(accelerate == 0, "Adding checker with zero accelerate has no sense, and can be infinitelly");
-		acceleration = accelerate;
 		speed = targetSpeed;
+		/*
+		 * Flush cached values via volatile
+		 */
+		acceleration = accelerate;
+//		inited = true;
 	}
 	
-	public void activate(){
-		changeAccelerationProcessor.setAcceleration(acceleration);
+	public void activate(T target, long curTime){
+//		Validate.isTrue(inited, "Volatile inited should be true");
+//		inited = false;
+		/*
+		 * Flush cached values via volatile
+		 */
+		float curAcceleration = acceleration;
+		changeAccelerationProcessor.setAcceleration(curAcceleration);
 		changeSpeedProcessor.setSpeed(speed);
-		accDisableProcessor.initialize(acceleration, speed);
-		super.activate();
+		accDisableProcessor.initialize(curAcceleration, speed);
+		super.activate(target, curTime);
 	}
 	
 	private class ConditionalAccDisableProcessor extends SingleActProcessor<T>{
 		
+		public ConditionalAccDisableProcessor() {
+			super(CheckerType.NO_SUPLANT);
+		}
+
 		private float accelerate, targetSpeed;
 		
 		private void initialize(float accelerate, float targetSpeed){

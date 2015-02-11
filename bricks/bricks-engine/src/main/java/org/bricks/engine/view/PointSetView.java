@@ -9,6 +9,7 @@ import org.bricks.core.entity.Dimentions;
 import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.Point;
+import org.bricks.core.help.ConvexityApproveHelper;
 import org.bricks.core.help.PointSetHelper;
 import org.bricks.core.help.TangPointLocator;
 
@@ -24,7 +25,6 @@ public class PointSetView extends DurableView{
 		for(int i = 1; i < 5; i++){
 			sectorPoints[i] = new SectorPoints(i);
 		}
-//		sectorPoints[0] = null;
 		this.points = new ArrayList<Ipoint>(size);
 		for(int j=0; j<size; j++){
 			this.points.add(new Ipoint(0, 0));
@@ -42,6 +42,7 @@ public class PointSetView extends DurableView{
 			this.points.add(new Ipoint(0, 0));
 		}
 		this.init(myPoints, center);
+		ConvexityApproveHelper.applyConvexity(this);
 	}
 
 	protected void init(List<Ipoint> data, Point center){

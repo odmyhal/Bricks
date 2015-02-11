@@ -18,7 +18,7 @@ import org.bricks.engine.staff.Liver;
 import org.bricks.engine.view.PointSetView;
 import org.bricks.engine.view.SubjectView;
 
-public class OverlapChecker extends EventChecker{
+public class OverlapChecker<T extends Liver> extends EventChecker<T>{
 	
 	private static final int[] sectors = new int[5];
 	private static final OverlapChecker instance = new OverlapChecker();
@@ -39,11 +39,19 @@ public class OverlapChecker extends EventChecker{
     };
 	
 	
-	private OverlapChecker(){};
+	private OverlapChecker(){
+		super(CheckerType.registerCheckerType());
+	};
 	
 	public static OverlapChecker instance(){
 		return instance;
 	}
+	
+	public boolean isActive(){
+		return true;
+	}
+	
+	public void activate(T target, long curTime){}
 	
 	protected Event popEvent(Liver targetP, long eventTime){
 		EventCheckState curState = localCheckState.get();
@@ -145,42 +153,23 @@ public class OverlapChecker extends EventChecker{
 	public static boolean isOvarlap(PointSetView one, PointSetView two){
 		return findOverlapPoint(one, two, false) != null;
 	}
-	
+/*change to private*/	
 	private static Point findOverlapPoint(PointSetView one, PointSetView two, boolean presize){
-/*		
-		Liver target = null;
-		if(one instanceof SubjectView){
-			System.out.println("TArget Not nulL");
-			if(one.getPoints().size() == 4){
-				System.out.println("Checking my point");
-				Entity e = ((SubjectView) one).getSubject().getEntity();
-				if(e instanceof Liver){
-					target = (Liver) e;
-				}
-			}else{
-				System.out.println("Chekcin entity of size " + one.getPoints().size());
-			}
-		}
-*/		
+	
 		Dimentions dimm1 = one.getDimentions();
 		Dimentions dimm2 = two.getDimentions();
 		if(dimm1.getMaxX() < dimm2.getMinX() || dimm1.getMinX() > dimm2.getMaxX()
 				|| dimm1.getMaxY() < dimm2.getMinY() || dimm1.getMinY() > dimm2.getMaxY()){
-/*			if(target != null){
-				target.startLog();
-				target.appendLog("Diff dimentions");
-				target.appendLog("One: " + one.getPoints());
-				target.appendLog("Two: " + one.getPoints());
-				target.finishLog();
-			}*/
 			return null;
 		}
 		int oneSector = PointHelper.detectSectorByPoint(one.getCenter(), two.getCenter());
 		int twoSector = sectors[oneSector];
-		
+//		System.out.println("---------------------------------------");
+//		System.out.println("Ship sector: " + oneSector + ", Stone sector: " + twoSector);
 		Collection<Point> onePoints = one.getPointsOfSector(oneSector);
 		Collection<Point> twoPoints = two.getPointsOfSector(twoSector);
-		
+//		System.out.println("Ship points: " + onePoints);
+//		System.out.println("Stone points: " + twoPoints);
 		Point oneCenter = one.getCenter();
 		Point twoCenter = two.getCenter();
 		Point oneCross = null, firstCheck = null, secondCheck;
@@ -194,6 +183,7 @@ public class OverlapChecker extends EventChecker{
 			firstCheck = secondCheck;
 		}
 		if(oneCross == null){
+//			System.out.println("OverlapChecker: zero");
 			return new Fpoint((oneCenter.getFX() + twoCenter.getFX()) / 2, (oneCenter.getFY() + twoCenter.getFY()) / 2);
 		}
 		firstCheck = null;
@@ -209,6 +199,7 @@ public class OverlapChecker extends EventChecker{
 			firstCheck = secondCheck;
 		}
 		if(twoCross == null){
+//			System.out.println("OverlapChecker: one");
 			return new Fpoint((oneCenter.getFX() + twoCenter.getFX()) / 2, (oneCenter.getFY() + twoCenter.getFY()) / 2);
 		}
 		if(twoCross.getFX() >= Math.min(oneCenter.getFX(), oneCross.getFX())
@@ -216,6 +207,7 @@ public class OverlapChecker extends EventChecker{
 				&& twoCross.getFY() >= Math.min(oneCenter.getFY(), oneCross.getFY())
 				&& twoCross.getFY() <= Math.max(oneCenter.getFY(), oneCross.getFY())
 						){
+//			System.out.println("OverlapChecker: two");
 			return new Fpoint((oneCenter.getFX() + twoCenter.getFX()) / 2, (oneCenter.getFY() + twoCenter.getFY()) / 2);
 		}
 		oneIter = onePoints.iterator();
@@ -262,18 +254,7 @@ public class OverlapChecker extends EventChecker{
 			firstOne = secondOne;
 		}
 		if(presize){
-/*			System.out.println("Finished priesice check");
-			if(target != null){
-				target.startLog();
-				if(oneTouch[0] == null){
-					target.appendLog("Has not found overlap");
-				}else{
-					target.appendLog("Has Found overlap");
-				}
-				target.appendLog("One: " + one.getPoints());
-				target.appendLog("Two: " + one.getPoints());
-				target.finishLog();
-			}*/
+//			System.out.println("OverlapChecker: three");
 			return resolveTouchPoint(oneTouch, twoTouch);
 		}else{
 			return null;
@@ -287,9 +268,7 @@ public class OverlapChecker extends EventChecker{
 		if(twoTouch[0] == null){
 			return oneTouch[0];
 		}
-/*		if(oneTouch[1] == twoTouch[1] || oneTouch[3] == twoTouch[3]){
-			return new Fpoint((oneTouch[0].getFX() + twoTouch[0].getFX()) / 2, (oneTouch[0].getFY() + twoTouch[0].getFY()) / 2);
-		}*/
+
 		if(oneTouch[4] == twoTouch[3]){
 			return oneTouch[4];
 		}

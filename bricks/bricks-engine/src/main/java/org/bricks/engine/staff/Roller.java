@@ -6,7 +6,6 @@ public interface Roller extends Liver{
 	public void setRotationSpeed(float rotationSpeed);
 	public float getRotation();
 	public void setRotation(float radians);
-	public void setToRotation(float radians);
 //	public void resetMoveTime();
 	public void flushTimer(long nTime);
 	public boolean rotate(long checkTime);

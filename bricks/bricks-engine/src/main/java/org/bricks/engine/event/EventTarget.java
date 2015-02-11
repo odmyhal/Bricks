@@ -11,7 +11,7 @@ public interface EventTarget {
 	public boolean addEvent(Event e);
 	public Event popEvent();
 	public boolean checkerRegistered(EventChecker checker);
-	public void refreshCheckers();
+	public void refreshCheckers(long currentTime);
 	public boolean hasChekers();
 	public Collection<EventChecker> getCheckers();
 	

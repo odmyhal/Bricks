@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class CheckerType {
 	
 	private static final AtomicInteger generator = new AtomicInteger(0);
+	public static final CheckerType NO_SUPLANT = registerCheckerType();
 
 	private int identity;
 	

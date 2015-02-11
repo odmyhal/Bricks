@@ -17,6 +17,8 @@ public interface Entity extends EventSource{
 	public float getWeight();
 	public List<? extends Subject> getStaff();
 	public void translate(int x, int y);
+
+	public void setToRotation(float radians);
 	public Ipoint getOrigin();
 	
 	public LinkedList<EntityView> getViewCache();

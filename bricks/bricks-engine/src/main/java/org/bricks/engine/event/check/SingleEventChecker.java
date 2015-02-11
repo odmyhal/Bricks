@@ -6,7 +6,7 @@ import org.bricks.engine.staff.Liver;
 public abstract class SingleEventChecker<T extends Liver> extends EventChecker<T>{
 	
 	public SingleEventChecker(){
-		super();
+		super(CheckerType.NO_SUPLANT);
 	}
 	
 	public SingleEventChecker(CheckerType type){

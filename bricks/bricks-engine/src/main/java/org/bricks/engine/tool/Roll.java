@@ -72,7 +72,10 @@ public class Roll {
 		}
 		Validate.isTrue(checkTime >= rotateTime);
 		rotation -= lastRotation;
-		lastRotation = 0;
+		/**
+		 * controversial, need to be checked
+		 */
+		lastRotation = -lastRotation;
 		rotateTime = checkTime;
 		return true;
 	}

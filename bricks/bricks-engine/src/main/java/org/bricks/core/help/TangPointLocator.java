@@ -7,10 +7,14 @@ import java.util.Iterator;
 import org.bricks.exception.Validate;
 import org.bricks.core.entity.Point;
 
+
 public class TangPointLocator {
 
 private static TangSectorPointSearcher[] searcher = new TangSectorPointSearcher[5];
 	
+	/**
+	 * Each sector comprises all points, except those which obviously belongs to opposite sector
+	 */
 	static{
 		searcher[1] = new TangSectorPointSearcher(){
 			@Override

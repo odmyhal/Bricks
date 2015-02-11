@@ -9,14 +9,23 @@ import org.bricks.engine.staff.Liver;
  * @author oleh
  *
  */
-public class OwnEventChecker extends EventChecker{
+public class OwnEventChecker<T extends Liver> extends EventChecker<T>{
 
 	private static final OwnEventChecker instance = new OwnEventChecker();
 	
-	private OwnEventChecker(){}
+	private OwnEventChecker(){
+		super(CheckerType.registerCheckerType());
+		this.supplant(this.checkerType());
+	}
+	
+	public boolean isActive(){
+		return true;
+	}
+	
+	public void activate(T target, long curTime){};
 	
 	@Override
-	protected Event popEvent(Liver target, long eventTime) {
+	protected Event popEvent(T target, long eventTime) {
 		return null;
 	}
 	

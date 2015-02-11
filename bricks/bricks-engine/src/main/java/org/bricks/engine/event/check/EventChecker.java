@@ -12,16 +12,17 @@ public abstract class EventChecker<T extends Liver> {
 	
 	private CheckerType type;
 	private boolean active = true;
+	protected T entity;
 	/**
 	 * When current checker added to entity, all checkers with types from this supplant list should be removed from entity
 	 * @author Oleh Myhal
 	 */
 	private final Set<CheckerType> supplants = new HashSet<CheckerType>();
-	
+/*	
 	public EventChecker(){
 		this(CheckerType.registerCheckerType());
 	}
-	
+*/	
 	public EventChecker(CheckerType type){
 		this.type = type;
 	}
@@ -36,7 +37,8 @@ public abstract class EventChecker<T extends Liver> {
 		this.active = false;
 	}
 	
-	public void activate(){
+	public void activate(T target, long curTime){
+		this.entity = target;
 		this.active = true;
 	}
 /*	public void setActive(boolean active){

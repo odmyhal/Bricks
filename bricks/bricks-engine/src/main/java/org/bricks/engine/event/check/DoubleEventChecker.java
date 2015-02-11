@@ -13,12 +13,12 @@ import org.bricks.engine.staff.Liver;
 public abstract class DoubleEventChecker<T extends Liver> extends EventChecker<T>{
 	
 	private boolean needStart;
-	
-	public DoubleEventChecker(){
+/*	
+	public DoubleEventChecker(CheckerType chType){
 		super();
 		init();
 	}
-	
+*/	
 	public DoubleEventChecker(CheckerType type){
 		super(type);
 		init();
@@ -26,7 +26,7 @@ public abstract class DoubleEventChecker<T extends Liver> extends EventChecker<T
 	
 	public void init(){
 		needStart = true;
-		activate();
+		activate(entity, System.currentTimeMillis());
 	}
 
 	@Override

@@ -16,7 +16,7 @@ import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Liver;
 import org.bricks.engine.view.SubjectView;
 
-public class BorderTouchChecker extends EventChecker{
+public class BorderTouchChecker<T extends Liver> extends EventChecker<T>{
 	
 	private static final BorderTouchChecker instance = new BorderTouchChecker();
 	
@@ -26,11 +26,20 @@ public class BorderTouchChecker extends EventChecker{
         }
     };
 
-	private BorderTouchChecker(){};
+	private BorderTouchChecker(){
+		super(CheckerType.registerCheckerType());
+	};
 	
 	public static BorderTouchChecker instance(){
 		return instance;
 	}
+	
+
+	public boolean isActive(){
+		return true;
+	}
+	
+	public void activate(T target, long curTime){}
 
 	@Override
 	protected Event popEvent(Liver targetP, long eventTime) {

@@ -1,8 +1,10 @@
 package org.bricks.extent.control;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.bricks.engine.event.Event;
 import org.bricks.engine.event.check.EventChecker;
@@ -24,8 +26,8 @@ public abstract class EventCheckRegAction<L extends Liver, W extends Widget> ext
 		super(target);
 	}
 
-	private List<Event> events = new LinkedList<Event>();
-	private List<EventChecker> checkers = new LinkedList<EventChecker>();
+	private Set<Event> events = new HashSet<Event>();
+	private Set<EventChecker> checkers = new HashSet<EventChecker>();
 
 	@Override
 	public boolean act(float delta) {
