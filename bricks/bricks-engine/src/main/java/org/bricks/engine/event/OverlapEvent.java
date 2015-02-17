@@ -3,6 +3,8 @@ package org.bricks.engine.event;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bricks.core.entity.Point;
+import org.bricks.engine.neve.EntityPrint;
+import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Entity;
 import org.bricks.engine.view.SubjectView;
@@ -10,8 +12,8 @@ import org.bricks.engine.view.SubjectView;
 public class OverlapEvent extends BaseEvent<Entity>{
 	
 	private static final AtomicInteger crashNumberGenerator = new AtomicInteger(0);
-	private SubjectView source;
-	private SubjectView target;
+	private SubjectPrint<? extends Subject, ? extends EntityPrint> source;
+	private SubjectPrint<? extends Subject, ? extends EntityPrint> target;
 	private Point touchPoint;
 	private int crashNum;
 	
@@ -19,14 +21,14 @@ public class OverlapEvent extends BaseEvent<Entity>{
 		return crashNumberGenerator.incrementAndGet();
 	}
 	
-	public OverlapEvent(SubjectView target, SubjectView source, Point touchPoint, int crNumb){
+	public OverlapEvent(SubjectPrint target, SubjectPrint source, Point touchPoint, int crNumb){
 		this.target = target;
 		this.source = source;
 		this.touchPoint = touchPoint;
 		this.crashNum = crNumb;
 	}
 	
-	public OverlapEvent(SubjectView target, SubjectView source, Point touchPoint){
+	public OverlapEvent(SubjectPrint target, SubjectPrint source, Point touchPoint){
 		this.target = target;
 		this.source = source;
 		this.touchPoint = touchPoint;
@@ -34,23 +36,23 @@ public class OverlapEvent extends BaseEvent<Entity>{
 	}
 	
 	public String sourceType(){
-		return source.getSubject().getEntity().sourceType();
+		return source.getTarget().getEntity().sourceType();
 	}
 	
 	public Point getTouchPoint(){
 		return touchPoint;
 	}
 	
-	public SubjectView getSourceView(){
+	public SubjectPrint<? extends Subject, ? extends EntityPrint> getSourcePrint(){
 		return source;
 	}
 	
-	public SubjectView getTargetView(){
+	public SubjectPrint<? extends Subject, ? extends EntityPrint> getTargetPrint(){
 		return target;
 	}
 
 	public Entity getEventSource() {
-		return source.getSubject().getEntity();
+		return source.getTarget().getEntity();
 	}
 
 	public int getEventGroupCode() {

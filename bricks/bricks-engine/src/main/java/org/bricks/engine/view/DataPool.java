@@ -7,6 +7,7 @@ import java.util.LinkedList;
 
 import org.bricks.engine.staff.Entity;
 
+@Deprecated
 public class DataPool<E> extends DurableView implements Iterable<E>{
 	
 	private final HashSet<E> entities = new HashSet<E>();

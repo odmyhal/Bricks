@@ -1,8 +1,9 @@
 package org.bricks.engine.staff;
 
 import org.bricks.core.entity.Fpoint;
+import org.bricks.engine.neve.WalkPrint;
 
-public interface Walker extends Roller{
+public interface Walker<I extends WalkPrint> extends Roller<I>{
 
 	public void setVector(Fpoint vector);
 	public void setVector(float x, float y);

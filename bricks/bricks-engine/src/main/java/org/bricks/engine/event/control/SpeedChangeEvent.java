@@ -72,6 +72,6 @@ public class SpeedChangeEvent extends BaseEvent {
 		double rotation = target.getRotation();
 		vector.setX((float) Math.cos(rotation) * targetSpeed);
 		vector.setY((float) Math.sin(rotation) * targetSpeed);
-		target.adjustCurrentView();
+		target.adjustCurrentPrint();
 	}
 }

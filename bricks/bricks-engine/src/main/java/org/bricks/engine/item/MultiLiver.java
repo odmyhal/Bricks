@@ -9,6 +9,8 @@ import org.bricks.engine.Motor;
 import org.bricks.engine.event.Event;
 import org.bricks.engine.event.check.EventChecker;
 import org.bricks.engine.event.overlap.OverlapStrategy;
+import org.bricks.engine.neve.EntityPrint;
+import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.pool.World;
@@ -16,7 +18,7 @@ import org.bricks.engine.staff.Liver;
 import org.bricks.engine.tool.Live;
 import org.bricks.engine.tool.Logger;
 
-public abstract class MultiLiver<S extends Subject> extends MultiSubjectEntity<S> implements Liver{
+public abstract class MultiLiver<S extends Subject, P extends EntityPrint> extends MultiSubjectEntity<S, P> implements Liver<P>{
 	
 	private Live live;
 	private Logger logger = new Logger();
@@ -76,6 +78,7 @@ public abstract class MultiLiver<S extends Subject> extends MultiSubjectEntity<S
 	}
 	
 	public void motorProcess(long currentTime){
+		System.out.println(this.getClass().getCanonicalName() + " motor process");
 		processEvents(currentTime);
 	}
 	
@@ -102,13 +105,12 @@ public abstract class MultiLiver<S extends Subject> extends MultiSubjectEntity<S
 	public void applyEngine(Engine engine){
 		super.applyEngine(engine);
 		World world = engine.getWorld();
-		this.adjustCurrentView(false);
+//		this.adjustCurrentView(false);
+		this.adjustCurrentPrint(false);
 		for(Subject subject: getStaff()){
 			District d = world.pointSector(subject.getCenter());
-//			d.lockView();
 			subject.joinDistrict(d);
-//			d.unlockView();
-			subject.adjustCurrentView();
+			subject.adjustCurrentPrint();
 		}
 		alive = true;
 		Motor motor = engine.getLazyMotor();
@@ -144,4 +146,11 @@ public abstract class MultiLiver<S extends Subject> extends MultiSubjectEntity<S
 		return logger.getlog();
 	}
 
+	public void log(String s){
+		logger.log(s);
+	}
+	
+	public void logStackTrace(String s){
+		logger.logStackTrace(s);
+	}
 }

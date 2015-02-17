@@ -1,19 +1,19 @@
 package org.bricks.extent.entity.mesh;
 
-import java.util.LinkedList;
-
-import org.bricks.engine.view.EntityView;
+import org.bricks.engine.neve.PrintStore;
+import org.bricks.engine.neve.Printable;
 
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 
-public class NodeData {
+public class NodeData<I extends NodeDataPrint> implements Printable<I>{
 	
-
-	private NodeDataView view;
-	private LinkedList<NodeDataView> viewCache = new LinkedList<NodeDataView>();
+	private PrintStore<?, I> printStore;
+	protected boolean edit = true;
+//	private NodeDataView view;
+//	private LinkedList<NodeDataView> viewCache = new LinkedList<NodeDataView>();
 	
 	public final Quaternion rotation = new Quaternion();
 	public final Vector3 translation = new Vector3();
@@ -28,7 +28,8 @@ public class NodeData {
 	public NodeData(Quaternion rotation, Vector3 translation){
 		setRotation(rotation);
 		setTranslation(translation);
-		adjustCurrentView();
+		printStore = new PrintStore(this);
+//		adjustCurrentView();
 	}
 	
 	public void setRotation(Quaternion quaternion){
@@ -43,6 +44,7 @@ public class NodeData {
 		this.rotation.mul(q);
 		q.toMatrix(helpMatrix.val);
 		this.translation.mul(helpMatrix);
+		edit = true;
 	}
 	
 	public void rotateByPoint(Quaternion q, Vector3 point){
@@ -57,12 +59,13 @@ public class NodeData {
 	
 	public void translate(Vector3 go){
 		translate(go.x, go.y, go.z);
+		edit = true;
 	}
 	
 	public void translate(float x, float y, float z){
 		translation.add(x, y, z);
 	}
-	
+/*	
 	protected LinkedList viewCache(){
 		return this.viewCache;
 	}
@@ -92,5 +95,23 @@ public class NodeData {
 			this.view.occupy();
 			return this.view;
 		}
+	}
+	*/
+
+	public void adjustCurrentPrint() {
+		printStore.adjustCurrentPrint();
+		edit = false;
+	}
+
+	public I getInnerPrint() {
+		return printStore.getInnerPrint();
+	}
+
+	public I getSafePrint() {
+		return printStore.getSafePrint();
+	}
+
+	public I print() {
+		return (I) new NodeDataPrint(printStore);
 	}
 }

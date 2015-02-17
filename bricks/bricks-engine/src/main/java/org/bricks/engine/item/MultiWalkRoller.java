@@ -3,9 +3,10 @@ package org.bricks.engine.item;
 import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Point;
 import org.bricks.core.help.PointHelper;
+import org.bricks.engine.neve.WalkPrint;
 import org.bricks.engine.pool.Subject;
 
-public abstract class MultiWalkRoller<S extends Subject> extends MultiWalker<S> {
+public abstract class MultiWalkRoller<S extends Subject, P extends WalkPrint> extends MultiWalker<S, P> {
 
 	protected MultiWalkRoller() {
 	}

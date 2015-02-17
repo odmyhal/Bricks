@@ -1,4 +1,4 @@
-package org.bricks.extent.entity.subject;
+package org.bricks.extent.entity.mesh;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,12 +9,10 @@ import java.util.Map.Entry;
 
 import org.bricks.core.entity.Point;
 import org.bricks.core.entity.type.Brick;
+import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Entity;
 import org.bricks.exception.Validate;
-import org.bricks.extent.entity.mesh.NodeData;
-import org.bricks.extent.entity.mesh.NodeDataView;
-import org.bricks.extent.entity.mesh.NodeOperator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -27,13 +25,13 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 
-public class ModelSubject<E extends Entity> extends Subject<E> implements RenderableProvider{
+public class ModelSubject<E extends Entity, I extends ModelSubjectPrint> extends Subject<E, I> implements RenderableProvider{
 
 	private ModelInstance modelInstance;
-	private Matrix4 transform;
-	private boolean edit = false;
+	protected Matrix4 transform;
+	protected boolean edit = true;
 	private Map<String, NodeOperator> operatedNodes = new HashMap<String, NodeOperator>();
-	private Map<Node, NodeData> dataNodes = new HashMap<Node, NodeData>();
+	protected Map<Node, NodeData> dataNodes = new HashMap<Node, NodeData>();
 	
 	public ModelSubject(Brick brick, ModelInstance modelInstance, String... operNodes){
 		super(brick);
@@ -57,32 +55,50 @@ public class ModelSubject<E extends Entity> extends Subject<E> implements Render
 
 	@Override
 	public void translate(int x, int y){
+		edit = true;
 		super.translate(x, y);
-		synchronized(transform){
+		transform.trn((float) x, (float) y, 0f);
+/*		synchronized(transform){
 			transform.trn((float) x, (float) y, 0f);
 			edit = true;
-		}
+		}*/
 	}
 	
 	@Override
 	public void rotate(float rad, Point central){
+		edit = true;
 		super.rotate(rad, central);
-		synchronized(transform){
+		transform.setToRotationRad(0, 0, 1f, rad);
+		transform.trn(central.getFX(), central.getFY(), 0f);
+/*		synchronized(transform){
 			transform.setToRotationRad(0, 0, 1f, rad);
 			transform.trn(central.getFX(), central.getFY(), 0f);
 			edit = true;
 		}
-		
+		*/
 	}
 
 	public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
-		synchronized(transform){
+		ModelSubjectPrint<?, ?> msp = getSafePrint();
+		if(msp.edit){
+			modelInstance.transform.set(msp.transform);
+		}
+		for(Node node : dataNodes.keySet()){
+			NodeDataPrint ndView = msp.nodeData.get(node);
+			if(ndView.edit){
+				node.rotation.set(ndView.rotation);
+				node.translation.set(ndView.translation);
+				node.calculateTransforms(false);
+			}
+		}
+		msp.free();
+/*		synchronized(transform){
 			if(edit){
 				modelInstance.transform.set(transform);
 				edit = false;
 			}
 		}
-		updateNodes();
+		updateNodes();*/
 		modelInstance.getRenderables(renderables, pool);
 	}
 	
@@ -129,15 +145,27 @@ public class ModelSubject<E extends Entity> extends Subject<E> implements Render
 		}
 		return null;
 	}
-	
+/*	
 	private void updateNodes(){
 		for(Entry<Node, NodeData> entry : dataNodes.entrySet()){
 			Node node = entry.getKey();
-			NodeDataView ndView = entry.getValue().getCurrentView();
+			NodeDataPrint ndView = entry.getValue().getSafePrint();
 			node.rotation.set(ndView.rotation);
 			node.translation.set(ndView.translation);
 			node.calculateTransforms(false);
 			ndView.free();
 		}
+	}
+*/
+	
+	@Override
+	public I print(){
+		return (I) new ModelSubjectPrint(this.printStore);
+	}
+	
+	@Override
+	public void adjustCurrentPrint(){
+		super.adjustCurrentPrint();
+		edit = false;
 	}
 }

@@ -8,8 +8,10 @@ import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.impl.PointSetBrick;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.engine.item.Stone;
+import org.bricks.engine.neve.EntityPrint;
 import org.bricks.engine.pool.Subject;
-import org.bricks.extent.entity.subject.ModelSubject;
+import org.bricks.extent.entity.mesh.ModelSubject;
+import org.bricks.extent.entity.mesh.ModelSubjectPrint;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -19,7 +21,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 
-public class Shield extends Stone<ModelSubject> implements RenderableProvider{
+public class Shield extends Stone<ModelSubject, EntityPrint> implements RenderableProvider{
 	
 	public static final String SHIELD_SOURCE = "ShieldSource@shoot.odmyha.com";
 
@@ -43,7 +45,7 @@ public class Shield extends Stone<ModelSubject> implements RenderableProvider{
 		ModelSubject<Shield> ms = new ModelSubject<Shield>(brick, mi);
 //		ms.getModelInstance().materials.get(0).set(ColorAttribute.createDiffuse(Color.GRAY));*/
 		ModelInstance shield = ModelStorage.instance().getModelInstance("shield");
-		ModelSubject<Shield> ms = new ModelSubject<Shield>(brick, shield);
+		ModelSubject<Shield, ModelSubjectPrint> ms = new ModelSubject<Shield, ModelSubjectPrint>(brick, shield);
 		return new Shield(ms);
 	}
 	

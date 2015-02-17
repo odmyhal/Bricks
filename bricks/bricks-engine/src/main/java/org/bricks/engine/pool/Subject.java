@@ -5,21 +5,23 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import org.bricks.core.entity.impl.BrickWrap;
+import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.staff.Entity;
 import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.view.SubjectView;
+import org.bricks.exception.Validate;
 import org.bricks.core.entity.type.Brick;
 
-public class Subject<E extends Entity> extends BrickWrap implements Satellite{
+public class Subject<E extends Entity, I extends SubjectPrint> extends BrickWrap<I> implements Satellite{
 	
 	private final Map<AreaBase, Integer> pools = new HashMap<AreaBase, Integer>();
 	private District<?, E> district;
 	private int sectorMask;
 	protected E entity;
-
+/*
 	private SubjectView currentView;
 	private final LinkedList<SubjectView> viewCache = new LinkedList<SubjectView>();
-
+*/
 	public Subject(Brick brick) {
 		super(brick);
 	}
@@ -44,6 +46,10 @@ public class Subject<E extends Entity> extends BrickWrap implements Satellite{
 		return pools.containsKey(pool);
 	}
 
+	/*
+	 * Method should occur only in motor thread
+	 * or before engine.start()
+	 */
 	public boolean joinPool(AreaBase pool){
 		if(pools.containsKey(pool)){
 			return false;
@@ -52,6 +58,10 @@ public class Subject<E extends Entity> extends BrickWrap implements Satellite{
 		return true;
 	}
 	
+	/*
+	 * Method should occur only in motor thread
+	 * or before engine.start()
+	 */
 	public boolean leavePool(AreaBase pool){
 		Integer reslt = pools.remove(pool);
 		if(reslt == null){
@@ -61,6 +71,10 @@ public class Subject<E extends Entity> extends BrickWrap implements Satellite{
 		return true;
 	}
 	
+	/*
+	 * Method should occur only in motor thread
+	 * or before engine.start()
+	 */
 	public boolean joinDistrict(District<?, E> sector){
 		boolean result = joinPool(sector);
 		if(result){
@@ -70,7 +84,11 @@ public class Subject<E extends Entity> extends BrickWrap implements Satellite{
 		}
 		return result;
 	}
-	
+
+	/*
+	 * Method should occur only in motor thread
+	 * or before engine.start()
+	 */
 	public boolean leaveDistrict(){
 //condition is not appropriatable for Stone
 //		Validate.isTrue(this.district != null, "Subject is out of sector");
@@ -85,6 +103,23 @@ public class Subject<E extends Entity> extends BrickWrap implements Satellite{
 		setDistrictMask(0);
 		return result;
 	}
+	
+	public void moveToDistrict(District<?, E> newOne){
+		Validate.isTrue(!(district.equals(newOne)));
+		District<?, E> oldOne = district;
+		int oldDistrictNum = -1;
+		for(AreaBase ar : pools.keySet()){
+			if(ar == district){
+				oldDistrictNum = pools.get(ar);
+			}else{
+				ar.freeSubject(pools.get(ar));
+			}
+		}
+		pools.clear();
+		setDistrictMask(0);
+		this.joinDistrict(newOne);
+		oldOne.freeSubject(oldDistrictNum);
+	}
 /*	
 	public void monitorSectorPosition(){
 		SectorMonitor.monitor(this);
@@ -97,7 +132,7 @@ public class Subject<E extends Entity> extends BrickWrap implements Satellite{
 	public void setDistrictMask(int sectorMask) {
 		this.sectorMask = sectorMask;
 	}
-	
+/*	
 	public LinkedList<SubjectView> getViewCache(){
 		return this.viewCache;
 	}
@@ -134,10 +169,14 @@ public class Subject<E extends Entity> extends BrickWrap implements Satellite{
 			return currentView;
 		}
 	}
-	
+*/	
 	public void update() {
 		SectorMonitor.monitor(this);
-		this.adjustCurrentView();
+		this.adjustCurrentPrint();
+	}
+	
+	public I print(){
+		return (I) new SubjectPrint(printStore);
 	}
 	
 //	public abstract void applyEngine(Engine engine);

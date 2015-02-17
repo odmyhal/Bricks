@@ -7,23 +7,37 @@ public class Logger {
 	private StringBuffer tmpLog;
 	private LinkedList<String> log = new LinkedList<String>();
 	
-	public void startLog(){
-		tmpLog = new StringBuffer(System.currentTimeMillis() + "--------------------------" + this);
+	public synchronized void startLog(){
+		tmpLog = new StringBuffer(System.currentTimeMillis() + "-----" + this + "-----thread:------" + Thread.currentThread().getName());
 	}
 	
-	public void appendLog(String s){
+	public synchronized void appendLog(String s){
 		tmpLog.append("\n" + s);
 	}
 	
-	public void finishLog(){
+	public synchronized void finishLog(){
 		tmpLog.append("\n------------------------------------------");
-		log.addFirst(tmpLog.toString());
-		if(log.size() > 10){
-			log.removeLast();
+		log.addLast(tmpLog.toString());
+		while(log.size() > 12){
+			log.removeFirst();
 		}
 	}
 	
-	public String getlog(){
+	public synchronized void log(String s){
+		startLog();
+		appendLog(s);
+		finishLog();
+	}
+	
+	public void logStackTrace(String msg){
+		StringBuffer buf = new StringBuffer(msg + "\n");
+		for(StackTraceElement stm : Thread.currentThread().getStackTrace()){
+			buf.append("	" + stm.getFileName() + " - " + stm.getMethodName() + " - " + stm.getLineNumber() + "\n");
+		}
+		log(buf.toString());
+	}
+	
+	public synchronized String getlog(){
 		StringBuffer res = new StringBuffer();
 		for(String lg : log){
 			res.append(lg + "\n");

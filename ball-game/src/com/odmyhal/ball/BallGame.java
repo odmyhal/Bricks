@@ -1,46 +1,25 @@
 package com.odmyhal.ball;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Properties;
 import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
 
-import org.bircks.enterprise.control.panel.ControlPanel;
 import org.bircks.enterprise.control.panel.InvisiblePanel;
 import org.bircks.enterprise.control.panel.PanelManager;
 import org.bircks.enterprise.control.panel.camera.CameraPanel;
 import org.bircks.entierprise.model.ModelStorage;
-import org.bricks.core.entity.Ipoint;
 import org.bricks.engine.Engine;
-import org.bricks.engine.item.MultiSubjectEntity;
-import org.bricks.engine.pool.Boundary;
-import org.bricks.engine.pool.District;
-import org.bricks.engine.pool.Subject;
-import org.bricks.engine.view.DataPool;
 import org.bricks.extent.debug.ShapeDebugger;
-import org.bricks.extent.entity.subject.ModelSubject;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-//import com.badlogic.gdx.graphics.g3d.model.Model;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.odmyha.shoot.Ball;
-import com.odmyha.subject.BallSubject;
-import com.odmyha.weapon.Bullet;
 import com.odmyha.weapon.Cannon;
 import com.odmyhal.panel.CannonPanel;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -154,7 +133,6 @@ public class BallGame implements ApplicationListener {
 		for(int i=750; i < 250 * 40 - 40; i+=225){
 			for(int j=50; j< 250 * 40 - 40; j+= 225){
 				bp.produceBall(j, i, 400f * (i%10 == 0 ? 1 : -1), 400f * (j%10 == 0 ? -1 : 1)).applyEngine(engine);
-	//			bp.produceBall(j, i, 0, 0).applyEngine(engine);
 				cnt++;
 			}
 		}
@@ -207,18 +185,20 @@ public class BallGame implements ApplicationListener {
 		}
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 //		drawSectors();
-		DataPool<RenderableProvider> entitiesPool = engine.getWorld().getRenderEntities();
+//		DataPool<RenderableProvider> entitiesPool = engine.getWorld().getRenderEntities();
+		
+		Collection<RenderableProvider> entities = engine.getWorld().getRenderEntities();
 
 		modelBatch.begin(camera);
-		for(RenderableProvider entity : entitiesPool.getEntities()){
+		for(RenderableProvider entity : entities){
 			modelBatch.render(entity, environment);
 		}
 
 		modelBatch.end();
 		if(debugEnabled){
-			debug.drawEntityShapes(entitiesPool.getEntities(), camera.combined);
+			debug.drawEntityShapes(entities, camera.combined);
 		}
-		entitiesPool.free();
+//		entitiesPool.free();
 
 		panelManager.render(Gdx.graphics.getDeltaTime());
 //		renderControl();

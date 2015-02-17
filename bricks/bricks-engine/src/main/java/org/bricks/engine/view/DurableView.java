@@ -7,6 +7,7 @@ import java.util.LinkedList;
  * @author oleh
  *
  */
+@Deprecated
 public abstract class DurableView {
 	
 	private LinkedList backet;

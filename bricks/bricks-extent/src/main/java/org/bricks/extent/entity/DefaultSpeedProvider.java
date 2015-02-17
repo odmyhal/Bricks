@@ -1,6 +1,7 @@
 package org.bricks.extent.entity;
 
 import org.bricks.core.entity.Fpoint;
+import org.bricks.engine.neve.WalkPrint;
 import org.bricks.engine.staff.Walker;
 import org.bricks.engine.view.WalkView;
 import org.bricks.exception.Validate;
@@ -14,7 +15,7 @@ public class DefaultSpeedProvider implements SpeedProvider{
 	}
 
 	public Fpoint provideSpeed() {
-		WalkView<?> walkView = (WalkView<?>) target.getCurrentView();
+		WalkPrint<?> walkView = (WalkPrint<?>) target.getSafePrint();
 		Fpoint vector = walkView.getVector();
 		Fpoint res = new Fpoint(vector.getFX(), vector.getFY());
 		walkView.free();
@@ -22,7 +23,7 @@ public class DefaultSpeedProvider implements SpeedProvider{
 	}
 
 	public float provideDirectionalSpeed() {
-		WalkView<?> walkView = (WalkView<?>) target.getCurrentView();
+		WalkPrint<?> walkView = (WalkPrint<?>) target.getSafePrint();
 		Fpoint vector = walkView.getVector();
 		float rotation = walkView.getRotation();
 		

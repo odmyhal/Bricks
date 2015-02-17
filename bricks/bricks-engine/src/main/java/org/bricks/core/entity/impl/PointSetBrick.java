@@ -13,7 +13,6 @@ import org.bricks.core.entity.type.Brick;
 import org.bricks.core.help.AlgebraHelper;
 import org.bricks.core.help.PointHelper;
 import org.bricks.core.help.PointSetHelper;
-import org.bricks.exception.BrickInitException;
 
 public class PointSetBrick implements Brick{
 	
@@ -35,47 +34,7 @@ public class PointSetBrick implements Brick{
 		innerDimentions = PointSetHelper.fetchDimentions(points);
 		center = new Ipoint(initialCenter.getX(), initialCenter.getY());
 	}
-/*
-	public void initialize(){
-		Point origin = PointSetHelper.detectCentralPoint(points);
-		initialize(origin);
-	}
 
-	public void initialize(Point origin) {
-		if(points == null || points.size() < 3){
-			throw new BrickInitException(this);
-		}
-		cache.clear();
-		Fpoint zeroPoint = PointSetHelper.detectCentralPoint(points);
-		zeroPoint.translate(-origin.getFX(), -origin.getFY());
-		float curWeight = 0;// curMaxRadius = 0;
-		Point one = null, two = null, first = null;
-		Iterator<? extends Point> pIter = points.iterator();
-		boolean cont = true;
-		while(cont){
-			if(one == null){
-				one = pIter.next();
-				first = one;
-				one.translate(-origin.getX(), -origin.getY());
-				cache.add(new Ipoint(one.getX(), one.getY()));
-			}
-			if(pIter.hasNext()){
-				two = pIter.next();
-				two.translate(-origin.getX(), -origin.getY());
-				cache.add(new Ipoint(two.getX(), two.getY()));
-			}else{
-				two = first;
-				cont = false;
-			}
-			curWeight += AlgebraHelper.triangleArea(one, two, zeroPoint);
-			one = two;
-		}
-		this.weight = curWeight;
-		innerDimentions = PointSetHelper.fetchDimentions(points);
-		center = new Ipoint(zeroPoint.getX(), zeroPoint.getY());
-		initialCenter = zeroPoint;
-	}
-*/
 	private float calcWeight(){
 		float rw = 0f;
 		Iterator<? extends Point> pIter = points.iterator();
@@ -130,15 +89,7 @@ public class PointSetBrick implements Brick{
 		}
 		center.translate(x, y);
 	}
-/*
-	public List<Ipoint> clonePoints() {
-		ArrayList<Ipoint> res = new ArrayList<Ipoint>();
-		for(Point p: cache){
-			res.add(new Ipoint(p.getX(), p.getY()));
-		}
-		return res;
-	}
-*/	
+	
 	public List<Ipoint> getPoints(){
 		return cache;
 	}

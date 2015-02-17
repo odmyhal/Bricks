@@ -8,7 +8,6 @@ import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.impl.PointSetBrick;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.engine.item.Stone;
-import org.bricks.extent.entity.subject.ModelSubject;
 
 import com.odmyha.shoot.Ball;
 import com.odmyha.weapon.Cannon;

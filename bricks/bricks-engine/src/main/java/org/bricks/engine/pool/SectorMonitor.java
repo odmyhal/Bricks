@@ -1,6 +1,5 @@
 package org.bricks.engine.pool;
 
-import org.bricks.exception.Validate;
 import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.Point;
 
@@ -52,13 +51,13 @@ public class SectorMonitor {
 				System.out.println("Subject point: " + subject.getCenter());
 				System.out.println("Secondary enter new distric: " + newSector);
 			}
-			Validate.isTrue(!(sector.equals(newSector)));
-			sector.lockView();
+/*			sector.lockView();
 			newSector.lockView();
 			subject.leaveDistrict();
 			subject.joinDistrict(newSector);
 			sector.unlockView();
-			newSector.unlockView();
+			newSector.unlockView();*/
+			subject.moveToDistrict(newSector);
 			return;
 		}
 		int mask = subject.getDistrictMask();

@@ -1,27 +1,27 @@
 package org.bricks.engine.pool;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.Iterator;
 
 import org.bricks.core.entity.Ipoint;
 import org.bricks.engine.staff.Entity;
-import org.bricks.engine.view.DataPool;
-import org.bricks.engine.view.SubjectView;
 
-public class District<R, E extends Entity> extends AreaBase<E>{
+public final class District<R, E extends Entity> extends AreaBase<E> implements Iterable<R> {
 	
 	private Area buffer;
 	private World<E> world;
 	public int rowNumber, colNumber;
 	private int luft;
-	private int viewLock;
+//	private int viewLock;
 	private volatile ArrayList<Boundary> boundaries;
+	private final ThreadLocal<EntityIterator> localIterator = new ThreadLocal<EntityIterator>(){
+		@Override protected EntityIterator initialValue() {
+            return new EntityIterator();
+        }
+	};
 	
-	private final LinkedList<DataPool<E>> districtEntities = new LinkedList<DataPool<E>>();
-	private DataPool<E> currentEntities = new DataPool<E>(districtEntities); 
-//	private boolean entityChange = false;
+//	private final LinkedList<DataPool<E>> districtEntities = new LinkedList<DataPool<E>>();
+//	private DataPool<E> currentEntities = new DataPool<E>(districtEntities); 
 	
 	public District(Ipoint corner, int capacity, int len, int bufferLuft, World world){
 		super(corner, capacity, len);
@@ -44,14 +44,14 @@ public class District<R, E extends Entity> extends AreaBase<E>{
 	public World getWorld(){
 		return world;
 	}
-
-	public /*synchronized*/ void lockView(){
+/*
+	public void lockView(){
 		synchronized(districtEntities){
 			viewLock++;
 		}
 	}
 	//wait should be used in some method like getView
-	public /*synchronized*/ void unlockView(){
+	public void unlockView(){
 		synchronized(districtEntities){
 			if(--viewLock <= 0){
 				districtEntities.notifyAll();
@@ -94,20 +94,23 @@ public class District<R, E extends Entity> extends AreaBase<E>{
 			return currentEntities.remove(e);
 		}
 	}
-	
-	synchronized Subject<E> freeSubject(int i){
-		Subject<E> res = super.freeSubject(i);
+*/
+	/*
+	@Override
+	synchronized Subject<E, ?> freeSubject(int i){
+		Subject<E, ?> res = super.freeSubject(i);
 		if(res == null){
 			return null;
 		}
-		removeEntity(res.getEntity());
+//		removeEntity(res.getEntity());
 		return res;
 	}
 	
-	int addSubject(Subject<E> subject){
+	@Override
+	int addSubject(Subject<E, ?> subject){
 		for(int i=0; i<pool.length; i++){
 			if(pool[i].setSubject(subject)){
-				addEntity(subject.getEntity());
+//				addEntity(subject.getEntity());
 				return i;
 			}
 		}
@@ -115,7 +118,7 @@ public class District<R, E extends Entity> extends AreaBase<E>{
 		throw new RuntimeException("Pool is full, need handler");
 //		throw new PoolFullException(this);
 	}
-
+*/
 	public boolean hasBoundaries(){
 		return boundaries != null;
 	}
@@ -206,4 +209,38 @@ public class District<R, E extends Entity> extends AreaBase<E>{
 	public String toString(){
 		return String.format("District row=%s,  col=%s, corner=%s", rowNumber, colNumber, getCorner());
 	}
+	
+
+	public EntityIterator iterator(){
+		EntityIterator iterator = localIterator.get();
+		iterator.reject();
+		return iterator;
+	}
+	
+	private class EntityIterator implements Iterator<R>{
+		
+		private int cursor = 0;
+
+		public boolean hasNext() {
+			return cursor < pool.length;
+		}
+
+		public R next() {
+			Subject<E, ?> sbj =  pool[cursor++].getSubject();
+			if(sbj == null){
+				return null;
+			}
+			return (R) sbj.getEntity();
+		}
+
+		public void remove() {
+			throw new RuntimeException("District Iterator has no rights to remove data");
+		}
+		
+		public void reject(){
+			cursor = 0;
+		}
+		
+	}
+
 }

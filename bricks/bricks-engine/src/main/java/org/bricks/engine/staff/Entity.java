@@ -6,10 +6,12 @@ import java.util.List;
 import org.bricks.core.entity.Ipoint;
 import org.bricks.engine.Engine;
 import org.bricks.engine.event.EventSource;
+import org.bricks.engine.neve.Imprint;
+import org.bricks.engine.neve.Printable;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.view.EntityView;
 
-public interface Entity extends EventSource{
+public interface Entity<P extends Imprint> extends EventSource, Printable<P>{
 	
 	public void applyEngine(Engine engine);
 	public Engine getEngine();
@@ -21,9 +23,9 @@ public interface Entity extends EventSource{
 	public void setToRotation(float radians);
 	public Ipoint getOrigin();
 	
-	public LinkedList<EntityView> getViewCache();
-	public EntityView getCurrentView();
-	public void adjustCurrentView();
+//	public LinkedList<EntityView> getViewCache();
+//	public EntityView getCurrentView();
+//	public void adjustCurrentView();
 	public void outOfWorld();
 
 }

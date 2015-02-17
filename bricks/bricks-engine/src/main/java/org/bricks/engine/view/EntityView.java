@@ -5,17 +5,23 @@ import java.util.LinkedList;
 import org.bricks.core.entity.Ipoint;
 import org.bricks.engine.staff.Entity;
 
+@Deprecated
 public class EntityView<E extends Entity> extends DurableView{
+
+	public EntityView(LinkedList backet) {
+		super(backet);
+		// TODO Auto-generated constructor stub
+	}
 
 	private final Ipoint origin  = new Ipoint(0, 0);
 	protected E entity;
-	
+/*	
 	public EntityView(E entity){
 		super(entity.getViewCache());
 		this.entity = entity;
 //		this.init();
 	}
-	
+*/	
 	public Ipoint getOrigin(){
 		return origin;
 	}

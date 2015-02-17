@@ -7,10 +7,10 @@ import org.bricks.engine.event.processor.WorkToConditionProcessor;
 import org.bricks.engine.help.RotationHelper;
 import org.bricks.engine.item.MultiLiver;
 import org.bricks.exception.Validate;
+import org.bricks.extent.entity.mesh.ModelSubject;
 import org.bricks.extent.entity.mesh.NodeOperator;
-import org.bricks.extent.entity.subject.ModelSubject;
 
-public class NodeRollProcessor<T extends MultiLiver<ModelSubject>> extends WorkToConditionProcessor<T>{
+public class NodeRollProcessor<T extends MultiLiver<ModelSubject, ?>> extends WorkToConditionProcessor<T>{
 	
 	private static final float minRotationRad = (float) Math.PI / 180;
 //	private static final CheckerType NODE_ROLL_CH_TYPE = CheckerType.registerCheckerType();
@@ -51,7 +51,7 @@ public class NodeRollProcessor<T extends MultiLiver<ModelSubject>> extends WorkT
 		if(Math.abs(rRad) > minRotationRad){
 			lastCheckTime = processTime;
 			nodeOperator.rotate(rRad);
-			nodeOperator.updateView();
+			nodeOperator.updatePrint();
 		}
 	}
 

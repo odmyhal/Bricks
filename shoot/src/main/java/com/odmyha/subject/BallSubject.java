@@ -8,6 +8,8 @@ import org.bricks.core.entity.Point;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.core.help.VectorHelper;
 import org.bricks.engine.item.ListenDistrictSubject;
+import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.extent.entity.mesh.ModelSubjectPrint;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -22,7 +24,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.odmyha.shoot.Ball;
 
-public class BallSubject extends ListenDistrictSubject<Ball> implements RenderableProvider{
+public class BallSubject extends ListenDistrictSubject<Ball, SubjectPrint> implements RenderableProvider{
 	
 	private ModelInstance modelInstance;
 	private Matrix4 transform = new Matrix4();

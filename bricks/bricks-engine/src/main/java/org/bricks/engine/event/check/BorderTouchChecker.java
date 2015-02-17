@@ -8,9 +8,11 @@ import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.Point;
 import org.bricks.core.help.PointHelper;
 import org.bricks.core.help.SideLocator;
+import org.bricks.core.help.TangPointLocator;
 import org.bricks.engine.event.BaseEvent;
 import org.bricks.engine.event.BorderEvent;
 import org.bricks.engine.event.Event;
+import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.pool.Boundary;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Liver;
@@ -58,6 +60,7 @@ public class BorderTouchChecker<T extends Liver> extends EventChecker<T>{
 //				targetP.appendLog("With center " + target.getPoint() + " checking border: " + border);
 //				targetP.appendLog("Current vector: " + ((Walker)targetP).getVector());
 				BorderEvent event = checkTouch(target, border);
+//				System.out.println(eventTime + " " + this.getClass().getCanonicalName() + " after check touch");
 				boolean isLast = checkIntHistory(targetP, border);
 				if(event == null){
 //					targetP.appendLog("No touch found");
@@ -78,14 +81,12 @@ public class BorderTouchChecker<T extends Liver> extends EventChecker<T>{
 		return null;
 	}
 	
-	private BorderEvent checkTouch(Subject target, Boundary border){
-		SubjectView sv = target.getCurrentView();
+	private BorderEvent checkTouch(Subject<?, ? extends SubjectPrint> target, Boundary border){
+		SubjectPrint sv = target.getInnerPrint();
 		if(sv == null){
 			return null;
 		}
-//		Collection<? extends Point> tPoints = sv.getPoints();
 		Collection<Point> tPoints = SideLocator.findPointsOfSector(sv.getPoints(), sv.getCenter(), border.fitSector());
-//		Collection<Point> tPoints = sv.getPointsOfSector(border.fitSector());
 		Iterator<? extends Point> pIter = tPoints.iterator();
 		Ipoint first = border.getFirst();
 		Ipoint second = border.getSecond();

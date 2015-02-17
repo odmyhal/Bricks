@@ -45,5 +45,4 @@ public class EventCheckState {
 		areaState = 0;
 		entityState = 0;
 	}
-	
 }

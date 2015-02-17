@@ -1,6 +1,8 @@
 package org.bricks.engine.staff;
 
-public interface Roller extends Liver{
+import org.bricks.engine.neve.RollPrint;
+
+public interface Roller<I extends RollPrint> extends Liver<I>{
 
 	public float getRotationSpeed();
 	public void setRotationSpeed(float rotationSpeed);

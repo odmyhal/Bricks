@@ -4,6 +4,7 @@ import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Point;
 import org.bricks.core.help.PointHelper;
 import org.bricks.engine.item.MultiWalker;
+import org.bricks.engine.neve.WalkPrint;
 import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.view.WalkView;
 import org.bricks.enterprise.control.widget.tool.RotationDependAction;
@@ -30,7 +31,7 @@ public class CameraSatellite implements Satellite, RotationDependAction.Rotation
 	public CameraSatellite(Camera camera, MultiWalker target){
 		this.camera = camera;
 		this.target = target;
-		WalkView wv = (WalkView)target.getCurrentView();
+		WalkPrint wv = (WalkPrint)target.getSafePrint();
 		generalRotation = wv.getRotation();
 		wv.free();
 	}

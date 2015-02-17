@@ -30,8 +30,11 @@ public class PointSetView extends DurableView{
 			this.points.add(new Ipoint(0, 0));
 		}
 	}
-	
-	public PointSetView(List<Ipoint> myPoints, Ipoint center){
+
+	/*
+	 * this constructor only used by AreaBase
+	 */
+/*	public PointSetView(List<Ipoint> myPoints, Ipoint center){
 		//When we do not need durable ability
 		super(null);
 		for(int i = 1; i < 5; i++){
@@ -44,7 +47,7 @@ public class PointSetView extends DurableView{
 		this.init(myPoints, center);
 		ConvexityApproveHelper.applyConvexity(this);
 	}
-
+*/
 	protected void init(List<Ipoint> data, Point center){
 		setCenter(center);
 		for(int i = 0; i < data.size(); i++){
@@ -56,7 +59,7 @@ public class PointSetView extends DurableView{
 		for(int k = 1; k < 5; k++){
 			sectorPoints[k].rejectSPoints();
 		}
-		dimentions = null;
+		dimentions = PointSetHelper.fetchDimentions(points);
 	}
 
 	public Point getCenter() {
@@ -76,10 +79,7 @@ public class PointSetView extends DurableView{
 		this.points = points;
 	}
 */	
-	public synchronized Dimentions getDimentions() {
-		if(dimentions == null){
-			dimentions = PointSetHelper.fetchDimentions(points);
-		}
+	public Dimentions getDimentions() {
 		return dimentions;
 	}
 	
@@ -89,21 +89,23 @@ public class PointSetView extends DurableView{
 
 	private class SectorPoints{
 		
-		private Collection<Point> sectorPoints;
+		private volatile Collection<Point> sectorPoints;
 		private int sectorNum;
 		
 		private SectorPoints(int num){
 			sectorNum = num;
 		}
 		
-		private synchronized Collection<Point> getSPoints(){
-			if(sectorPoints == null){
-				sectorPoints = TangPointLocator.findPointsOfSector(points, sectorNum);
+		private Collection<Point> getSPoints(){
+			Collection<Point> result = sectorPoints;
+			if(result == null){
+				result = TangPointLocator.findPointsOfSector(points, sectorNum);
+				sectorPoints = result;
 			}
-			return sectorPoints;
+			return result;
 		}
 		
-		private synchronized void rejectSPoints(){
+		private void rejectSPoints(){
 			sectorPoints = null;
 		}
 	}

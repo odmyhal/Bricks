@@ -79,9 +79,9 @@ public class NodeOperator implements RotationProvider{
 		}
 	}
 	
-	public void updateView(){
+	public void updatePrint(){
 		for(NodeData nd : nodes.values()){
-			nd.adjustCurrentView();
+			nd.adjustCurrentPrint();
 		}
 	}
 	

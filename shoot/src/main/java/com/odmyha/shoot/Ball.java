@@ -17,13 +17,12 @@ import org.bricks.engine.event.overlap.OverlapStrategy;
 import org.bricks.engine.event.overlap.SmallEventStrategy;
 import org.bricks.engine.help.VectorSwapHelper;
 import org.bricks.engine.item.MultiWalker;
+import org.bricks.engine.neve.RollPrint;
+import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.engine.neve.WalkPrint;
 import org.bricks.engine.pool.Boundary;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.staff.ListenDistrictEntity;
-import org.bricks.engine.view.RollView;
-import org.bricks.engine.view.SubjectView;
-import org.bricks.engine.view.WalkView;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;
 import com.badlogic.gdx.utils.Array;
@@ -33,7 +32,7 @@ import com.odmyha.weapon.Bullet;
 import com.odmyha.weapon.Cannon;
 import com.odmyha.weapon.Shield;
 
-public class Ball extends MultiWalker<BallSubject> implements ListenDistrictEntity, RenderableProvider{
+public class Ball extends MultiWalker<BallSubject, WalkPrint> implements ListenDistrictEntity<WalkPrint>, RenderableProvider{
 	
 	public static final String BALL_SOURCE_TYPE = "BallSource@shoot.odmyha.com";
 	
@@ -82,8 +81,8 @@ public class Ball extends MultiWalker<BallSubject> implements ListenDistrictEnti
 		}
 	}
 	
-	private void reflectOfMoveingPoint(SubjectView<?, WalkView> target, Point touch, Point mVector, long curTime){
-		Validate.isTrue(this.equals(target.getSubject().getEntity()));
+	private void reflectOfMoveingPoint(SubjectPrint<?, WalkPrint> target, Point touch, Point mVector, long curTime){
+		Validate.isTrue(this.equals(target.getTarget().getEntity()));
 		Fpoint swap = VectorSwapHelper.fetchReturnVector(target, touch);
 //Moveing sake	
 		if(mVector.getFX() != 0 || mVector.getFY() != 0){
@@ -101,19 +100,19 @@ public class Ball extends MultiWalker<BallSubject> implements ListenDistrictEnti
 		Fpoint V = getVector();
 		V.setX(V.getFX() + swap.getFX());
 		V.setY(V.getFY() + swap.getFY());
-		this.adjustCurrentView();
+		this.adjustCurrentPrint();
 		if(swap.getFX() != 0 || swap.getFY() != 0){
 			flushTimer(curTime);
 		}
 	}
 
-	private void reflectOfPoint(SubjectView<?, WalkView> target, Point touch, long curTime){
-		Validate.isTrue(this.equals(target.getSubject().getEntity()));
+	private void reflectOfPoint(SubjectPrint<?, WalkPrint> target, Point touch, long curTime){
+		Validate.isTrue(this.equals(target.getTarget().getEntity()));
 		Fpoint swap = VectorSwapHelper.fetchReturnVector(target, touch);
 		Fpoint V = getVector();
 		V.setX(V.getFX() + swap.getFX());
 		V.setY(V.getFY() + swap.getFY());
-		this.adjustCurrentView();
+		this.adjustCurrentPrint();
 		if(swap.getFX() != 0 || swap.getFY() != 0){
 			flushTimer(curTime);
 		}
@@ -121,14 +120,14 @@ public class Ball extends MultiWalker<BallSubject> implements ListenDistrictEnti
 	
 	@EventHandle(eventType = Ball.BALL_SOURCE_TYPE)
 	public void vectorHit(OverlapEvent e){
-		SubjectView<?, WalkView> target = (SubjectView<?, WalkView>) e.getTargetView();
-		Validate.isTrue(this.equals(target.getSubject().getEntity()));
-		SubjectView<?, WalkView> source = (SubjectView<?, WalkView>) e.getSourceView();
+		SubjectPrint<?, WalkPrint> target = (SubjectPrint<?, WalkPrint>) e.getTargetPrint();
+		Validate.isTrue(this.equals(target.entityPrint.getTarget()));
+		SubjectPrint<?, WalkPrint> source = (SubjectPrint<?, WalkPrint>) e.getSourcePrint();
 		Fpoint swap = VectorSwapHelper.fetchSwapVector(target, source);
 		Fpoint myVector = getVector();
 		myVector.setX(myVector.getFX() + swap.getFX());
 		myVector.setY(myVector.getFY() + swap.getFY());
-		this.adjustCurrentView();
+		this.adjustCurrentPrint();
 /*		this.startLog();
 		this.appendLog("Hit ball");
 		this.appendLog(String.format("My vector=%s,  my center=%s", target.getEntityView().getVector(), target.getEntityView().getOrigin()));
@@ -147,15 +146,15 @@ public class Ball extends MultiWalker<BallSubject> implements ListenDistrictEnti
 		WalkView wv = (WalkView)e.getTargetView().getEntityView();
 		this.appendLog(String.format("My vector=%s,  my center=%s", wv.getVector(), wv.getOrigin()));
 		this.appendLog(String.format("Touch Point=%s", e.getTouchPoint()));*/
-		reflectOfPoint((SubjectView<?, WalkView>) e.getTargetView(), e.getTouchPoint(), e.getEventTime());
+		reflectOfPoint((SubjectPrint<?, WalkPrint>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
 /*		this.appendLog(String.format("Result vector=%s", getVector()));
 		this.finishLog();*/
 	}
 	
 	@EventHandle(eventType = Cannon.CANNON_SOURCE)
 	public void cannonHit(OverlapEvent e){
-		SubjectView<?, RollView> source = (SubjectView<?, RollView>) e.getSourceView();
-		RollView rv = source.getEntityView();
+		SubjectPrint<?, RollPrint> source = (SubjectPrint<?, RollPrint>) e.getSourcePrint();
+		RollPrint rv = source.entityPrint;
 /*		this.appendLog("Hit Cannon");
 		WalkView wv = (WalkView)e.getTargetView().getEntityView();
 		this.appendLog(String.format("My vector=%s,  my center=%s", wv.getVector(), wv.getOrigin()));
@@ -163,11 +162,11 @@ public class Ball extends MultiWalker<BallSubject> implements ListenDistrictEnti
 		this.appendLog(String.format("Cannon rotationSpeed=%.5f, rotation=%.5f", rv.getRotationSpeed(), rv.getRotation()));
 */		if(rv.getRotationSpeed() == 0){
 //			this.appendLog("Simple reflect");
-			reflectOfPoint((SubjectView<?, WalkView>) e.getTargetView(), e.getTouchPoint(), e.getEventTime());
+			reflectOfPoint((SubjectPrint<?, WalkPrint>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
 		}else{
 //			System.out.println(String.format("Reflection of rollable cannon with speed=%.5f", rv.getRotationSpeed()));
 			Point mVector = VectorSwapHelper.getRollVector(e.getTouchPoint(), rv.getOrigin(), rv.getRotationSpeed());
-			reflectOfMoveingPoint((SubjectView<?, WalkView>) e.getTargetView(), e.getTouchPoint(), mVector, e.getEventTime());
+			reflectOfMoveingPoint((SubjectPrint<?, WalkPrint>) e.getTargetPrint(), e.getTouchPoint(), mVector, e.getEventTime());
 		}
 /*		this.appendLog(String.format("Result vector=%s", getVector()));
 		this.finishLog();*/
@@ -184,7 +183,7 @@ public class Ball extends MultiWalker<BallSubject> implements ListenDistrictEnti
 		WalkView wv = (WalkView)e.getTargetView().getEntityView();
 		this.appendLog(String.format("My vector=%s,  my center=%s", wv.getVector(), wv.getOrigin()));
 		this.appendLog(String.format("Touch Point=%s, border=%s", e.getTouchPoint(), e.getEventSource()));
-*/		reflectOfPoint((SubjectView<?, WalkView>) e.getTargetView(), e.getTouchPoint(), e.getEventTime());
+*/		reflectOfPoint((SubjectPrint<?, WalkPrint>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
 /*		this.appendLog(String.format("Result vector=%s", getVector()));
 		this.finishLog();*/
 	}
@@ -195,7 +194,7 @@ public class Ball extends MultiWalker<BallSubject> implements ListenDistrictEnti
 		WalkView wv = (WalkView)e.getTargetView().getEntityView();
 		this.appendLog(String.format("My vector=%s,  my center=%s", wv.getVector(), wv.getOrigin()));
 		this.appendLog(String.format("Touch Point=%s, border=%s", e.getTouchPoint(), e.getEventSource()));
-*/		reflectOfPoint((SubjectView<?, WalkView>) e.getTargetView(), e.getTouchPoint(), e.getEventTime());
+*/		reflectOfPoint((SubjectPrint<?, WalkPrint>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
 /*		this.appendLog(String.format("Result vector=%s", getVector()));
 		this.finishLog();*/
 	}
@@ -219,7 +218,7 @@ public class Ball extends MultiWalker<BallSubject> implements ListenDistrictEnti
 		ballStrategy.put(Cannon.CANNON_SOURCE, OverlapStrategy.TRUE);
 		return ballStrategy;
 	}
-
+/*
 	public ModelInstance produceModel() {
 		// TODO Auto-generated method stub
 		return null;
@@ -234,4 +233,5 @@ public class Ball extends MultiWalker<BallSubject> implements ListenDistrictEnti
 		// TODO Auto-generated method stub
 		
 	}
+*/
 }

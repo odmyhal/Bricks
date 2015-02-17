@@ -7,16 +7,16 @@ import org.bricks.exception.Validate;
 import org.bricks.core.entity.Dimentions;
 import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Point;
+import org.bricks.core.entity.impl.PointSetPrint;
 import org.bricks.core.help.PointHelper;
 import org.bricks.engine.event.BaseEvent;
 import org.bricks.engine.event.Event;
 import org.bricks.engine.event.EventTarget;
 import org.bricks.engine.event.OverlapEvent;
+import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.pool.Area;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Liver;
-import org.bricks.engine.view.PointSetView;
-import org.bricks.engine.view.SubjectView;
 
 public class OverlapChecker<T extends Liver> extends EventChecker<T>{
 	
@@ -61,14 +61,14 @@ public class OverlapChecker<T extends Liver> extends EventChecker<T>{
 		}
 		int entityNum = curState.getEntityState();
 		while(entityNum < targetP.getStaff().size()){
-			Subject target = (Subject) targetP.getStaff().get(entityNum);
+			Subject<?, SubjectPrint> target = (Subject<?, SubjectPrint>) targetP.getStaff().get(entityNum);
 //			Validate.isTrue(target != null, "Subject " + entityNum + " of " + targetP.getClass().getSimpleName() + " is null");
 //			Validate.isTrue(target.getDistrict() != null, "Subject " + entityNum + " of " + targetP.getClass().getSimpleName() + "(" + "Subject: " + target + ", entity: " + targetP + ")" + " has not district");
 //			Validate.isTrue(target.getDistrict().getBuffer() != null, "Subject " + entityNum + " of " + targetP.getClass().getSimpleName() + " district buffer is null");
 			Area area = target.getDistrict().getBuffer();
 			int areaNum = curState.getAndIncrementAreaState();
 			while(areaNum < area.capacity()){
-				Subject<?> sv = area.getSubject(areaNum);
+				Subject<?, SubjectPrint> sv = area.getSubject(areaNum);
 				areaNum = curState.getAndIncrementAreaState();
 				if(sv == null || sv == curState.getLast() || sv == target){
 					continue;
@@ -78,8 +78,8 @@ public class OverlapChecker<T extends Liver> extends EventChecker<T>{
 				}
 				//Synchronize with EventChecker.checkEvents()
 				synchronized(sv.getEntity()){
-					SubjectView targetView = target.getCurrentView();
-					SubjectView checkView = sv.getOccupiedCurrentView();
+					SubjectPrint targetView = target.getInnerPrint();//target.getCurrentView();
+					SubjectPrint checkView = sv.getSafePrint();//sv.getOccupiedCurrentView();
 					OverlapEvent oe = checkOverlap(targetView, checkView);
 					if(oe != null){
 						targetView.occupy();
@@ -109,8 +109,8 @@ public class OverlapChecker<T extends Liver> extends EventChecker<T>{
 			return null;
 		}
 		OverlapEvent oEvent = (OverlapEvent) hEvent;
-		SubjectView sv = oEvent.getSourceView();
-		Subject<?> check = sv.getSubject();
+		SubjectPrint<? extends Subject, ?> sv = oEvent.getSourcePrint();
+		Subject<?, ?> check = sv.getTarget();
 		if(!target.needCheckOverlap(check)){
 			return null;
 		}
@@ -126,10 +126,10 @@ public class OverlapChecker<T extends Liver> extends EventChecker<T>{
 				return null;
 			}
 		}
-		Subject<?> ts = oEvent.getTargetView().getSubject();
+		Subject ts = oEvent.getTargetPrint().getTarget();
 		Validate.isTrue(target.equals(ts.getEntity()));
-		SubjectView checkView = check.getOccupiedCurrentView();
-		Point touchPoint = findOverlapPoint(ts.getCurrentView(), checkView);
+		SubjectPrint checkView = check.getSafePrint();
+		Point touchPoint = findOverlapPoint(ts.getInnerPrint(), checkView);
 		if(touchPoint == null){
 			target.removeHistory(BaseEvent.touchEventCode);
 			return null;
@@ -138,7 +138,7 @@ public class OverlapChecker<T extends Liver> extends EventChecker<T>{
 		return check;
 	}
 	
-	private OverlapEvent checkOverlap(SubjectView targetView, SubjectView checkView){
+	private OverlapEvent checkOverlap(SubjectPrint targetView, SubjectPrint checkView){
 		Point overlapPoint = findOverlapPoint(targetView, checkView);
 		if(overlapPoint == null){
 			return null;
@@ -146,15 +146,15 @@ public class OverlapChecker<T extends Liver> extends EventChecker<T>{
 		return new OverlapEvent(targetView, checkView, overlapPoint);
 	}
 
-	private static Point findOverlapPoint(PointSetView one, PointSetView two){
+	private static Point findOverlapPoint(PointSetPrint one, PointSetPrint two){
 		return findOverlapPoint(one, two, true);
 	}
 	
-	public static boolean isOvarlap(PointSetView one, PointSetView two){
+	public static boolean isOvarlap(PointSetPrint one, PointSetPrint two){
 		return findOverlapPoint(one, two, false) != null;
 	}
 /*change to private*/	
-	private static Point findOverlapPoint(PointSetView one, PointSetView two, boolean presize){
+	private static Point findOverlapPoint(PointSetPrint one, PointSetPrint two, boolean presize){
 	
 		Dimentions dimm1 = one.getDimentions();
 		Dimentions dimm2 = two.getDimentions();

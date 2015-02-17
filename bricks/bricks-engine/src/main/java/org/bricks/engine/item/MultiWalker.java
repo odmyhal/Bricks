@@ -2,6 +2,7 @@ package org.bricks.engine.item;
 
 import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Point;
+import org.bricks.engine.neve.WalkPrint;
 import org.bricks.engine.pool.SectorMonitor;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Satellite;
@@ -11,16 +12,18 @@ import org.bricks.engine.tool.Walk;
 import org.bricks.engine.view.WalkView;
 import org.bricks.exception.Validate;
 
-public abstract class MultiWalker<S extends Subject> extends MultiRoller<S> implements Walker{
+public abstract class MultiWalker<S extends Subject, P extends WalkPrint> extends MultiRoller<S, P> implements Walker<P>{
 
 	private Walk legs;
 	private Fpoint vector;
 	private float acceleration;
 	private long accelerationTime;
-
+/*
 	protected MultiWalker() {
+		legs = new Walk(this);
+		vector = new Fpoint(0f, 0f);
 	}
-	
+*/	
 	@Override
 	protected void init(){
 		legs = new Walk(this);
@@ -28,6 +31,7 @@ public abstract class MultiWalker<S extends Subject> extends MultiRoller<S> impl
 		super.init();
 	}
 	
+	@Override
 	public void motorProcess(long currentTime){
 		processEvents(currentTime);
 		if(!alive()){
@@ -40,7 +44,7 @@ public abstract class MultiWalker<S extends Subject> extends MultiRoller<S> impl
 		applyAcceleration(currentTime);
 		boolean move = legs.move(currentTime, vector.getFX(), vector.getFY());
 		if(rotate || move){
-			adjustCurrentView(false);
+			adjustCurrentPrint(false);
 			for(Satellite satellite : getSatellites()){
 				satellite.update();
 			}
@@ -105,7 +109,7 @@ public abstract class MultiWalker<S extends Subject> extends MultiRoller<S> impl
 			applyRotation();
 		}
 		if(rotateBack || moveBack){
-			adjustCurrentView(false);
+			adjustCurrentPrint(false);
 			for(Satellite satellite : getSatellites()){
 				satellite.update();
 			}
@@ -122,7 +126,13 @@ public abstract class MultiWalker<S extends Subject> extends MultiRoller<S> impl
 	}
 	
 	@Override
+	public P print(){
+		return (P) new WalkPrint(this.printStore);
+	}
+/*	
+	@Override
 	public WalkView provideCurrentView(){
 		return new WalkView(this);
 	}
+	*/
 }

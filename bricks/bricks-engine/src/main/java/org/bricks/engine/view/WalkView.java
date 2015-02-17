@@ -1,16 +1,23 @@
 package org.bricks.engine.view;
 
+import java.util.LinkedList;
+
 import org.bricks.core.entity.Fpoint;
 import org.bricks.engine.staff.Walker;
 
 public class WalkView<W extends Walker> extends RollView<W>{
 	
-	private final Fpoint vector = new Fpoint(0f, 0f);
+	public WalkView(LinkedList backet) {
+		super(backet);
+		// TODO Auto-generated constructor stub
+	}
 
+	private final Fpoint vector = new Fpoint(0f, 0f);
+/*
 	public WalkView(W entity) {
 		super(entity);
 	}
-	
+*/	
 	public Fpoint getVector(){
 		return vector;
 	}

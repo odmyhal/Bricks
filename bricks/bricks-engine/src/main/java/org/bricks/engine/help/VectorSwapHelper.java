@@ -5,19 +5,19 @@ import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Point;
 import org.bricks.core.help.PointHelper;
 import org.bricks.core.help.VectorHelper;
-import org.bricks.engine.view.SubjectView;
-import org.bricks.engine.view.WalkView;
+import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.engine.neve.WalkPrint;
 
 public class VectorSwapHelper {
 
-	public static Fpoint fetchSwapVector(SubjectView<?, WalkView> target, SubjectView<?, WalkView> source){
+	public static Fpoint fetchSwapVector(SubjectPrint<?, WalkPrint> target, SubjectPrint<?, WalkPrint> source){
 		
-		Fpoint targetVector = target.getEntityView().getVector();
+		Fpoint targetVector = target.entityPrint.getVector();
 		
 		Fpoint minusSwap = fetchMinusSwap(target, source);
 		Fpoint plusSwap = fetchMinusSwap(source, target);
 		//Changes for weight
-		float k = source.getWeight() / target.getWeight();
+		float k = source.getTarget().getWeight() / target.getTarget().getWeight();
 		Fpoint targetPlusSwap = new Fpoint(plusSwap.getFX() * k, plusSwap.getFY() * k);
 //changes finish
 		float targetNX = targetVector.getFX() + targetPlusSwap.getFX() - minusSwap.getFX();
@@ -26,20 +26,20 @@ public class VectorSwapHelper {
 		float x = targetPlusSwap.getFX() - minusSwap.getFX();
 		float y = targetPlusSwap.getFY() - minusSwap.getFY();
 		if(targetNX != 0 || targetNY != 0){
-			Fpoint sourceVector = source.getEntityView().getVector();
-			double totalImpuls = VectorHelper.vectorLen(targetVector) * target.getWeight() + VectorHelper.vectorLen(sourceVector) * source.getWeight();
-			k = target.getWeight() / source.getWeight();
+			Fpoint sourceVector = source.entityPrint.getVector();
+			double totalImpuls = VectorHelper.vectorLen(targetVector) * target.getTarget().getWeight() + VectorHelper.vectorLen(sourceVector) * source.getTarget().getWeight();
+			k = target.getTarget().getWeight() / source.getTarget().getWeight();
 			Fpoint sourcePlusSwap = new Fpoint(minusSwap.getFX() * k, minusSwap.getFY() * k); 
 			float sourceNX = sourceVector.getFX() - plusSwap.getFX() + sourcePlusSwap.getFX();
 			float sourceNY = sourceVector.getFY() - plusSwap.getFY() + sourcePlusSwap.getFY();
 			Fpoint newTarget = new Fpoint(targetNX, targetNY);
 			Fpoint newSource = new Fpoint(sourceNX, sourceNY);
 //System.out.println("Approximat new target is " + newTarget);			
-			double targetNewImpuls = VectorHelper.vectorLen(newTarget) * target.getWeight();
-			double newTotalImpuls = targetNewImpuls + VectorHelper.vectorLen(newSource) * source.getWeight();
+			double targetNewImpuls = VectorHelper.vectorLen(newTarget) * target.getTarget().getWeight();
+			double newTotalImpuls = targetNewImpuls + VectorHelper.vectorLen(newSource) * source.getTarget().getWeight();
 			double targetPart = targetNewImpuls / newTotalImpuls;
 			double targetImpulsDiff = (totalImpuls - newTotalImpuls) * targetPart;
-			double targetLenDiff = targetImpulsDiff / target.getWeight();
+			double targetLenDiff = targetImpulsDiff / target.getTarget().getWeight();
 			
 			newTarget = PointHelper.normalize(newTarget, Math.abs(targetLenDiff));
 			if(targetLenDiff < 0){
@@ -53,18 +53,18 @@ public class VectorSwapHelper {
 	}
 	
 	//public just for test
-	private static Fpoint fetchMinusSwap(SubjectView<?, WalkView> target, SubjectView<?, WalkView> source){
+	private static Fpoint fetchMinusSwap(SubjectPrint<?, WalkPrint> target, SubjectPrint<?, WalkPrint> source){
 		Point tCenter = target.getCenter();
 		Point sCenter = source.getCenter();
 		Fpoint hitVector = new Fpoint(sCenter.getFX() - tCenter.getFX(), sCenter.getFY() - tCenter.getFY());
 		if(hitVector.getFX() == 0 && hitVector.getFY() == 0){
 			return hitVector;
 		}
-		Fpoint myVector = target.getEntityView().getVector();
+		Fpoint myVector = target.entityPrint.getVector();
 		
 		Fpoint swap = VectorHelper.vectorProjection(myVector, hitVector);
 //		double k = 1;//for test
-		double k = Math.min(1, source.getWeight() / target.getWeight() );
+		double k = Math.min(1, source.getTarget().getWeight() / target.getTarget().getWeight() );
 		if(swap.getFX() * hitVector.getFX() < 0){
 			swap.setX(0);
 		}else{
@@ -78,8 +78,8 @@ public class VectorSwapHelper {
 
 //		return swap;
 		
-		Fpoint hisWay = VectorHelper.vectorProjection(source.getEntityView().getVector(), hitVector);
-		double p = Math.min(1, source.getWeight() / target.getWeight());
+		Fpoint hisWay = VectorHelper.vectorProjection(source.entityPrint.getVector(), hitVector);
+		double p = Math.min(1, source.getTarget().getWeight() / target.getTarget().getWeight());
 		if(hisWay.getFX() * hitVector.getFX() < 0){
 			hisWay.setX(0);
 		}else{
@@ -99,10 +99,10 @@ public class VectorSwapHelper {
 		return swap;
 	}
 	
-	public static Fpoint fetchReturnVector(SubjectView<?, WalkView> target, Point touch){
+	public static Fpoint fetchReturnVector(SubjectPrint<?, WalkPrint> target, Point touch){
 		Point tCenter = target.getCenter();
 		Fpoint hitVector = new Fpoint(touch.getFX() - tCenter.getFX(), touch.getFY() - tCenter.getFY());
-		Fpoint myVector = target.getEntityView().getVector();
+		Fpoint myVector = target.entityPrint.getVector();
 		Fpoint ret = VectorHelper.vectorProjection(myVector, hitVector);
 		if(ret.getFX() * hitVector.getFX() < 0){
 			ret.setX(0);

@@ -1,12 +1,12 @@
 package org.bricks.engine.pool;
 
-import org.bricks.engine.view.PointSetView;
+import org.bricks.core.entity.impl.PointSetPrint;
 
 public interface Pool {
 	
 	public boolean containsSubject(Subject subject);
 	public boolean coverSubject(Subject subject);
 	public int capacity();
-	public PointSetView getView();
+	public PointSetPrint getPrint();
 
 }

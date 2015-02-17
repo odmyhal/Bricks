@@ -19,10 +19,13 @@ import org.bricks.engine.event.control.RotationSpeedEvent;
 import org.bricks.engine.event.overlap.OverlapStrategy;
 import org.bricks.engine.event.overlap.SmallEventStrategy;
 import org.bricks.engine.item.MultiRoller;
+import org.bricks.engine.neve.RollPrint;
+import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.staff.Walker;
 import org.bricks.engine.view.RollView;
 import org.bricks.engine.view.SubjectView;
-import org.bricks.extent.entity.subject.ModelSubject;
+import org.bricks.extent.entity.mesh.ModelSubject;
+import org.bricks.extent.entity.mesh.ModelSubjectPrint;
 import org.bricks.extent.event.ExtentEventGroups;
 import org.bricks.extent.event.FireEvent;
 
@@ -33,7 +36,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.odmyha.shoot.Ball;
 
-public class Cannon extends MultiRoller<ModelSubject> implements RenderableProvider{
+public class Cannon extends MultiRoller<ModelSubject, RollPrint> implements RenderableProvider{
 	
 	public static final String CANNON_SOURCE = "CannonSource@shoot.odmyha.com";
 
@@ -49,7 +52,7 @@ public class Cannon extends MultiRoller<ModelSubject> implements RenderableProvi
 		}
 	}
 	
-	private ModelSubject<Cannon> produceOne(){
+	private ModelSubject<Cannon, ModelSubjectPrint> produceOne(){
 		Collection<Ipoint> points = new LinkedList<Ipoint>();
 		points.add(new Ipoint(150, 175));
 		points.add(new Ipoint(125, 200));
@@ -69,10 +72,10 @@ public class Cannon extends MultiRoller<ModelSubject> implements RenderableProvi
 		Brick brick = new PointSetBrick(points);
 //		brick.rotate((float)(-Math.PI / 2), new Ipoint(0, 0));
 		ModelInstance tower = ModelStorage.instance().getModelInstance("tower");//ModelProvider.produceTowerModel();//
-		return new ModelSubject<Cannon>(brick, tower);
+		return new ModelSubject<Cannon, ModelSubjectPrint>(brick, tower);
 	}
 	
-	private ModelSubject<Cannon> produceTwo(){
+	private ModelSubject<Cannon, ModelSubjectPrint> produceTwo(){
 		Collection<Ipoint> points = new LinkedList<Ipoint>();
 		points.add(new Ipoint(100, 300));
 		points.add(new Ipoint(50, 300));
@@ -88,11 +91,11 @@ public class Cannon extends MultiRoller<ModelSubject> implements RenderableProvi
 		Brick brick = new PointSetBrick(points);
 //		brick.rotate((float)(-Math.PI / 2), new Ipoint(0, 0));
 		ModelInstance tube = ModelStorage.instance().getModelInstance("tube");//ModelProvider.produceTubeModel()
-		return new ModelSubject<Cannon>(brick, tube);
+		return new ModelSubject<Cannon, ModelSubjectPrint>(brick, tube);
 	}
 	
 	private void fire(){
-		SubjectView<Walker, RollView> gunView = getStaff().get(1).getCurrentView();
+		ModelSubjectPrint<?, RollPrint> gunView = (ModelSubjectPrint<?, RollPrint>) this.getStaff().get(1).getInnerPrint();// getStaff().get(1).getInnerPrint();
 		List<Ipoint> gunPoints = gunView.getPoints();
 		Ipoint one = gunPoints.get(0);
 		Ipoint two = gunPoints.get(1);
@@ -103,7 +106,7 @@ public class Cannon extends MultiRoller<ModelSubject> implements RenderableProvi
 		firePoint.translate(v.getX(), v.getY());
 		Bullet bullet = Bullet.produce();
 		
-		bullet.setRotation(gunView.getEntityView().getRotation());
+		bullet.setRotation(gunView.entityPrint.getRotation());
 		bullet.applyRotation();
 		bullet.translate(firePoint.getX(), firePoint.getY());
 		bullet.applyEngine(this.getEngine());

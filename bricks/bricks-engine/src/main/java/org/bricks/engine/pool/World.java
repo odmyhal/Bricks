@@ -3,13 +3,12 @@ package org.bricks.engine.pool;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.prefs.Preferences;
 
 import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.Point;
-import org.bricks.engine.view.DataPool;
+import org.bricks.engine.data.DataPool;
 
 public class World<R> {
 	
@@ -20,10 +19,13 @@ public class World<R> {
 	private int rowsCount;
 	private final Map<Integer, Map<Integer, District<R, ?>>> sectors = new HashMap<Integer, Map<Integer, District<R, ?>>>();
 	
-	private final LinkedList<DataPool<R>> entitiesPool = new LinkedList<DataPool<R>>();
-	private DataPool<R> currentEntities;
+//	private final LinkedList<DataPool<R>> entitiesPool = new LinkedList<DataPool<R>>();
+//	private DataPool<R> currentEntities;
 	
-	private Collection<R> decorPool = new HashSet<R>();
+//	private Collection<R> tmpDecorPool = new HashSet<R>();
+//	private volatile Collection<R> decorPool = new HashSet<R>();
+	
+	private DataPool<R> decorPool = new DataPool<R>(8);
 	
 	public World(Preferences props){
 		sectorLen = props.getInt("sector.length", 100);
@@ -96,6 +98,7 @@ public class World<R> {
 		return (int) Math.floor(point.getFX() / sectorLen);
 	}
 	
+/*	
 	public DataPool<R> getRenderEntities(){
 		synchronized(entitiesPool){
 			currentEntities = entitiesPool.poll();
@@ -114,19 +117,30 @@ public class World<R> {
 			return currentEntities;
 		}
 	}
+*/
+	public Collection<R> getRenderEntities(){
+		Collection<R> result = decorPool.collection();
+		for(int i = 0; i < rowsCount; i++){
+			for(int j = 0; j < colsCount; j++){
+				for(R r : getDistrict(i, j)){
+					if(r != null){
+						result.add(r);
+					}
+				}
+			}
+		}
+		return result;
+	}
 	
 	public boolean addDecor(R decor){
-		synchronized(entitiesPool){
-			return decorPool.add(decor);
-		}
+		decorPool.addItem(decor);
+		return true;
 	}
-	
-	public boolean removeDecor(R decor){
-		synchronized(entitiesPool){
-			return decorPool.remove(decor);
-		}
+/*	
+	public synchronized boolean removeDecor(R decor){
+		decorPool.addItem(item)
 	}
-	
+*/	
 	public Collection<District<R, ?>> getDistricts(){
 		Collection<District<R, ?>> districts = new HashSet<District<R, ?>>();
 		for(int i = 0; i < rowsCount; i++){

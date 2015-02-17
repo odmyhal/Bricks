@@ -7,13 +7,18 @@ import org.bricks.engine.staff.Roller;
 
 public class RollView<R extends Roller> extends EntityView<R>{
 	
+	public RollView(LinkedList backet) {
+		super(backet);
+		// TODO Auto-generated constructor stub
+	}
+
 	private float rotationSpeed;
 	private float rotation;
-
+/*
 	public RollView(R entity) {
 		super(entity);
 	}
-	
+*/	
 	public float getRotationSpeed(){
 		return rotationSpeed;
 	}

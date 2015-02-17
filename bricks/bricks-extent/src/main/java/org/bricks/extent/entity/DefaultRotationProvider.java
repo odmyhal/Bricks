@@ -1,7 +1,7 @@
 package org.bricks.extent.entity;
 
+import org.bricks.engine.neve.RollPrint;
 import org.bricks.engine.staff.Roller;
-import org.bricks.engine.view.RollView;
 import org.bricks.enterprise.control.widget.tool.RotationDependAction.RotationProvider;
 
 public class DefaultRotationProvider implements RotationProvider{
@@ -13,7 +13,7 @@ public class DefaultRotationProvider implements RotationProvider{
 	}
 	
 	public float provideRotation() {
-		RollView<?> rollView = (RollView<?>) target.getCurrentView();
+		RollPrint<?> rollView = (RollPrint<?>) target.getSafePrint();
 		float rotation = rollView.getRotation();
 		rollView.free();
 		return rotation;

@@ -1,27 +1,32 @@
 package org.bricks.engine.pool;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.Point;
+import org.bricks.core.entity.impl.BrickWrap;
+import org.bricks.core.entity.impl.PointSetBrick;
+import org.bricks.core.entity.impl.PointSetPrint;
 import org.bricks.engine.staff.Entity;
 import org.bricks.engine.view.PointSetView;
 
-public abstract class AreaBase<E extends Entity> implements Pool {
+public abstract class AreaBase<E extends Entity> extends BrickWrap<PointSetPrint> implements Pool{
 
 	private Ipoint corner;
 	private Ipoint dimm;
-	private volatile PointSetView view;
+//	private Ipoint center;
+//	private volatile PointSetView view;
 	protected PoolSlot[] pool;
 	
 	private AreaBase(Ipoint corner, int capacity, int xLen, int yLen){
+		super(createBrick(corner, xLen, yLen));
 		this.corner = corner;
-		this.dimm = new Ipoint(xLen, yLen);
+		dimm = new Ipoint(xLen, yLen);
 		this.pool = new PoolSlot[capacity];
 		for(int i = 0; i < capacity; i++){
 			this.pool[i] = new PoolSlot();
 		}
-		createView();
 	}
 	
 	public AreaBase(Ipoint corner, int capacity, int len){
@@ -35,11 +40,11 @@ public abstract class AreaBase<E extends Entity> implements Pool {
 		return x && y;
 	}
 	
-	synchronized Subject<E> freeSubject(int i){
+	protected Subject<E, ?> freeSubject(int i){
 		return pool[i].freeSubject();
 	}
 	
-	int addSubject(Subject<E> subject){
+	protected int addSubject(Subject<E, ?> subject){
 		for(int i=0; i<pool.length; i++){
 			if(pool[i].setSubject(subject)){
 				return i;
@@ -70,18 +75,22 @@ public abstract class AreaBase<E extends Entity> implements Pool {
 		return this.corner;
 	}
 	
-	private void createView(){
+	private static PointSetBrick createBrick(Ipoint corner, int xLen, int yLen){
 		ArrayList<Ipoint> myPoints = new ArrayList(4);
 		myPoints.add(corner);
-		myPoints.add(new Ipoint(corner.getX() + dimm.getX() - 1, corner.getY()));
-		myPoints.add(new Ipoint(corner.getX() + dimm.getX() - 1, corner.getY() + dimm.getY() - 1));
-		myPoints.add(new Ipoint(corner.getX(), corner.getY() + dimm.getY() -1));
-		Ipoint center = new Ipoint(corner.getX() + (int) Math.round(dimm.getX() / 2), corner.getY() + (int) Math.round(dimm.getY() / 2));
-		this.view = new PointSetView(myPoints, center);
+		myPoints.add(new Ipoint(corner.getX() + xLen - 1, corner.getY()));
+		myPoints.add(new Ipoint(corner.getX() + xLen - 1, corner.getY() + yLen - 1));
+		myPoints.add(new Ipoint(corner.getX(), corner.getY() + yLen -1));
+//		Ipoint center = new Ipoint(corner.getX() + (int) Math.round(xLen / 2), corner.getY() + (int) Math.round(yLen / 2));
+
+		PointSetBrick psb = new PointSetBrick(myPoints);
+		Point bCenter = psb.getCenter();
+		return psb;
+//		this.view = new PointSetView(myPoints, center);
+	}
+
+	public PointSetPrint getPrint(){
+		return getInnerPrint();
 	}
 	
-//	@Override
-	public PointSetView getView(){
-		return view;
-	}
 }
