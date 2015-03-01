@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Ipoint;
-import org.bricks.engine.view.PointSetView;
+import org.bricks.core.entity.impl.PointSetPrint;
 import org.bricks.exception.Validate;
 
 public class ConvexityApproveHelper {
@@ -12,7 +12,7 @@ public class ConvexityApproveHelper {
 	private static final LocalPoint firstLocalVector = new LocalPoint();
 	private static final LocalPoint secondLocalVector = new LocalPoint();
 
-	public static void applyConvexity(PointSetView psv){
+	public static void applyConvexity(PointSetPrint psv){
 		applyConvexity(psv.getPoints());
 	}
 	

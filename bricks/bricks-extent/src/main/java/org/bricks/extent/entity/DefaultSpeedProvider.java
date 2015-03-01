@@ -3,7 +3,6 @@ package org.bricks.extent.entity;
 import org.bricks.core.entity.Fpoint;
 import org.bricks.engine.neve.WalkPrint;
 import org.bricks.engine.staff.Walker;
-import org.bricks.engine.view.WalkView;
 import org.bricks.exception.Validate;
 
 public class DefaultSpeedProvider implements SpeedProvider{

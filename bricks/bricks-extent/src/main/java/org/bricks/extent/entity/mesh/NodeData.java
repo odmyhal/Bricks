@@ -1,19 +1,20 @@
 package org.bricks.extent.entity.mesh;
 
-import org.bricks.engine.neve.PrintStore;
-import org.bricks.engine.neve.Printable;
+import org.bricks.engine.neve.PrintableBase;
 
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 
-public class NodeData<I extends NodeDataPrint> implements Printable<I>{
+public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
 	
-	private PrintStore<?, I> printStore;
-	protected boolean edit = true;
+//	private PrintStore<?, I> printStore;
+//	protected boolean edit = true;
 //	private NodeDataView view;
 //	private LinkedList<NodeDataView> viewCache = new LinkedList<NodeDataView>();
+	private int currentPrint = -1, renderLastPrint = -5;
+	protected int lastPrintModified = -2;
 	
 	public final Quaternion rotation = new Quaternion();
 	public final Vector3 translation = new Vector3();
@@ -28,15 +29,17 @@ public class NodeData<I extends NodeDataPrint> implements Printable<I>{
 	public NodeData(Quaternion rotation, Vector3 translation){
 		setRotation(rotation);
 		setTranslation(translation);
-		printStore = new PrintStore(this);
+		initPrintStore();
+		adjustCurrentPrint();
+//		printStore = new PrintStore(this);
 //		adjustCurrentView();
 	}
 	
-	public void setRotation(Quaternion quaternion){
+	private void setRotation(Quaternion quaternion){
 		this.rotation.set(quaternion);
 	}
 	
-	public void setTranslation(Vector3 translation){
+	private void setTranslation(Vector3 translation){
 		this.translation.set(translation);
 	}
 
@@ -44,7 +47,8 @@ public class NodeData<I extends NodeDataPrint> implements Printable<I>{
 		this.rotation.mul(q);
 		q.toMatrix(helpMatrix.val);
 		this.translation.mul(helpMatrix);
-		edit = true;
+//		edit = true;
+		lastPrintModified = currentPrint;
 	}
 	
 	public void rotateByPoint(Quaternion q, Vector3 point){
@@ -59,11 +63,20 @@ public class NodeData<I extends NodeDataPrint> implements Printable<I>{
 	
 	public void translate(Vector3 go){
 		translate(go.x, go.y, go.z);
-		edit = true;
+//		edit = true;
+		lastPrintModified = currentPrint;
 	}
 	
 	public void translate(float x, float y, float z){
 		translation.add(x, y, z);
+	}
+	
+	protected boolean renderOutdated(int modifiedPrint){
+		if(renderLastPrint < modifiedPrint){
+			renderLastPrint = modifiedPrint;
+			return true;
+		}
+		return false;
 	}
 /*	
 	protected LinkedList viewCache(){
@@ -98,17 +111,11 @@ public class NodeData<I extends NodeDataPrint> implements Printable<I>{
 	}
 	*/
 
-	public void adjustCurrentPrint() {
-		printStore.adjustCurrentPrint();
-		edit = false;
-	}
-
-	public I getInnerPrint() {
-		return printStore.getInnerPrint();
-	}
-
-	public I getSafePrint() {
-		return printStore.getSafePrint();
+	@Override
+	public int adjustCurrentPrint() {
+		currentPrint = printStore.adjustCurrentPrint();
+//		edit = false;
+		return currentPrint;
 	}
 
 	public I print() {

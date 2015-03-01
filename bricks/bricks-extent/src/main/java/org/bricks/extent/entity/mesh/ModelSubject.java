@@ -14,22 +14,29 @@ import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Entity;
 import org.bricks.exception.Validate;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 
+/**
+ * @deprecated use ModelSubjectOperable instead
+ * Has exactly the same functionality as org.bricks.extent.entity.mesh.ModelSubjectOperable
+ * @author oleh
+ *
+ * @param <E>
+ * @param <I>
+ */
 public class ModelSubject<E extends Entity, I extends ModelSubjectPrint> extends Subject<E, I> implements RenderableProvider{
 
 	private ModelInstance modelInstance;
 	protected Matrix4 transform;
 	protected boolean edit = true;
+	private volatile int currentPrint = -1;
+	private int lastPrint = -2;
 	private Map<String, NodeOperator> operatedNodes = new HashMap<String, NodeOperator>();
 	protected Map<Node, NodeData> dataNodes = new HashMap<Node, NodeData>();
 	
@@ -58,10 +65,6 @@ public class ModelSubject<E extends Entity, I extends ModelSubjectPrint> extends
 		edit = true;
 		super.translate(x, y);
 		transform.trn((float) x, (float) y, 0f);
-/*		synchronized(transform){
-			transform.trn((float) x, (float) y, 0f);
-			edit = true;
-		}*/
 	}
 	
 	@Override
@@ -70,35 +73,28 @@ public class ModelSubject<E extends Entity, I extends ModelSubjectPrint> extends
 		super.rotate(rad, central);
 		transform.setToRotationRad(0, 0, 1f, rad);
 		transform.trn(central.getFX(), central.getFY(), 0f);
-/*		synchronized(transform){
-			transform.setToRotationRad(0, 0, 1f, rad);
-			transform.trn(central.getFX(), central.getFY(), 0f);
-			edit = true;
-		}
-		*/
 	}
 
 	public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
-		ModelSubjectPrint<?, ?> msp = getSafePrint();
-		if(msp.edit){
-			modelInstance.transform.set(msp.transform);
-		}
-		for(Node node : dataNodes.keySet()){
-			NodeDataPrint ndView = msp.nodeData.get(node);
-			if(ndView.edit){
-				node.rotation.set(ndView.rotation);
-				node.translation.set(ndView.translation);
-				node.calculateTransforms(false);
+		int tmpCurPrint = currentPrint;
+		if(!isLastPrint(lastPrint)){
+			ModelSubjectPrint<?, ?> msp = getSafePrint();
+			if(tmpCurPrint - msp.lastPrintModified < 2){
+				modelInstance.transform.set(msp.transform);
 			}
-		}
-		msp.free();
-/*		synchronized(transform){
-			if(edit){
-				modelInstance.transform.set(transform);
-				edit = false;
+			for(Entry<Node, NodeData> entry : dataNodes.entrySet()){
+				NodeData nd = entry.getValue();
+				Node node = entry.getKey();
+				NodeDataPrint ndView = msp.nodeData.get(node);
+				if(nd.renderOutdated(ndView.lastPrintModified)){
+					node.rotation.set(ndView.rotation);
+					node.translation.set(ndView.translation);
+					node.calculateTransforms(false);
+				}
 			}
+			msp.free();
+			lastPrint = tmpCurPrint;
 		}
-		updateNodes();*/
 		modelInstance.getRenderables(renderables, pool);
 	}
 	
@@ -145,18 +141,6 @@ public class ModelSubject<E extends Entity, I extends ModelSubjectPrint> extends
 		}
 		return null;
 	}
-/*	
-	private void updateNodes(){
-		for(Entry<Node, NodeData> entry : dataNodes.entrySet()){
-			Node node = entry.getKey();
-			NodeDataPrint ndView = entry.getValue().getSafePrint();
-			node.rotation.set(ndView.rotation);
-			node.translation.set(ndView.translation);
-			node.calculateTransforms(false);
-			ndView.free();
-		}
-	}
-*/
 	
 	@Override
 	public I print(){
@@ -164,8 +148,10 @@ public class ModelSubject<E extends Entity, I extends ModelSubjectPrint> extends
 	}
 	
 	@Override
-	public void adjustCurrentPrint(){
-		super.adjustCurrentPrint();
+	public int adjustCurrentPrint(){
+		int res = super.adjustCurrentPrint();
 		edit = false;
+		currentPrint = res;
+		return res;
 	}
 }

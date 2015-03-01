@@ -133,6 +133,7 @@ public class BallGame implements ApplicationListener {
 		for(int i=750; i < 250 * 40 - 40; i+=225){
 			for(int j=50; j< 250 * 40 - 40; j+= 225){
 				bp.produceBall(j, i, 400f * (i%10 == 0 ? 1 : -1), 400f * (j%10 == 0 ? -1 : 1)).applyEngine(engine);
+//				bp.produceBall(j, i, 20f * (i%10 == 0 ? 1 : -1), 15f * (j%10 == 0 ? -1 : 1)).applyEngine(engine);
 				cnt++;
 			}
 		}
@@ -149,8 +150,8 @@ public class BallGame implements ApplicationListener {
 		cannonPanel.inputControl();
 		panelManager.addPanel(cannonPanel);
 		
-//		bp.produceShield(1075, 100).applyEngine(engine);
-//		bp.produceShield(775, 100).applyEngine(engine);
+		bp.produceShield(1075, 100).applyEngine(engine);
+		bp.produceShield(775, 100).applyEngine(engine);
 		
 		
 //		Gdx.input.setInputProcessor(new BallAdapter(cann, cameraMove));

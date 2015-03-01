@@ -8,7 +8,6 @@ import org.bricks.core.entity.Point;
 import org.bricks.core.help.ConvexityApproveHelper;
 import org.bricks.core.help.PointHelper;
 import org.bricks.engine.event.check.OverlapChecker;
-import org.bricks.engine.view.PointSetView;
 import org.junit.Test;
 
 public class CrossPointTest {

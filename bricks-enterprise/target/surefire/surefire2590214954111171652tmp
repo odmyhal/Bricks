@@ -1,15 +1,16 @@
 #surefire
-#Tue Feb 17 15:18:15 EET 2015
-testClassesDirectory=/home/oleh/git/Bricks/bricks/bricks-engine/target/test-classes
-classPathUrl.3=/home/oleh/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
-classPathUrl.2=/home/oleh/.m2/repository/junit/junit/4.11/junit-4.11.jar
+#Sun Mar 01 13:11:28 EET 2015
+testClassesDirectory=/home/oleh/git/Bricks/bricks-enterprise/target/test-classes
+classPathUrl.4=/home/oleh/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+classPathUrl.3=/home/oleh/.m2/repository/junit/junit/4.11/junit-4.11.jar
+classPathUrl.2=/home/oleh/.m2/repository/com/badlogicgames/gdx/gdx/1.3.1/gdx-1.3.1.jar
 useManifestOnlyJar=true
-classPathUrl.1=/home/oleh/git/Bricks/bricks/bricks-engine/target/classes
-reportsDirectory=/home/oleh/git/Bricks/bricks/bricks-engine/target/surefire-reports
-classPathUrl.0=/home/oleh/git/Bricks/bricks/bricks-engine/target/test-classes
+classPathUrl.1=/home/oleh/git/Bricks/bricks-enterprise/target/classes
+reportsDirectory=/home/oleh/git/Bricks/bricks-enterprise/target/surefire-reports
+classPathUrl.0=/home/oleh/git/Bricks/bricks-enterprise/target/test-classes
 dirscanner.0=directoryScannerOptions
 providerConfiguration=org.apache.maven.surefire.junit4.JUnit4Provider
-testSuiteDefinitionTestSourceDirectory=/home/oleh/git/Bricks/bricks/bricks-engine/src/test/java
+testSuiteDefinitionTestSourceDirectory=/home/oleh/git/Bricks/bricks-enterprise/src/test/java
 surefireClassPathUrl.1=/home/oleh/.m2/repository/org/apache/maven/surefire/surefire-api/2.7.1/surefire-api-2.7.1.jar
 surefireClassPathUrl.0=/home/oleh/.m2/repository/org/apache/maven/surefire/surefire-junit4/2.7.1/surefire-junit4-2.7.1.jar
 report.2=org.apache.maven.surefire.report.XMLReporter
@@ -18,7 +19,7 @@ report.1=org.apache.maven.surefire.report.BriefFileReporter
 report.0=org.apache.maven.surefire.report.ForkingConsoleReporter
 excludes0=**/*$*
 isTrimStackTrace=true
-dirscanner.0.params=/home/oleh/git/Bricks/bricks/bricks-engine/target/test-classes|[**/Test*.java, **/*Test.java, **/*TestCase.java]|[**/*$*]
+dirscanner.0.params=/home/oleh/git/Bricks/bricks-enterprise/target/test-classes|[**/Test*.java, **/*Test.java, **/*TestCase.java]|[**/*$*]
 enableAssertions=true
 includes2=**/*TestCase.java
 failIfNoTests=false

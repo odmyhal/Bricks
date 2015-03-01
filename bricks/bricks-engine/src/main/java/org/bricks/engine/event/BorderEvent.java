@@ -3,7 +3,6 @@ package org.bricks.engine.event;
 import org.bricks.core.entity.Point;
 import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.pool.Boundary;
-import org.bricks.engine.view.SubjectView;
 
 public class BorderEvent extends BaseEvent<Boundary>{
 	

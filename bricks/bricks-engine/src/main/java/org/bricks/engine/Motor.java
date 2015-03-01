@@ -49,7 +49,7 @@ public class Motor implements Runnable {
 			hooks++;
 		}
 		long diffTime = System.currentTimeMillis() - startTime;
-		System.out.println(String.format("Motor %s: average delay - %d", Thread.currentThread().getName(), (diffTime / hooks) ));
+		System.out.println(String.format("Motor %s: average delay - %.3f", Thread.currentThread().getName(), (((double) diffTime) / hooks) ));
 	}
 	
 	public void stop(){

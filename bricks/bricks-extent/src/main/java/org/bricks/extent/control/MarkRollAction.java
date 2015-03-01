@@ -3,10 +3,9 @@ package org.bricks.extent.control;
 import org.bricks.engine.event.Event;
 import org.bricks.engine.item.MultiRoller;
 import org.bricks.engine.neve.RollPrint;
-import org.bricks.engine.view.RollView;
+import org.bricks.engine.event.control.RotationSpeedEvent;
 import org.bricks.enterprise.control.widget.tool.FlowTouchPad;
 import org.bricks.enterprise.d3.help.AlgebraUtils;
-import org.bricks.engine.event.control.RotationSpeedEvent;
 
 import com.badlogic.gdx.math.Vector2;
 

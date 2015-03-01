@@ -10,12 +10,12 @@ import org.bricks.engine.Engine;
 import org.bricks.engine.neve.EntityPrint;
 import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.neve.PrintStore;
+import org.bricks.engine.neve.PrintableBase;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Entity;
 import org.bricks.engine.staff.Satellite;
-import org.bricks.engine.view.EntityView;
 
-public abstract class MultiSubjectEntity<S extends Subject, P extends EntityPrint> implements Entity<P>{
+public abstract class MultiSubjectEntity<S extends Subject, P extends EntityPrint> extends PrintableBase<P> implements Entity<P>{
 
 	private List<S> staff = new ArrayList<S>();
 	private List<Satellite> satellites = new ArrayList<Satellite>();
@@ -24,7 +24,7 @@ public abstract class MultiSubjectEntity<S extends Subject, P extends EntityPrin
 	private float weight = 0;
 	private Engine engine;
 	
-	protected PrintStore<? extends Entity, P> printStore;
+//	protected PrintStore<? extends Entity, P> printStore;
 	
 	protected MultiSubjectEntity(){
 		init();
@@ -32,7 +32,8 @@ public abstract class MultiSubjectEntity<S extends Subject, P extends EntityPrin
 	
 	protected void init(){
 //		adjustCurrentView();
-		this.printStore = new PrintStore(this);
+//		this.printStore = new PrintStore(this);
+		initPrintStore();
 	}
 	
 	public void applyEngine(Engine engine){
@@ -54,9 +55,11 @@ public abstract class MultiSubjectEntity<S extends Subject, P extends EntityPrin
 		for(Satellite satellite : getSatellites()){
 			satellite.rotate(radians, getOrigin());
 		}
-		for(S subject : staff){
+//		this.adjustSubjectsViews();
+		this.adjustCurrentPrint();
+/*		for(S subject : staff){
 			subject.adjustCurrentPrint();
-		}
+		}*/
 	}
 	
 	public boolean addSubject(S subject){
@@ -91,8 +94,8 @@ public abstract class MultiSubjectEntity<S extends Subject, P extends EntityPrin
 			satellite.translate(x, y);
 		}
 		if(adjustView){
+//			this.adjustSubjectsViews();
 			this.adjustCurrentPrint();
-			this.adjustSubjectsViews();
 		}
 	}
 	
@@ -111,58 +114,18 @@ public abstract class MultiSubjectEntity<S extends Subject, P extends EntityPrin
 	public Ipoint getOrigin(){
 		return orign;
 	}
-/*	
-	public void adjustCurrentView(){
-		adjustCurrentView(true); 
-	}
 
-	public LinkedList<EntityView> getViewCache(){
-		return this.viewCache;
-	}*/
-/*	
-//	public static final AtomicLong createdViews = new AtomicLong(0);
-//	public static final AtomicLong reusedViews = new AtomicLong(0);
-//TODO need refuse of synchronization use Concurrent collection and volatile modificator for this.view	
-	protected final void adjustCurrentView(boolean adjustSubjects){
-		synchronized(viewCache){
-			EntityView nView = viewCache.pollFirst();
-			if(nView == null){
-				nView = this.provideCurrentView();
-			}
-			nView.init();
-			nView.occupy();
-			if(this.view != null){
-				this.view.free();
-			}
-			this.view = nView;
-		}
-
+	protected final int adjustCurrentPrint(boolean adjustSubjects){
+//		System.out.println("MultiSubject entity adjust current print...");
+		int r = printStore.adjustCurrentPrint();
 		if(adjustSubjects){
 			adjustSubjectsViews();
 		}
+		return r;
 	}
 	
-	protected EntityView provideCurrentView(){
-		return new EntityView(this);
-	}
-	*/
-	protected final void adjustCurrentPrint(boolean adjustSubjects){
-		printStore.adjustCurrentPrint();
-		if(adjustSubjects){
-			adjustSubjectsViews();
-		}
-	}
-	
-	public final void adjustCurrentPrint(){
-		adjustCurrentPrint(true);
-	}
-	
-	public P getSafePrint(){
-		return printStore.getSafePrint();
-	}
-	
-	public P getInnerPrint(){
-		return printStore.getInnerPrint();
+	public final int adjustCurrentPrint(){
+		return adjustCurrentPrint(true);
 	}
 	
 	public P print(){
@@ -174,12 +137,5 @@ public abstract class MultiSubjectEntity<S extends Subject, P extends EntityPrin
 			subject.adjustCurrentPrint();
 		}
 	}
-/*	
-	public EntityView getCurrentView(){
-		synchronized(viewCache){
-			this.view.occupy();
-			return this.view;
-		}
-	}
-	*/
+
 }

@@ -1,20 +1,18 @@
 package org.bricks.extent.engine.checker;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.bricks.engine.event.check.CheckerType;
 import org.bricks.engine.event.processor.WorkToConditionProcessor;
 import org.bricks.engine.help.RotationHelper;
 import org.bricks.engine.item.MultiLiver;
 import org.bricks.exception.Validate;
-import org.bricks.extent.entity.mesh.ModelSubject;
+import org.bricks.extent.entity.mesh.ModelSubjectOperable;
 import org.bricks.extent.entity.mesh.NodeOperator;
 
-public class NodeRollProcessor<T extends MultiLiver<ModelSubject, ?>> extends WorkToConditionProcessor<T>{
+public class NodeRollProcessor<T extends MultiLiver<ModelSubjectOperable, ?>> extends WorkToConditionProcessor<T>{
 	
 	private static final float minRotationRad = (float) Math.PI / 180;
 //	private static final CheckerType NODE_ROLL_CH_TYPE = CheckerType.registerCheckerType();
-	
+	private ModelSubjectOperable subject;
 //	private AtomicInteger one;
 //	private volatile boolean inited = false;
 	private float targetRotation, rotationSpeed, tmpRotation;
@@ -27,9 +25,10 @@ public class NodeRollProcessor<T extends MultiLiver<ModelSubject, ?>> extends Wo
 	public NodeRollProcessor(T target, String nodeOperatorName){
 		super(CheckerType.registerCheckerType());
 		supplant(checkerType());
-		for(ModelSubject ms : target.getStaff() ){
+		for(ModelSubjectOperable ms : target.getStaff() ){
 			nodeOperator = ms.getNodeOperator(nodeOperatorName);
 			if(nodeOperator != null){
+				subject = ms;
 				break;
 			}
 		}
@@ -52,6 +51,7 @@ public class NodeRollProcessor<T extends MultiLiver<ModelSubject, ?>> extends Wo
 			lastCheckTime = processTime;
 			nodeOperator.rotate(rRad);
 			nodeOperator.updatePrint();
+			subject.adjustCurrentPrint();
 		}
 	}
 

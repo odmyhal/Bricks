@@ -16,10 +16,12 @@ import org.bricks.engine.event.OverlapEvent;
 import org.bricks.engine.event.check.OverlapChecker;
 import org.bricks.engine.event.overlap.OverlapStrategy;
 import org.bricks.engine.item.MultiWalker;
+import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.neve.WalkPrint;
 import org.bricks.engine.pool.Subject;
 import org.bricks.extent.entity.mesh.ModelSubject;
 import org.bricks.extent.entity.mesh.ModelSubjectPrint;
+import org.bricks.extent.entity.mesh.ModelSubjectSync;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Renderable;
@@ -28,7 +30,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.odmyha.shoot.Ball;
 
-public class Bullet extends MultiWalker<ModelSubject, WalkPrint> implements RenderableProvider{
+public class Bullet extends MultiWalker<ModelSubjectSync, WalkPrint> implements RenderableProvider{
 	
 	public static final String BULLET_SOURCE = "BulletSource@shoot.odmyha.com";
 	private static final float speed = 1000;
@@ -39,7 +41,7 @@ public class Bullet extends MultiWalker<ModelSubject, WalkPrint> implements Rend
 		bulletStrategy.put(Shield.SHIELD_SOURCE, OverlapStrategy.TRUE);
 	}
 	
-	private Bullet(ModelSubject<Bullet, ModelSubjectPrint> s){
+	private Bullet(ModelSubjectSync<Bullet, SubjectPrint> s){
 		addSubject(s);
 		registerEventChecker(OverlapChecker.instance());
 		setVector(new Fpoint(speed, 0f));
@@ -50,12 +52,12 @@ public class Bullet extends MultiWalker<ModelSubject, WalkPrint> implements Rend
 	}
 	
 	public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
-		for(ModelSubject subject: getStaff()){
+		for(ModelSubjectSync subject: getStaff()){
 			subject.getRenderables(renderables, pool);
 		}
 	}
 	
-	private static ModelSubject<Bullet, ModelSubjectPrint> produceSubject(){
+	private static ModelSubjectSync<Bullet, SubjectPrint> produceSubject(){
 		Collection<Ipoint> points = new LinkedList<Ipoint>();
 		points.add(new Ipoint(0, 0));
 		points.add(new Ipoint(25, 0));
@@ -71,7 +73,7 @@ public class Bullet extends MultiWalker<ModelSubject, WalkPrint> implements Rend
 		}
 		Brick brick = new PointSetBrick(points);
 		ModelInstance bulletModel = ModelStorage.instance().getModelInstance("bullet");//ModelStorage.instance().getModelInstance("gilse", "cone");//
-		return new ModelSubject<Bullet, ModelSubjectPrint>(brick, bulletModel);
+		return new ModelSubjectSync<Bullet, SubjectPrint>(brick, bulletModel);
 	}
 	
 	@Override

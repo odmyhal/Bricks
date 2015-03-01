@@ -9,7 +9,6 @@ import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.staff.Walker;
 import org.bricks.engine.tool.Roll;
 import org.bricks.engine.tool.Walk;
-import org.bricks.engine.view.WalkView;
 import org.bricks.exception.Validate;
 
 public abstract class MultiWalker<S extends Subject, P extends WalkPrint> extends MultiRoller<S, P> implements Walker<P>{

@@ -11,7 +11,10 @@ public final class PrintStore<T extends Printable, P extends Imprint> {
 	protected T target;
 	private PrintSlot<P>[] cache = new PrintSlot[size];
 	private AtomicInteger putIndex = new AtomicInteger(-1);
-	private int getIndex = 0;
+	/**
+	 * getIndex has no need to be volatile if isLastPrint accept volatile parameter
+	 */
+	private /*volatile*/ int getIndex = 0;
 	private volatile P currentPrint;
 	
 	public PrintStore(T printable){
@@ -36,13 +39,16 @@ public final class PrintStore<T extends Printable, P extends Imprint> {
 		currentPrint = newPrint;
 	}
 	
-	public void adjustCurrentPrint(){
+	/*
+	 * Runs only in motor thread. getIndex is thread local
+	 */
+	public int adjustCurrentPrint(){
 		P oldPrint = currentPrint;
 		initPrint();
-		if(oldPrint == null){
-			return;
+		if(oldPrint != null){
+			oldPrint.free();
 		}
-		oldPrint.free();
+		return getIndex;
 	}
 	
 	/*
@@ -64,6 +70,13 @@ public final class PrintStore<T extends Printable, P extends Imprint> {
 			}
 		}
 		return res;
+	}
+	
+	/*
+	 * Because of getIndex is not volatile, parameter printNum should be volatile
+	 */
+	public boolean isLastPrint(int printNum){
+		return printNum == getIndex;
 	}
 	
 	protected void putPrint(Imprint print){

@@ -8,6 +8,7 @@ import org.bricks.engine.event.EventSource;
 import org.bricks.engine.event.check.OverlapChecker;
 import org.bricks.engine.neve.EntityPrint;
 import org.bricks.engine.neve.Imprint;
+import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.pool.World;
@@ -25,7 +26,7 @@ public abstract class Stone<S extends Subject, P extends EntityPrint> extends Mu
 	public void applyEngine(Engine engine) {
 		super.applyEngine(engine);
 		World world = engine.getWorld();
-		for(Subject subject : getStaff()){
+		for(Subject<?, SubjectPrint> subject : getStaff()){
 			subject.adjustCurrentPrint();
 			Dimentions dimm = PointSetHelper.fetchDimentions(subject.getBrick().getPoints());
 			int startRow = world.detectSectorRow(dimm.getMinYPoint()) - 1;

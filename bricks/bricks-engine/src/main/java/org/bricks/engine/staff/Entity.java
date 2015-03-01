@@ -9,7 +9,6 @@ import org.bricks.engine.event.EventSource;
 import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.neve.Printable;
 import org.bricks.engine.pool.Subject;
-import org.bricks.engine.view.EntityView;
 
 public interface Entity<P extends Imprint> extends EventSource, Printable<P>{
 	

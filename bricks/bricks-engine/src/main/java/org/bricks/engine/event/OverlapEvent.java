@@ -7,7 +7,6 @@ import org.bricks.engine.neve.EntityPrint;
 import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Entity;
-import org.bricks.engine.view.SubjectView;
 
 public class OverlapEvent extends BaseEvent<Entity>{
 	

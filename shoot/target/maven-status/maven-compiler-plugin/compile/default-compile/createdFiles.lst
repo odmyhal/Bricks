@@ -13,6 +13,7 @@ org/bricks/engine/event/handler/CannonOverlapEventHandler.class
 org/bricks/engine/event/handler/BallOverlapEventHandler_2.class
 com/odmyha/weapon/Shield.class
 org/bricks/engine/event/handler/BallBorderEventHandler_1.class
+com/odmyha/subject/BallSubjectNew.class
 com/odmyhal/panel/CannonPanel.class
 org/bricks/engine/event/handler/BallOverlapEventHandler.class
 com/odmyha/model/construct/ShieldConstructor.class

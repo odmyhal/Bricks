@@ -32,10 +32,10 @@ public class BallProducer {
 		Brick brick = new PointSetBrick(points);
 		Ball res = Ball.create(brick);
 		Fpoint vector = res.getVector();
-		vector.setX(373);
-		vector.setY(-393);
-//		vector.setX(100);
-//		vector.setY(-50);
+//		vector.setX(373);
+//		vector.setY(-393);
+		vector.setX(20);
+		vector.setY(-50);
 		res.translate(startX, startY);
 		return res;
 	}

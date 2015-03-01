@@ -4,24 +4,18 @@ import org.bricks.core.entity.Point;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.engine.neve.PrintStore;
 import org.bricks.engine.neve.Printable;
+import org.bricks.engine.neve.PrintableBase;
 
-public abstract class BrickWrap<I extends PointSetPrint> implements Printable<I>{
+public abstract class BrickWrap<I extends PointSetPrint> extends PrintableBase<I>{
 	
 	protected Brick brick;
-	protected PrintStore<? extends BrickWrap, I> printStore;
+//	protected PrintStore<? extends BrickWrap, I> printStore;
 	
 	public BrickWrap(Brick brick){
-//		brick.initialize();
 		this.brick = brick;
-		printStore = new PrintStore(this);
-//		printStore.initPrint();
+		initPrintStore();
+//		printStore = new PrintStore(this);
 	}
-/*	
-	public BrickWrap(Brick brick){
-		brick.initialize(origin);
-		this.brick = brick;
-	}
-*/
 	
 	public Point getCenter() {
 		return brick.getCenter();
@@ -42,7 +36,7 @@ public abstract class BrickWrap<I extends PointSetPrint> implements Printable<I>
 	public void rotate(float rad, Point central){
 		brick.rotate(rad, central);
 	}
-	
+/*	
 	public void adjustCurrentPrint(){
 		printStore.adjustCurrentPrint();
 	}
@@ -54,7 +48,7 @@ public abstract class BrickWrap<I extends PointSetPrint> implements Printable<I>
 	public I getSafePrint(){
 		return printStore.getSafePrint();
 	}
-	
+*/	
 	public I print(){
 		return (I) new PointSetPrint(printStore);
 	}

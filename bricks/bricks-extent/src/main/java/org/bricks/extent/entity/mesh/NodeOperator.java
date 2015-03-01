@@ -3,8 +3,9 @@ package org.bricks.extent.entity.mesh;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.bricks.engine.help.RotationHelper.rotationCycle;
 import org.bricks.enterprise.control.widget.tool.RotationDependAction.RotationProvider;
+
+import static org.bricks.engine.help.RotationHelper.rotationCycle;
 
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.math.Quaternion;

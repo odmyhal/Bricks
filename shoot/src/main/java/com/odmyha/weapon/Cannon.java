@@ -22,10 +22,9 @@ import org.bricks.engine.item.MultiRoller;
 import org.bricks.engine.neve.RollPrint;
 import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.staff.Walker;
-import org.bricks.engine.view.RollView;
-import org.bricks.engine.view.SubjectView;
 import org.bricks.extent.entity.mesh.ModelSubject;
 import org.bricks.extent.entity.mesh.ModelSubjectPrint;
+import org.bricks.extent.entity.mesh.ModelSubjectSync;
 import org.bricks.extent.event.ExtentEventGroups;
 import org.bricks.extent.event.FireEvent;
 
@@ -36,7 +35,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.odmyha.shoot.Ball;
 
-public class Cannon extends MultiRoller<ModelSubject, RollPrint> implements RenderableProvider{
+public class Cannon extends MultiRoller<ModelSubjectSync, RollPrint> implements RenderableProvider{
 	
 	public static final String CANNON_SOURCE = "CannonSource@shoot.odmyha.com";
 
@@ -47,12 +46,12 @@ public class Cannon extends MultiRoller<ModelSubject, RollPrint> implements Rend
 	}
 	
 	public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
-		for(ModelSubject subject: getStaff()){
+		for(ModelSubjectSync subject: getStaff()){
 			subject.getRenderables(renderables, pool);
 		}
 	}
 	
-	private ModelSubject<Cannon, ModelSubjectPrint> produceOne(){
+	private ModelSubjectSync<Cannon, SubjectPrint> produceOne(){
 		Collection<Ipoint> points = new LinkedList<Ipoint>();
 		points.add(new Ipoint(150, 175));
 		points.add(new Ipoint(125, 200));
@@ -72,10 +71,10 @@ public class Cannon extends MultiRoller<ModelSubject, RollPrint> implements Rend
 		Brick brick = new PointSetBrick(points);
 //		brick.rotate((float)(-Math.PI / 2), new Ipoint(0, 0));
 		ModelInstance tower = ModelStorage.instance().getModelInstance("tower");//ModelProvider.produceTowerModel();//
-		return new ModelSubject<Cannon, ModelSubjectPrint>(brick, tower);
+		return new ModelSubjectSync<Cannon, SubjectPrint>(brick, tower);
 	}
 	
-	private ModelSubject<Cannon, ModelSubjectPrint> produceTwo(){
+	private ModelSubjectSync<Cannon, SubjectPrint> produceTwo(){
 		Collection<Ipoint> points = new LinkedList<Ipoint>();
 		points.add(new Ipoint(100, 300));
 		points.add(new Ipoint(50, 300));
@@ -91,11 +90,11 @@ public class Cannon extends MultiRoller<ModelSubject, RollPrint> implements Rend
 		Brick brick = new PointSetBrick(points);
 //		brick.rotate((float)(-Math.PI / 2), new Ipoint(0, 0));
 		ModelInstance tube = ModelStorage.instance().getModelInstance("tube");//ModelProvider.produceTubeModel()
-		return new ModelSubject<Cannon, ModelSubjectPrint>(brick, tube);
+		return new ModelSubjectSync<Cannon, SubjectPrint>(brick, tube);
 	}
 	
 	private void fire(){
-		ModelSubjectPrint<?, RollPrint> gunView = (ModelSubjectPrint<?, RollPrint>) this.getStaff().get(1).getInnerPrint();// getStaff().get(1).getInnerPrint();
+		SubjectPrint<?, RollPrint> gunView = (SubjectPrint<?, RollPrint>) this.getStaff().get(1).getInnerPrint();// getStaff().get(1).getInnerPrint();
 		List<Ipoint> gunPoints = gunView.getPoints();
 		Ipoint one = gunPoints.get(0);
 		Ipoint two = gunPoints.get(1);

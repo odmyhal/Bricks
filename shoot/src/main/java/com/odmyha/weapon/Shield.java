@@ -9,9 +9,11 @@ import org.bricks.core.entity.impl.PointSetBrick;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.engine.item.Stone;
 import org.bricks.engine.neve.EntityPrint;
+import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.pool.Subject;
 import org.bricks.extent.entity.mesh.ModelSubject;
 import org.bricks.extent.entity.mesh.ModelSubjectPrint;
+import org.bricks.extent.entity.mesh.ModelSubjectSync;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -21,11 +23,11 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 
-public class Shield extends Stone<ModelSubject, EntityPrint> implements RenderableProvider{
+public class Shield extends Stone<ModelSubjectSync, EntityPrint> implements RenderableProvider{
 	
 	public static final String SHIELD_SOURCE = "ShieldSource@shoot.odmyha.com";
 
-	private Shield(ModelSubject subject) {
+	private Shield(ModelSubjectSync subject) {
 		super(subject);
 	}
 	
@@ -45,12 +47,12 @@ public class Shield extends Stone<ModelSubject, EntityPrint> implements Renderab
 		ModelSubject<Shield> ms = new ModelSubject<Shield>(brick, mi);
 //		ms.getModelInstance().materials.get(0).set(ColorAttribute.createDiffuse(Color.GRAY));*/
 		ModelInstance shield = ModelStorage.instance().getModelInstance("shield");
-		ModelSubject<Shield, ModelSubjectPrint> ms = new ModelSubject<Shield, ModelSubjectPrint>(brick, shield);
+		ModelSubjectSync<Shield, SubjectPrint> ms = new ModelSubjectSync<Shield, SubjectPrint>(brick, shield);
 		return new Shield(ms);
 	}
 	
 	public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
-		for(ModelSubject subject: getStaff()){
+		for(ModelSubjectSync subject: getStaff()){
 			subject.getRenderables(renderables, pool);
 		}
 	}

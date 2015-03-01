@@ -10,7 +10,8 @@ public class NodeDataPrint<P extends NodeData> extends Imprint<P>{
 
 	public final Quaternion rotation = new Quaternion();
 	public final Vector3 translation = new Vector3();
-	protected boolean edit;
+	protected int lastPrintModified = -3;
+//	protected boolean edit;
 	
 	public NodeDataPrint(PrintStore<P, ?> ps) {
 		super(ps);
@@ -18,11 +19,13 @@ public class NodeDataPrint<P extends NodeData> extends Imprint<P>{
 
 	@Override
 	protected void init() {
-		edit = getTarget().edit;
-		if(edit){
-			this.rotation.set(getTarget().rotation);
-			this.translation.set(this.getTarget().translation);
+//		edit = getTarget().edit;
+		P target = getTarget();
+		if(lastPrintModified < target.lastPrintModified){
+			this.rotation.set(target.rotation);
+			this.translation.set(target.translation);
+			lastPrintModified = target.lastPrintModified;
 		}
 	}
-
+	
 }

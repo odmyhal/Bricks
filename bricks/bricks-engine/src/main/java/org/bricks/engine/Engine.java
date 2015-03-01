@@ -14,7 +14,6 @@ import org.bricks.engine.pool.District;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.pool.World;
 import org.bricks.engine.staff.Entity;
-import org.bricks.engine.view.SubjectView;
 import org.bricks.engine.event.handler.EventHandleRegistrator;
 
 public class Engine<R> 

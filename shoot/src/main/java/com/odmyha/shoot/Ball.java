@@ -28,11 +28,12 @@ import com.badlogic.gdx.graphics.g3d.RenderableProvider;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.odmyha.subject.BallSubject;
+import com.odmyha.subject.BallSubjectNew;
 import com.odmyha.weapon.Bullet;
 import com.odmyha.weapon.Cannon;
 import com.odmyha.weapon.Shield;
 
-public class Ball extends MultiWalker<BallSubject, WalkPrint> implements ListenDistrictEntity<WalkPrint>, RenderableProvider{
+public class Ball extends MultiWalker<BallSubjectNew, WalkPrint> implements ListenDistrictEntity<WalkPrint>, RenderableProvider{
 	
 	public static final String BALL_SOURCE_TYPE = "BallSource@shoot.odmyha.com";
 	
@@ -42,24 +43,24 @@ public class Ball extends MultiWalker<BallSubject, WalkPrint> implements ListenD
 		ballStrategy.put(Shield.SHIELD_SOURCE, OverlapStrategy.TRUE);
 	}
 
-	private Ball(BallSubject subj) {
+	private Ball(BallSubjectNew subj) {
 		addSubject(subj);
 		registerEventChecker(OverlapChecker.instance());
 	}
 	
 	public static Ball create(Brick brick){
-		BallSubject subject = new BallSubject(brick);
+		BallSubjectNew subject = new BallSubjectNew(brick);
 		return new Ball(subject);
 	}
 	
 	public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
-		for(BallSubject subject: getStaff()){
+		for(BallSubjectNew subject: getStaff()){
 			subject.getRenderables(renderables, pool);
 		}
 	}
 	
 	@Override
-	public boolean addSubject(BallSubject subj){
+	public boolean addSubject(BallSubjectNew subj){
 		if(getStaff().isEmpty()){
 			boolean res = super.addSubject(subj);
 			return res;

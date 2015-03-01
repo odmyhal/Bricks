@@ -8,7 +8,6 @@ import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.Point;
 import org.bricks.core.help.PointHelper;
 import org.bricks.core.help.SideLocator;
-import org.bricks.core.help.TangPointLocator;
 import org.bricks.engine.event.BaseEvent;
 import org.bricks.engine.event.BorderEvent;
 import org.bricks.engine.event.Event;
@@ -16,7 +15,6 @@ import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.pool.Boundary;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Liver;
-import org.bricks.engine.view.SubjectView;
 
 public class BorderTouchChecker<T extends Liver> extends EventChecker<T>{
 	

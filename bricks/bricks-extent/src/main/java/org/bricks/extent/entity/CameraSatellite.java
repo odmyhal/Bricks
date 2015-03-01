@@ -6,13 +6,12 @@ import org.bricks.core.help.PointHelper;
 import org.bricks.engine.item.MultiWalker;
 import org.bricks.engine.neve.WalkPrint;
 import org.bricks.engine.staff.Satellite;
-import org.bricks.engine.view.WalkView;
-import org.bricks.enterprise.control.widget.tool.RotationDependAction;
+import org.bricks.enterprise.control.widget.tool.RotationDependAction.RotationProvider;
 import org.bricks.exception.Validate;
 
 import com.badlogic.gdx.graphics.Camera;
 
-public class CameraSatellite implements Satellite, RotationDependAction.RotationProvider{
+public class CameraSatellite implements Satellite, RotationProvider{
 	
 	public Camera camera;
 	private MultiWalker target;

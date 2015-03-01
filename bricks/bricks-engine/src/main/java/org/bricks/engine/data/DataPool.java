@@ -57,7 +57,7 @@ public class DataPool<D> implements Iterable<D> {
 		private final AtomicBoolean exists = new AtomicBoolean(false);
 		
 		private boolean setItem(D item){
-			if(exists.compareAndSet(true, false)){
+			if(exists.compareAndSet(false, true)){
 				object = item;
 				return true;
 			}
@@ -65,8 +65,13 @@ public class DataPool<D> implements Iterable<D> {
 		}
 		
 		private boolean removeItem(){
-			if(exists.compareAndSet(false, true)){
+/*			if(exists.compareAndSet(true, false)){
 				object = null;
+				return true;
+			}*/
+			if(exists.get()){
+				object = null;
+				exists.set(false);
 				return true;
 			}
 			return false;

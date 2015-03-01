@@ -118,6 +118,10 @@ public class World<R> {
 		}
 	}
 */
+	/**
+	 * TODO: make one constant collection instead of creating each time new in getRenderEntities
+	 * @return
+	 */
 	public Collection<R> getRenderEntities(){
 		Collection<R> result = decorPool.collection();
 		for(int i = 0; i < rowsCount; i++){

@@ -8,7 +8,6 @@ import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Roller;
 import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.tool.Roll;
-import org.bricks.engine.view.RollView;
 
 public abstract class MultiRoller<S extends Subject, P extends RollPrint> extends MultiLiver<S, P> implements Roller<P>{
 	

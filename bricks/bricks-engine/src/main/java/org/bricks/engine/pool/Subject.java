@@ -8,11 +8,10 @@ import org.bricks.core.entity.impl.BrickWrap;
 import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.staff.Entity;
 import org.bricks.engine.staff.Satellite;
-import org.bricks.engine.view.SubjectView;
 import org.bricks.exception.Validate;
 import org.bricks.core.entity.type.Brick;
 
-public class Subject<E extends Entity, I extends SubjectPrint> extends BrickWrap<I> implements Satellite{
+public abstract class Subject<E extends Entity, I extends SubjectPrint> extends BrickWrap<I> implements Satellite{
 	
 	private final Map<AreaBase, Integer> pools = new HashMap<AreaBase, Integer>();
 	private District<?, E> district;

@@ -9,14 +9,11 @@ import org.bricks.core.entity.impl.BrickWrap;
 import org.bricks.core.entity.impl.PointSetBrick;
 import org.bricks.core.entity.impl.PointSetPrint;
 import org.bricks.engine.staff.Entity;
-import org.bricks.engine.view.PointSetView;
 
 public abstract class AreaBase<E extends Entity> extends BrickWrap<PointSetPrint> implements Pool{
 
 	private Ipoint corner;
 	private Ipoint dimm;
-//	private Ipoint center;
-//	private volatile PointSetView view;
 	protected PoolSlot[] pool;
 	
 	private AreaBase(Ipoint corner, int capacity, int xLen, int yLen){
@@ -27,6 +24,7 @@ public abstract class AreaBase<E extends Entity> extends BrickWrap<PointSetPrint
 		for(int i = 0; i < capacity; i++){
 			this.pool[i] = new PoolSlot();
 		}
+		this.adjustCurrentPrint();
 	}
 	
 	public AreaBase(Ipoint corner, int capacity, int len){

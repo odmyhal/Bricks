@@ -126,7 +126,7 @@ public class OverlapChecker<T extends Liver> extends EventChecker<T>{
 				return null;
 			}
 		}
-		Subject ts = oEvent.getTargetPrint().getTarget();
+		Subject<?, SubjectPrint> ts = oEvent.getTargetPrint().getTarget();
 		Validate.isTrue(target.equals(ts.getEntity()));
 		SubjectPrint checkView = check.getSafePrint();
 		Point touchPoint = findOverlapPoint(ts.getInnerPrint(), checkView);
