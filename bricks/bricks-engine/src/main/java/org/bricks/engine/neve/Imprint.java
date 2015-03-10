@@ -14,7 +14,7 @@ public abstract class Imprint<P extends Printable> {
 	}
 	
 	protected void checkCounterZero(){
-		Validate.isTrue(counter.get() == 0, "Counter should be zero");
+		Validate.isTrue(counter.get() == 0, "Counter should be zero, but we have: " + counter.get());
 	}
 
 	protected abstract void init();

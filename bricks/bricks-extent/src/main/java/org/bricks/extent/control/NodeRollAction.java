@@ -37,6 +37,7 @@ public class NodeRollAction<T extends Entity, W extends FlowTouchPad> extends Fl
 	
 	public NodeRollAction(T target, Vector3 spin, Vector3 point, float startRotation, float rotationSpeed, Node... nodes) {
 		super(target);
+		
 		this.nodes = Arrays.asList(nodes);
 		Validate.isTrue(rotationSpeed > 0, "Rotation Speed should be bigger than zero.");
 		this.rotationSpeed = rotationSpeed;

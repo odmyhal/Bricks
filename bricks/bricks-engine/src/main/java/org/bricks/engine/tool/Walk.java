@@ -6,8 +6,8 @@ import org.bricks.engine.staff.Walker;
 
 public class Walk {
 
-	private long moveXTime = System.currentTimeMillis();
-	private long moveYTime = moveXTime;
+	private double moveXTime = System.currentTimeMillis();
+	private double moveYTime = moveXTime;
 	private Walker owner;
 	private int lastMoveX, lastMoveY;
 	private static final int moveLimit = 14;
@@ -34,18 +34,19 @@ public class Walk {
 */	
 	public boolean move(long checkTime, float x, float y){
 		boolean res = false;
-		long diffX = checkTime - moveXTime;
+		double diffX = checkTime - moveXTime;
 		lastMoveX = (int) /*Math.round*/(x * diffX / 1000);
 		if(lastMoveX != 0){
 			if(lastMoveX > moveLimit){
+//				System.out.println("Used move limit: " + lastMoveX);
 				lastMoveX = moveLimit;
 			}else if(lastMoveX < -moveLimit){
 				lastMoveX = -moveLimit;
 			}
 			res = true;
-			moveXTime += (int) (lastMoveX * 1000 / x);
+			moveXTime += /*(int)*/ (lastMoveX * 1000 / x);
 		}
-		long diffY = checkTime - moveYTime;
+		double diffY = checkTime - moveYTime;
 		lastMoveY = (int) /*Math.round*/(y * diffY / 1000);
 		if(lastMoveY != 0){
 			if(lastMoveY > moveLimit){
@@ -54,7 +55,7 @@ public class Walk {
 				lastMoveY = -moveLimit;
 			}
 			res = true;
-			moveYTime += (int) (lastMoveY * 1000 / y);
+			moveYTime += /*(int)*/ (lastMoveY * 1000 / y);
 		}
 		Validate.isTrue(diffX >= 0 && diffY >= 0);
 		if(res){

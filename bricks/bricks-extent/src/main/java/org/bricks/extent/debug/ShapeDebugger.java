@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.Disposable;
 
 public class ShapeDebugger implements Disposable{
 
-	private ShapeRenderer shR = new ShapeRenderer();
+	public ShapeRenderer shR = new ShapeRenderer();
 	
 	
 	public <R> void drawSectors(Engine<R> engine, Matrix4 cameraMatrix){

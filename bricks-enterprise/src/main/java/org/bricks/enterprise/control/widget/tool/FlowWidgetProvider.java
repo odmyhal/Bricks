@@ -48,13 +48,31 @@ public class FlowWidgetProvider {
 		return new FlowTouchPad(tps, listener);
 	}
 	
+	public static final <T> HalfRTouchPad produceFlowHalfRTouchPad(FlowMutableAction<T, HalfRTouchPad> action, String name, int radius){
+		return produceFlowHalfRTouchPad(action, name, radius, defaults);
+	}
+	
+	public static final <T> HalfRTouchPad produceFlowHalfRTouchPad(FlowMutableAction<T, HalfRTouchPad> action, String name, int radius, Preferences prefs){
+		String padName = name + "-Backgorund-" + radius;
+		int knobRadius = Math.max(10, radius / 13);
+		String knobName = name + "-Knob-" + knobRadius;
+		TouchpadStyle tps = new TouchpadStyle(produceBackground(padName, radius / 2, radius, prefs), produceKnob(knobName, knobRadius, prefs));
+		
+		FlowTouchListener<HalfRTouchPad> listener = new FlowTouchListener<HalfRTouchPad>(action);
+		return new HalfRTouchPad(tps, listener);
+	}
+	
 	private static final Drawable produceBackground(String padName, int radius, Preferences prefs){
+		return produceBackground(padName, radius, radius, prefs);
+	}
+	
+	private static final Drawable produceBackground(String padName, int width, int height, Preferences prefs){
 		if(!Skinner.instance().hasFrame(padName)){
 			String bKey = "touchpad.background.color";
 			Color background = Color.valueOf(prefs.get(bKey, defaults.get(bKey, "ffffffff")));
 			String brKey = "touchpad.border.color";
 			Color border = Color.valueOf(prefs.get(brKey, defaults.get(brKey, "ffffffff")));
-			Skinner.instance().putFrame(radius, radius, 2, background, border, padName);
+			Skinner.instance().putFrame(width, height, 2, background, border, padName);
 		}
 		return Skinner.instance().skin().getDrawable(padName);
 	}

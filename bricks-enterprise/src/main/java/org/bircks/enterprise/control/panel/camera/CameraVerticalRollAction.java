@@ -4,6 +4,7 @@ import java.util.prefs.Preferences;
 
 import org.bircks.enterprise.control.panel.PanelManager;
 import org.bricks.enterprise.control.widget.tool.FlowMutableAction;
+import org.bricks.enterprise.control.widget.tool.HalfRTouchPad;
 import org.bricks.enterprise.d3.help.AlgebraUtils;
 import org.bricks.enterprise.d3.help.Vector3Helper;
 
@@ -11,7 +12,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-public class CameraVerticalRollAction extends FlowMutableAction<Camera, CameraVerticalRollPad>{
+public class CameraVerticalRollAction extends FlowMutableAction<Camera, HalfRTouchPad /*CameraVerticalRollPad*/>{
 
 	private float rotationSpeed;// = (float) Math.PI;
 	private float curRad, tarRad, curSpeed, diffRad;
@@ -33,7 +34,7 @@ public class CameraVerticalRollAction extends FlowMutableAction<Camera, CameraVe
 	}
 
 	@Override
-	public void init(CameraVerticalRollPad widget) {
+	public void init(HalfRTouchPad /*CameraVerticalRollPad*/ widget) {
 		touchPercentile.set(widget.getKnobPercentX(), widget.getKnobPercentY());
 		touchPercentile.nor();
 		tarRad = (float) AlgebraUtils.trigToRadians(touchPercentile.x, touchPercentile.y);

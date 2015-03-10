@@ -2,6 +2,7 @@ package org.bricks.extent.entity.mesh;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.bricks.core.entity.Point;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.engine.staff.Entity;
 import org.bricks.exception.Validate;
+import org.bricks.extent.tool.ModelHelper;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Renderable;
@@ -31,12 +33,12 @@ public class ModelSubjectOperable<E extends Entity, I extends ModelSubjectPrint>
 		super(brick, modelInstance);
 		initiateNodeOperators(operNodes);
 	}
-
+/*
 	public ModelSubjectOperable(Brick brick, ModelInstance modelInstance, Matrix4 initialTransform, String... operNodes){
 		super(brick, modelInstance, initialTransform);
 		initiateNodeOperators(operNodes);
 	}
-	
+*/	
 	private void initiateNodeOperators(String... nodes){
 		for(String node: nodes){
 			addNodeOperator(node);
@@ -49,8 +51,6 @@ public class ModelSubjectOperable<E extends Entity, I extends ModelSubjectPrint>
 		lastPrintModified = currentPrint;
 		super.translate(x, y);
 		transform.trn((float) x, (float) y, 0f);
-//		System.out.println("ModelSubjectOperable translate: " + x + " , " + y);
-//		System.out.println("ModelSubjectOperable translated to: " + transform);
 	}
 	
 	@Override
@@ -69,8 +69,6 @@ public class ModelSubjectOperable<E extends Entity, I extends ModelSubjectPrint>
 		 */
 		if(!isLastPrint(lastPrint)){
 			ModelSubjectPrint<?, ?> msp = getSafePrint();
-//			System.out.println("++ModelSubjectOperable getting renderables transform: " + msp.edit);
-			//TODO: return edit
 			Validate.isFalse(renderPrintModified > msp.lastPrintModified, "printModified can't be less than render last modified");
 			if(renderPrintModified < msp.lastPrintModified){
 				modelInstance.transform.set(msp.transform);
@@ -84,9 +82,11 @@ public class ModelSubjectOperable<E extends Entity, I extends ModelSubjectPrint>
 				Node node = entry.getKey();
 				NodeDataPrint ndView = msp.nodeData.get(node);
 				if(nd.renderOutdated(ndView.lastPrintModified)){
-					node.rotation.set(ndView.rotation);
-					node.translation.set(ndView.translation);
-					node.calculateTransforms(false);
+//					node.rotation.set(ndView.rotation);
+//					node.translation.set(ndView.translation);
+					node.localTransform.set(ndView.transform);
+					ModelHelper.calculateNodeGlobalTransforms(node);
+//					node.calculateTransforms(true);
 				}
 			}
 			msp.free();
@@ -95,17 +95,19 @@ public class ModelSubjectOperable<E extends Entity, I extends ModelSubjectPrint>
 		modelInstance.getRenderables(renderables, pool);
 	}
 	
-	public NodeOperator addNodeOperator(String operatorName, String... nodeNames){
-		Validate.isTrue(nodeNames.length > 0, "Can't create node operator without nodes");
-		List<Node> nodes = new ArrayList<Node>();
-		List<String> names = Arrays.asList(nodeNames);
-		for(Node node : modelInstance.nodes){
-			if(names.contains(node.id)){
-				nodes.add(node);
-			}
+	
+	
+	public NodeOperator addNodeOperator(String operatorName, String... nodePaths){
+		Validate.isTrue(nodePaths.length > 0, "Can't create node operator without nodes");
+		Node[] nodes = new Node[nodePaths.length];
+		int i = 0;
+		for(String nodePath : nodePaths){
+			Node node = findNode(nodePath, modelInstance.nodes);
+			Validate.isFalse(node == null, "Could not find node by path: " + nodePath);
+			nodes[i++] = node;
 		}
-		Validate.isTrue(names.size() == nodes.size(), "Not all required nodes exists in modelInstance");
-		NodeOperator nodeOperator = new NodeOperator(nodes.toArray(new Node[nodes.size()]));
+
+		NodeOperator nodeOperator = new NodeOperator(nodes);
 		operatedNodes.put(operatorName, nodeOperator);
 		for(Node node : nodes){
 			NodeData nodeData = nodeOperator.getNodeData(node.id);
@@ -113,6 +115,26 @@ public class ModelSubjectOperable<E extends Entity, I extends ModelSubjectPrint>
 			dataNodes.put(node, nodeData);
 		}
 		return nodeOperator;
+	}
+	
+	private Node findNode(String nodePath, Iterable<Node> nodes){
+		int splitIndex = nodePath.indexOf('/');
+		String curName;
+		if(splitIndex < 0){
+			curName = nodePath;
+		}else{
+			curName = nodePath.substring(0, splitIndex);
+		}
+		for(Node node : nodes){
+			if(curName.equals(node.id)){
+				if(curName.equals(nodePath)){
+					return node;
+				}else{
+					return findNode(nodePath.substring(splitIndex + 1, nodePath.length()), node.children);
+				}
+			}
+		}
+		return null;
 	}
 	
 	private NodeOperator addNodeOperator(String nodeName){

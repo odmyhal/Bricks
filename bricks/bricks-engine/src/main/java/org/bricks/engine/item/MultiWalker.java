@@ -47,6 +47,8 @@ public abstract class MultiWalker<S extends Subject, P extends WalkPrint> extend
 			for(Satellite satellite : getSatellites()){
 				satellite.update();
 			}
+/*			this.log("Center is: " + this.getStaff().get(0).getCenter()
+					+ "\n Speed is: " + this.getVector());*/
 		}
 	}
 	
@@ -63,8 +65,8 @@ public abstract class MultiWalker<S extends Subject, P extends WalkPrint> extend
 			vector.setX(vector.getFX() + absAcc * (float) Math.cos(rotation));
 			vector.setY(vector.getFY() + absAcc * (float) Math.sin(rotation));
 //			System.out.println(curTime + " -- AccTime " + accelerationTime + " - Up speed on " + absAcc + ", new speed " + vector.getFX() + ", diff was " + diff);
-			Validate.isTrue(vector.getFX() < 10000, "Speed X is to hie");
-			Validate.isTrue(vector.getFY() < 10000, "Speed Y is to hie");
+			Validate.isTrue(vector.getFX() < 3000, "Speed X is to hie");
+			Validate.isTrue(vector.getFY() < 3000, "Speed Y is to hie");
 			accelerationTime = curTime;
 		}
 	}
@@ -73,6 +75,7 @@ public abstract class MultiWalker<S extends Subject, P extends WalkPrint> extend
 	public void flushTimer(long nTime){
 		super.flushTimer(nTime);
 		legs.flushTimer(nTime);
+//		System.out.println("CHECK: " + this.getClass().getCanonicalName() + " has flushed timer!!!");
 	}
 
 	public void setVector(Fpoint vector) {

@@ -18,11 +18,11 @@ public class ModelSubjectSync<E extends Entity, I extends SubjectPrint> extends 
 	public ModelSubjectSync(Brick brick, ModelInstance modelInstance) {
 		super(brick, modelInstance);
 	}
-	
+/*	
 	public ModelSubjectSync(Brick brick, ModelInstance modelInstance, Matrix4 initialTransform){
 		super(brick, modelInstance, initialTransform);
 	}
-
+*/
 	@Override
 	public void translate(int x, int y){
 		super.translate(x, y);

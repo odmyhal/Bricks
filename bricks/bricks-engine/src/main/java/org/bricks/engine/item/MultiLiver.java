@@ -109,6 +109,7 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint> exten
 		this.adjustCurrentPrint(false);
 		for(Subject subject: getStaff()){
 			District d = world.pointSector(subject.getCenter());
+			Validate.isFalse(d == null, "Could not find district for point: " + subject.getCenter());
 			subject.joinDistrict(d);
 			subject.adjustCurrentPrint();
 		}

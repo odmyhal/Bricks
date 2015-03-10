@@ -6,6 +6,7 @@ import org.bircks.enterprise.control.panel.AnimationRisePanel;
 import org.bircks.enterprise.control.panel.Skinner;
 import org.bricks.enterprise.control.widget.tool.FlowTouchPad;
 import org.bricks.enterprise.control.widget.tool.FlowWidgetProvider;
+import org.bricks.enterprise.control.widget.tool.HalfRTouchPad;
 import org.bricks.enterprise.control.widget.tool.RotationDependAction;
 
 import com.badlogic.gdx.graphics.Camera;
@@ -17,8 +18,8 @@ public class CameraPanel extends AnimationRisePanel{
 	
 	private Camera camera;
 	private RotationDependAction.RotationProvider rotationProvider;
-	private Preferences widgetDefaults;// = Preferences.userRoot().node("panel.defaults");
-	private Preferences cameraDefaults;// = Preferences.userRoot().node("camera.defaults");
+	private Preferences widgetDefaults;
+	private Preferences cameraDefaults;
 	
 	public CameraPanel(Camera camera){
 		this(camera, "panel.defaults", "camera.defaults");
@@ -66,8 +67,12 @@ public class CameraPanel extends AnimationRisePanel{
 		FlowTouchPad cmp = FlowWidgetProvider.produceFlowTouchPad(cameraMoveAction, "CameraMovePad", (int)(Math.min(width, height) * 0.7), widgetDefaults);
 		controlPanel.add(cmp).pad(3);
 
-		controlPanel.add(CameraAltitudeSlider.produceSlider((int)(Math.min(width, height) * 0.7), camera, cameraDefaults)).pad(3);
-		controlPanel.add(CameraVerticalRollPad.produceTouchPad((int)(Math.min(width, height) * 0.7), camera)).pad(3);
+		controlPanel.add(CameraAltitudeSlider.produceSlider((int)(Math.min(width, height) * 0.7), camera, cameraDefaults)).pad(3);		
+
+		CameraVerticalRollAction cameraVerticalRollAction = new CameraVerticalRollAction(camera);
+		HalfRTouchPad cameraVerticalRollPad = FlowWidgetProvider.produceFlowHalfRTouchPad(cameraVerticalRollAction, "CameraVerticalRoll", (int)(Math.min(width, height) * 0.7));
+		controlPanel.add(cameraVerticalRollPad).pad(3);
+		
 		return controlPanel;
 	}
 	

@@ -13,6 +13,7 @@ import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Entity;
 import org.bricks.exception.Validate;
+import org.bricks.extent.tool.ModelHelper;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Renderable;
@@ -30,6 +31,7 @@ import com.badlogic.gdx.utils.Pool;
  * @param <E>
  * @param <I>
  */
+@Deprecated
 public class ModelSubject<E extends Entity, I extends ModelSubjectPrint> extends Subject<E, I> implements RenderableProvider{
 
 	private ModelInstance modelInstance;
@@ -87,9 +89,11 @@ public class ModelSubject<E extends Entity, I extends ModelSubjectPrint> extends
 				Node node = entry.getKey();
 				NodeDataPrint ndView = msp.nodeData.get(node);
 				if(nd.renderOutdated(ndView.lastPrintModified)){
-					node.rotation.set(ndView.rotation);
-					node.translation.set(ndView.translation);
-					node.calculateTransforms(false);
+//					node.rotation.set(ndView.rotation);
+//					node.translation.set(ndView.translation);
+					node.localTransform.set(ndView.transform);
+					ModelHelper.calculateNodeGlobalTransforms(node);
+//					node.calculateTransforms(false);
 				}
 			}
 			msp.free();

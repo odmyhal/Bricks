@@ -15,7 +15,8 @@
                 <entry key="panel.relative.width" value="1.0"/>
 				<entry key="panel.relative.height" value="0.3"/>
 				<entry key="panel.padding" value="10"/>
-				<entry key="panel.background.color" value="99bf334c"/>
+<!--				<entry key="panel.background.color" value="99bf334c"/>  -->
+				<entry key="panel.background.color" value="99bf3300"/>
 				<entry key="panel.border.color" value="ffff00ff"/>
             </map>
         </node>

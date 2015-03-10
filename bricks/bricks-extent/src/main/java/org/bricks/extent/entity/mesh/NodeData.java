@@ -16,49 +16,39 @@ public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
 	private int currentPrint = -1, renderLastPrint = -5;
 	protected int lastPrintModified = -2;
 	
-	public final Quaternion rotation = new Quaternion();
-	public final Vector3 translation = new Vector3();
+	private final Quaternion rotation = new Quaternion();
+	private final Vector3 translation = new Vector3();
+	private final Vector3 scale = new Vector3();
+	private final Matrix4 transformMatrix = new Matrix4();
 	
 	private Matrix4 helpMatrix = new Matrix4();
-	private Vector3 helpPoint = new Vector3();
+//	private Vector3 helpPoint = new Vector3();
 	
 	public NodeData(Node node){
-		this(node.rotation, node.translation);
+		this(node.rotation, node.translation, node.scale);
 	}
 	
-	public NodeData(Quaternion rotation, Vector3 translation){
-		setRotation(rotation);
-		setTranslation(translation);
+	public NodeData(Quaternion rotation, Vector3 translation, Vector3 scale){
+		this.rotation.set(rotation);
+		this.translation.set(translation);
+		this.scale.set(scale);
 		initPrintStore();
 		adjustCurrentPrint();
-//		printStore = new PrintStore(this);
-//		adjustCurrentView();
 	}
-	
-	private void setRotation(Quaternion quaternion){
-		this.rotation.set(quaternion);
-	}
-	
-	private void setTranslation(Vector3 translation){
-		this.translation.set(translation);
-	}
-
-	public void rotate(Quaternion q){
-		this.rotation.mul(q);
+/*	
+	private void rotate(Quaternion q){
+		this.rotation.mulLeft(q);
 		q.toMatrix(helpMatrix.val);
 		this.translation.mul(helpMatrix);
-//		edit = true;
 		lastPrintModified = currentPrint;
 	}
-	
+*/	
 	public void rotateByPoint(Quaternion q, Vector3 point){
-		this.rotation.mul(q);
+		this.rotation.mulLeft(q);
 		q.toMatrix(helpMatrix.val);
+		this.translation.sub(point);
 		this.translation.mul(helpMatrix);
-		this.helpPoint.set(point);
-		this.helpPoint.mul(helpMatrix);
-		this.helpPoint.sub(point).scl(-1);
-		translate(this.helpPoint);
+		translate(point);
 	}
 	
 	public void translate(Vector3 go){
@@ -78,44 +68,26 @@ public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
 		}
 		return false;
 	}
-/*	
-	protected LinkedList viewCache(){
-		return this.viewCache;
-	}
-	
-	//TODO need refuse of synchronization use Concurrent collection and volatile modificator for this.view	
-	protected final void adjustCurrentView(){
-		synchronized(viewCache){
-			NodeDataView nView = viewCache.pollFirst();
-			if(nView == null){
-				nView = this.provideCurrentView();
-			}
-			nView.init();
-			nView.occupy();
-			if(this.view != null){
-				this.view.free();
-			}
-			this.view = nView;
-		}
-	}
-	
-	protected NodeDataView provideCurrentView(){
-		return new NodeDataView(this);
-	}
-	
-	public NodeDataView getCurrentView(){
-		synchronized(viewCache){
-			this.view.occupy();
-			return this.view;
-		}
-	}
-	*/
 
 	@Override
 	public int adjustCurrentPrint() {
 		currentPrint = printStore.adjustCurrentPrint();
-//		edit = false;
 		return currentPrint;
+	}
+	
+	/*
+	 * Method used in NodeDataPrint.init() called from this.adjustCurrentPrint()
+	 */
+	protected void calculateTransform(){
+		transformMatrix.set(translation, rotation, scale);
+	}
+	
+	/**
+	 * For concurrency safe sake use only in owner Motor thread
+	 * @return link to transform matrix
+	 */
+	public Matrix4 linkTransform(){
+		return transformMatrix;
 	}
 
 	public I print() {
