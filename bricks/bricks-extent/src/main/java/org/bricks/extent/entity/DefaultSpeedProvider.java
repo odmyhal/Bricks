@@ -14,20 +14,20 @@ public class DefaultSpeedProvider implements SpeedProvider{
 	}
 
 	public Fpoint provideSpeed() {
-		WalkPrint<?> walkView = (WalkPrint<?>) target.getSafePrint();
-		Fpoint vector = walkView.getVector();
-		Fpoint res = new Fpoint(vector.getFX(), vector.getFY());
+		WalkPrint<?, Fpoint> walkView = (WalkPrint<?, Fpoint>) target.getSafePrint();
+		Fpoint vector = walkView.getVector().source;
+		Fpoint res = new Fpoint(vector.x, vector.y);
 		walkView.free();
 		return res;
 	}
 
 	public float provideDirectionalSpeed() {
-		WalkPrint<?> walkView = (WalkPrint<?>) target.getSafePrint();
-		Fpoint vector = walkView.getVector();
+		WalkPrint<?, Fpoint> walkView = (WalkPrint<?, Fpoint>) target.getSafePrint();
+		Fpoint vector = walkView.getVector().source;
 		float rotation = walkView.getRotation();
 		
-		float vx = vector.getFX();
-		float vy = vector.getFY();
+		float vx = vector.x;
+		float vy = vector.y;
 		float curSpeed = (float) Math.sqrt(vx * vx + vy * vy);
 		if(curSpeed != 0){
 			double mark1 = vx * Math.cos((double) rotation);

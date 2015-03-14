@@ -17,6 +17,7 @@ import org.bricks.engine.event.overlap.OverlapStrategy;
 import org.bricks.engine.event.overlap.SmallEventStrategy;
 import org.bricks.engine.help.VectorSwapHelper;
 import org.bricks.engine.item.MultiWalker;
+import org.bricks.engine.item.MultiWalkRoller;
 import org.bricks.engine.neve.RollPrint;
 import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.neve.WalkPrint;
@@ -27,13 +28,12 @@ import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
-import com.odmyha.subject.BallSubject;
 import com.odmyha.subject.BallSubjectNew;
 import com.odmyha.weapon.Bullet;
 import com.odmyha.weapon.Cannon;
 import com.odmyha.weapon.Shield;
 
-public class Ball extends MultiWalker<BallSubjectNew, WalkPrint> implements ListenDistrictEntity<WalkPrint>, RenderableProvider{
+public class Ball extends MultiWalkRoller<BallSubjectNew, WalkPrint> implements ListenDistrictEntity<WalkPrint>, RenderableProvider{
 	
 	public static final String BALL_SOURCE_TYPE = "BallSource@shoot.odmyha.com";
 	
@@ -78,11 +78,11 @@ public class Ball extends MultiWalker<BallSubjectNew, WalkPrint> implements List
 			super.outOfWorld();
 		}else{
 			System.out.println(getlog());
-			throw new RuntimeException(String.format("Ball got out of world, vector=%s, origin=%s", getVector(), getOrigin()));
+			throw new RuntimeException(String.format("Ball got out of world, vector=%s, origin=%s", getVector(), this.origin().source));
 		}
 	}
 	
-	private void reflectOfMoveingPoint(SubjectPrint<?, WalkPrint> target, Point touch, Point mVector, long curTime){
+	private void reflectOfMoveingPoint(SubjectPrint<?, WalkPrint<?, Fpoint>> target, Point touch, Point mVector, long curTime){
 		Validate.isTrue(this.equals(target.getTarget().getEntity()));
 		Fpoint swap = VectorSwapHelper.fetchReturnVector(target, touch);
 //Moveing sake	
@@ -98,21 +98,21 @@ public class Ball extends MultiWalker<BallSubjectNew, WalkPrint> implements List
 			swap.translate(addVector.getFX(), addVector.getFY());
 		}
 //end moveing sake		
-		Fpoint V = getVector();
-		V.setX(V.getFX() + swap.getFX());
-		V.setY(V.getFY() + swap.getFY());
+		Fpoint V = getVector().source;
+		V.setX(V.x + swap.x);
+		V.setY(V.y + swap.y);
 		this.adjustCurrentPrint();
-		if(swap.getFX() != 0 || swap.getFY() != 0){
+		if(swap.x != 0 || swap.y != 0){
 			flushTimer(curTime);
 		}
 	}
 
-	private void reflectOfPoint(SubjectPrint<?, WalkPrint> target, Point touch, long curTime){
+	private void reflectOfPoint(SubjectPrint<?, WalkPrint<?, Fpoint>> target, Point touch, long curTime){
 		Validate.isTrue(this.equals(target.getTarget().getEntity()));
 		Fpoint swap = VectorSwapHelper.fetchReturnVector(target, touch);
-		Fpoint V = getVector();
-		V.setX(V.getFX() + swap.getFX());
-		V.setY(V.getFY() + swap.getFY());
+		Fpoint V = getVector().source;
+		V.setX(V.x + swap.x);
+		V.setY(V.y + swap.y);
 		this.adjustCurrentPrint();
 		if(swap.getFX() != 0 || swap.getFY() != 0){
 			flushTimer(curTime);
@@ -121,13 +121,13 @@ public class Ball extends MultiWalker<BallSubjectNew, WalkPrint> implements List
 	
 	@EventHandle(eventType = Ball.BALL_SOURCE_TYPE)
 	public void vectorHit(OverlapEvent e){
-		SubjectPrint<?, WalkPrint> target = (SubjectPrint<?, WalkPrint>) e.getTargetPrint();
+		SubjectPrint<?, WalkPrint<?, Fpoint>> target = (SubjectPrint<?, WalkPrint<?, Fpoint>>) e.getTargetPrint();
 		Validate.isTrue(this.equals(target.entityPrint.getTarget()));
-		SubjectPrint<?, WalkPrint> source = (SubjectPrint<?, WalkPrint>) e.getSourcePrint();
+		SubjectPrint<?, WalkPrint<?, Fpoint>> source = (SubjectPrint<?, WalkPrint<?, Fpoint>>) e.getSourcePrint();
 		Fpoint swap = VectorSwapHelper.fetchSwapVector(target, source);
-		Fpoint myVector = getVector();
-		myVector.setX(myVector.getFX() + swap.getFX());
-		myVector.setY(myVector.getFY() + swap.getFY());
+		Fpoint myVector = getVector().source;
+		myVector.setX(myVector.x + swap.x);
+		myVector.setY(myVector.y + swap.y);
 		this.adjustCurrentPrint();
 /*		this.startLog();
 		this.appendLog("Hit ball");
@@ -147,7 +147,7 @@ public class Ball extends MultiWalker<BallSubjectNew, WalkPrint> implements List
 		WalkView wv = (WalkView)e.getTargetView().getEntityView();
 		this.appendLog(String.format("My vector=%s,  my center=%s", wv.getVector(), wv.getOrigin()));
 		this.appendLog(String.format("Touch Point=%s", e.getTouchPoint()));*/
-		reflectOfPoint((SubjectPrint<?, WalkPrint>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
+		reflectOfPoint((SubjectPrint<?, WalkPrint<?, Fpoint>>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
 /*		this.appendLog(String.format("Result vector=%s", getVector()));
 		this.finishLog();*/
 	}
@@ -163,11 +163,12 @@ public class Ball extends MultiWalker<BallSubjectNew, WalkPrint> implements List
 		this.appendLog(String.format("Cannon rotationSpeed=%.5f, rotation=%.5f", rv.getRotationSpeed(), rv.getRotation()));
 */		if(rv.getRotationSpeed() == 0){
 //			this.appendLog("Simple reflect");
-			reflectOfPoint((SubjectPrint<?, WalkPrint>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
+			reflectOfPoint((SubjectPrint<?, WalkPrint<?, Fpoint>>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
 		}else{
 //			System.out.println(String.format("Reflection of rollable cannon with speed=%.5f", rv.getRotationSpeed()));
-			Point mVector = VectorSwapHelper.getRollVector(e.getTouchPoint(), rv.getOrigin(), rv.getRotationSpeed());
-			reflectOfMoveingPoint((SubjectPrint<?, WalkPrint>) e.getTargetPrint(), e.getTouchPoint(), mVector, e.getEventTime());
+			Point originP = (Point) rv.getOrigin().source;
+			Point mVector = VectorSwapHelper.getRollVector(e.getTouchPoint(), originP, rv.getRotationSpeed());
+			reflectOfMoveingPoint((SubjectPrint<?, WalkPrint<?, Fpoint>>) e.getTargetPrint(), e.getTouchPoint(), mVector, e.getEventTime());
 		}
 /*		this.appendLog(String.format("Result vector=%s", getVector()));
 		this.finishLog();*/
@@ -184,7 +185,7 @@ public class Ball extends MultiWalker<BallSubjectNew, WalkPrint> implements List
 		WalkView wv = (WalkView)e.getTargetView().getEntityView();
 		this.appendLog(String.format("My vector=%s,  my center=%s", wv.getVector(), wv.getOrigin()));
 		this.appendLog(String.format("Touch Point=%s, border=%s", e.getTouchPoint(), e.getEventSource()));
-*/		reflectOfPoint((SubjectPrint<?, WalkPrint>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
+*/		reflectOfPoint((SubjectPrint<?, WalkPrint<?, Fpoint>>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
 /*		this.appendLog(String.format("Result vector=%s", getVector()));
 		this.finishLog();*/
 	}
@@ -195,7 +196,7 @@ public class Ball extends MultiWalker<BallSubjectNew, WalkPrint> implements List
 		WalkView wv = (WalkView)e.getTargetView().getEntityView();
 		this.appendLog(String.format("My vector=%s,  my center=%s", wv.getVector(), wv.getOrigin()));
 		this.appendLog(String.format("Touch Point=%s, border=%s", e.getTouchPoint(), e.getEventSource()));
-*/		reflectOfPoint((SubjectPrint<?, WalkPrint>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
+*/		reflectOfPoint((SubjectPrint<?, WalkPrint<?, Fpoint>>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
 /*		this.appendLog(String.format("Result vector=%s", getVector()));
 		this.finishLog();*/
 	}

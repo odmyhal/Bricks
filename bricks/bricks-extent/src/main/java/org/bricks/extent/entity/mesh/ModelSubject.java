@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import org.bricks.core.entity.Point;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Entity;
 import org.bricks.exception.Validate;
@@ -32,7 +33,7 @@ import com.badlogic.gdx.utils.Pool;
  * @param <I>
  */
 @Deprecated
-public class ModelSubject<E extends Entity, I extends ModelSubjectPrint> extends Subject<E, I> implements RenderableProvider{
+public class ModelSubject<E extends Entity, I extends ModelSubjectPrint> extends BrickSubject<E, I> implements RenderableProvider{
 
 	private ModelInstance modelInstance;
 	protected Matrix4 transform;

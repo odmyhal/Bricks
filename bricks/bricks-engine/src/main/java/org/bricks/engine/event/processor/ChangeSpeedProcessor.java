@@ -1,9 +1,10 @@
 package org.bricks.engine.event.processor;
 
+import org.bricks.core.entity.Fpoint;
 import org.bricks.engine.event.control.SpeedChangeEvent;
 import org.bricks.engine.staff.Walker;
 
-public class ChangeSpeedProcessor <T extends Walker> extends ImmediateActProcessor<T>{
+public class ChangeSpeedProcessor <T extends Walker<?, Fpoint>> extends ImmediateActProcessor<T>{
 
 	private float speed;
 	

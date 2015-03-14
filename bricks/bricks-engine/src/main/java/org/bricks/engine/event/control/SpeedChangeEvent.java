@@ -67,8 +67,8 @@ public class SpeedChangeEvent extends BaseEvent {
 		return null;
 	}
 	
-	public static void changeWalkerSpeed(Walker target, float targetSpeed){
-		Fpoint vector = target.getVector();
+	public static void changeWalkerSpeed(Walker<?, Fpoint> target, float targetSpeed){
+		Fpoint vector = target.getVector().source;
 		double rotation = target.getRotation();
 		vector.setX((float) Math.cos(rotation) * targetSpeed);
 		vector.setY((float) Math.sin(rotation) * targetSpeed);

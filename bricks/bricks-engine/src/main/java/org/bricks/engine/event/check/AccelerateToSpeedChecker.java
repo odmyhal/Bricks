@@ -1,5 +1,6 @@
 package org.bricks.engine.event.check;
 
+import org.bricks.core.entity.Fpoint;
 import org.bricks.engine.event.Event;
 import org.bricks.engine.event.control.AccelerationChangeEvent;
 import org.bricks.engine.event.control.SpeedChangeEvent;
@@ -13,7 +14,7 @@ import org.bricks.exception.Validate;
  * @param <T>
  */
 @Deprecated
-public class AccelerateToSpeedChecker<T extends Walker> extends ChunkEventChecker<T> {
+public class AccelerateToSpeedChecker<T extends Walker<?, Fpoint>> extends ChunkEventChecker<T> {
 	
 	
 
@@ -36,8 +37,9 @@ public class AccelerateToSpeedChecker<T extends Walker> extends ChunkEventChecke
 
 			@Override
 			protected boolean ready(T target) {
-				float vx = target.getVector().getFX();
-				float vy = target.getVector().getFY();
+				Fpoint vector = target.getVector().source;
+				float vx = vector.x;
+				float vy = vector.y;
 				double curSpeed = Math.sqrt(vx * vx + vy * vy);
 				if(curSpeed != 0){
 					double mark1 = vx * Math.cos((double) target.getRotation());

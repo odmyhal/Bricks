@@ -8,12 +8,15 @@ import org.bricks.core.entity.Dimentions;
 import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.Point;
+import org.bricks.core.entity.type.Brick;
 import org.bricks.core.help.PointSetHelper;
 import org.bricks.core.help.TangPointLocator;
 import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.neve.PrintStore;
+import org.bricks.engine.neve.PrintableBase;
+import org.bricks.engine.neve.PrintableBrickWrap;
 
-public class PointSetPrint<P extends BrickWrap> extends Imprint<P>{
+public class PointSetPrint<P extends PrintableBrickWrap> extends Imprint<P>{
 	
 	private final Fpoint center = new Fpoint(0f, 0f);
 	private List<Ipoint> points;
@@ -25,7 +28,7 @@ public class PointSetPrint<P extends BrickWrap> extends Imprint<P>{
 		for(int i = 1; i < 5; i++){
 			sectorPoints[i] = new SectorPoints(i);
 		}
-		int size = getTarget().brick.size();
+		int size = getTarget().getBrick().size();
 		this.points = new ArrayList<Ipoint>(size);
 		for(int j=0; j<size; j++){
 			this.points.add(new Ipoint(0, 0));
@@ -34,8 +37,9 @@ public class PointSetPrint<P extends BrickWrap> extends Imprint<P>{
 
 	@Override
 	protected void init() {
-		setCenter(getTarget().brick.getCenter());
-		List<Ipoint> data = getTarget().brick.getPoints();
+		Brick brick = getTarget().getBrick();
+		setCenter(brick.getCenter());
+		List<Ipoint> data = brick.getPoints();
 		for(int i = 0; i < data.size(); i++){
 			Ipoint target = points.get(i);
 			Ipoint source = data.get(i);

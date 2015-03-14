@@ -6,12 +6,13 @@ import org.bricks.core.help.PointHelper;
 import org.bricks.engine.item.MultiWalker;
 import org.bricks.engine.neve.WalkPrint;
 import org.bricks.engine.staff.Satellite;
+import org.bricks.engine.tool.Origin;
 import org.bricks.enterprise.control.widget.tool.RotationDependAction.RotationProvider;
 import org.bricks.exception.Validate;
 
 import com.badlogic.gdx.graphics.Camera;
 
-public class CameraSatellite implements Satellite, RotationProvider{
+public class CameraSatellite implements Satellite<Point>, RotationProvider{
 	
 	public Camera camera;
 	private MultiWalker target;
@@ -38,11 +39,11 @@ public class CameraSatellite implements Satellite, RotationProvider{
 	/**
 	 * Method called in motor thread
 	 */
-	public void rotate(float rad, Point central) {
+	public void rotate(float rad, Origin<Point> central) {
 		q[curIndex] = 1;
 		rotate[curIndex] = target.lastRotation();
-		orgX[curIndex] = central.getX();
-		orgY[curIndex] = central.getY();
+		orgX[curIndex] = central.source.getX();
+		orgY[curIndex] = central.source.getY();
 //		rotation[curIndex] = target.getRotation();
 		generalRotation = target.getRotation();
 	}
@@ -50,10 +51,10 @@ public class CameraSatellite implements Satellite, RotationProvider{
 	/**
 	 * Method called in motor thread
 	 */
-	public void translate(int x, int y) {
+	public void translate(Origin<Point> trn) {
 		q[curIndex] = 2;
-		trX[curIndex] = x;
-		trY[curIndex] = y;
+		trX[curIndex] = trn.source.getX();
+		trY[curIndex] = trn.source.getY();
 	}
 
 	/**

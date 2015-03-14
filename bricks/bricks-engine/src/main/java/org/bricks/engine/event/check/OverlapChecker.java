@@ -15,6 +15,7 @@ import org.bricks.engine.event.EventTarget;
 import org.bricks.engine.event.OverlapEvent;
 import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.pool.Area;
+import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Liver;
 
@@ -61,14 +62,14 @@ public class OverlapChecker<T extends Liver> extends EventChecker<T>{
 		}
 		int entityNum = curState.getEntityState();
 		while(entityNum < targetP.getStaff().size()){
-			Subject<?, SubjectPrint> target = (Subject<?, SubjectPrint>) targetP.getStaff().get(entityNum);
+			BrickSubject<?, SubjectPrint> target = (BrickSubject<?, SubjectPrint>) targetP.getStaff().get(entityNum);
 //			Validate.isTrue(target != null, "Subject " + entityNum + " of " + targetP.getClass().getSimpleName() + " is null");
 //			Validate.isTrue(target.getDistrict() != null, "Subject " + entityNum + " of " + targetP.getClass().getSimpleName() + "(" + "Subject: " + target + ", entity: " + targetP + ")" + " has not district");
 //			Validate.isTrue(target.getDistrict().getBuffer() != null, "Subject " + entityNum + " of " + targetP.getClass().getSimpleName() + " district buffer is null");
 			Area area = target.getDistrict().getBuffer();
 			int areaNum = curState.getAndIncrementAreaState();
 			while(areaNum < area.capacity()){
-				Subject<?, SubjectPrint> sv = area.getSubject(areaNum);
+				Subject<?, SubjectPrint, ?> sv = area.getSubject(areaNum);
 				areaNum = curState.getAndIncrementAreaState();
 				if(sv == null || sv == curState.getLast() || sv == target){
 					continue;
@@ -110,7 +111,7 @@ public class OverlapChecker<T extends Liver> extends EventChecker<T>{
 		}
 		OverlapEvent oEvent = (OverlapEvent) hEvent;
 		SubjectPrint<? extends Subject, ?> sv = oEvent.getSourcePrint();
-		Subject<?, ?> check = sv.getTarget();
+		BrickSubject<?, SubjectPrint> check = sv.getTarget();
 		if(!target.needCheckOverlap(check)){
 			return null;
 		}
@@ -126,7 +127,7 @@ public class OverlapChecker<T extends Liver> extends EventChecker<T>{
 				return null;
 			}
 		}
-		Subject<?, SubjectPrint> ts = oEvent.getTargetPrint().getTarget();
+		BrickSubject<?, SubjectPrint> ts = oEvent.getTargetPrint().getTarget();
 		Validate.isTrue(target.equals(ts.getEntity()));
 		SubjectPrint checkView = check.getSafePrint();
 		Point touchPoint = findOverlapPoint(ts.getInnerPrint(), checkView);

@@ -1,17 +1,18 @@
 package org.bricks.engine.event.processor;
 
 import org.bricks.engine.staff.Walker;
+import org.bricks.engine.tool.Origin;
 
 public class ChangeAccelerationProcessor<T extends Walker> extends ImmediateActProcessor<T>{
 	
-	private float acceleration;
+	private Origin acceleration;
 	
-	public ChangeAccelerationProcessor(float acceleration){
+	public ChangeAccelerationProcessor(Origin acceleration){
 		this.acceleration = acceleration;
 	}
 
-	public void setAcceleration(float acceleration) {
-		this.acceleration = acceleration;
+	public void setAcceleration(Origin acceleration) {
+		this.acceleration.set(acceleration);
 	}
 
 	@Override

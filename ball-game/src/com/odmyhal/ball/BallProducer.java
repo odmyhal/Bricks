@@ -8,12 +8,16 @@ import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.impl.PointSetBrick;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.engine.item.Stone;
+import org.bricks.engine.tool.Origin;
+import org.bricks.engine.tool.Origin2D;
 
 import com.odmyha.shoot.Ball;
 import com.odmyha.weapon.Cannon;
 import com.odmyha.weapon.Shield;
 
 public class BallProducer {
+	
+	private Origin2D tmpOrigin = new Origin2D();
 
 	public Ball produceBall(int startX, int startY){
 		Collection<Ipoint> points = new LinkedList<Ipoint>();
@@ -31,12 +35,13 @@ public class BallProducer {
 		points.add(new Ipoint(27, -15));
 		Brick brick = new PointSetBrick(points);
 		Ball res = Ball.create(brick);
-		Fpoint vector = res.getVector();
+		Fpoint vector = res.getVector().source;
 //		vector.setX(373);
 //		vector.setY(-393);
 		vector.setX(20);
 		vector.setY(-50);
-		res.translate(startX, startY);
+		tmpOrigin.set(startX, startY);
+		res.translate(tmpOrigin);
 		return res;
 	}
 	
@@ -56,10 +61,11 @@ public class BallProducer {
 		points.add(new Ipoint(27, -15));
 		Brick brick = new PointSetBrick(points);
 		Ball res = Ball.create(brick);
-		Fpoint vector = res.getVector();
+		Fpoint vector = res.getVector().source;
 		vector.setX(vX);
 		vector.setY(vY);
-		res.translate(startX, startY);
+		tmpOrigin.set(startX, startY);
+		res.translate(tmpOrigin);
 		return res;
 	}
 	
@@ -79,22 +85,25 @@ public class BallProducer {
 		points.add(new Ipoint(12, -9));
 		Brick brick = new PointSetBrick(points);
 		Ball res = Ball.create(brick);
-		Fpoint vector = res.getVector();
+		Fpoint vector = res.getVector().source;
 		vector.setX(vX);
 		vector.setY(vY);
-		res.translate(startX, startY);
+		tmpOrigin.set(startX, startY);
+		res.translate(tmpOrigin);
 		return res;
 	}
 	
 	public Stone produceShield(int x, int y){
 		Shield shield = Shield.instance();
-		shield.translate(x, y);
+		tmpOrigin.set(x, y);
+		shield.translate(tmpOrigin);
 		return shield;
 	}
 	
 	public Cannon produceCannon(int x, int y){
 		Cannon cannon = new Cannon();
-		cannon.translate(x, y);
+		tmpOrigin.set(x, y);
+		cannon.translate(tmpOrigin);
 		return cannon;
 	}
 /*	

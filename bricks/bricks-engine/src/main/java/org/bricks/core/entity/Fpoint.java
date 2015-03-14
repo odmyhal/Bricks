@@ -1,8 +1,12 @@
 package org.bricks.core.entity;
-
+/**
+ * TODO: remove setters and getters
+ * @author oleh
+ *
+ */
 public class Fpoint implements Point{
-
-private float x, y;
+	
+	public float x, y;
 	
 	public Fpoint(float x, float y){
 		this.x = x;

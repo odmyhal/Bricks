@@ -5,8 +5,9 @@ import org.bricks.core.entity.type.Brick;
 import org.bricks.engine.neve.PrintStore;
 import org.bricks.engine.neve.Printable;
 import org.bricks.engine.neve.PrintableBase;
+import org.bricks.engine.neve.PrintableBrickWrap;
 
-public abstract class BrickWrap<I extends PointSetPrint> extends PrintableBase<I>{
+public abstract class BrickWrap<I extends PointSetPrint> extends PrintableBase<I> implements PrintableBrickWrap<I>{
 	
 	protected Brick brick;
 //	protected PrintStore<? extends BrickWrap, I> printStore;

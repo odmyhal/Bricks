@@ -6,6 +6,7 @@ import org.bricks.core.entity.Ipoint;
 import org.bricks.engine.Engine;
 import org.bricks.engine.item.MultiSubjectEntity;
 import org.bricks.engine.pool.Boundary;
+import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.pool.Subject;
 
@@ -51,9 +52,11 @@ public class ShapeDebugger implements Disposable{
 		shR.setColor(Color.RED);
 		for(K entity: entities){
 			if(entity instanceof MultiSubjectEntity){
-				MultiSubjectEntity<Subject, ?> msubjecte = (MultiSubjectEntity<Subject, ?>) entity;
+				MultiSubjectEntity<Subject, ?, ?> msubjecte = (MultiSubjectEntity<Subject, ?, ?>) entity;
 				for(Subject sv : msubjecte.getStaff()){
-					drawPoints(sv.getBrick().getPoints(), cameraMatrix);
+					if(sv instanceof BrickSubject){
+						drawPoints(((BrickSubject)sv).getBrick().getPoints(), cameraMatrix);
+					}
 				}
 			}
 		}
@@ -65,9 +68,11 @@ public class ShapeDebugger implements Disposable{
 		shR.begin(ShapeType.Line);
 		shR.setColor(Color.RED);
 		if(entity instanceof MultiSubjectEntity){
-			MultiSubjectEntity<Subject, ?> msubjecte = (MultiSubjectEntity<Subject, ?>) entity;
+			MultiSubjectEntity<Subject, ?, ?> msubjecte = (MultiSubjectEntity<Subject, ?, ?>) entity;
 			for(Subject sv : msubjecte.getStaff()){
-				drawPoints(sv.getBrick().getPoints(), cameraMatrix);
+				if(sv instanceof BrickSubject){
+					drawPoints(((BrickSubject)sv).getBrick().getPoints(), cameraMatrix);
+				}
 			}
 		}
 		shR.end();

@@ -142,7 +142,6 @@ public class BallGame implements ApplicationListener {
 		Cannon cann = bp.produceCannon(925, 125);
 		cann.setToRotation((float)(Math.PI / 2));
 //		cann = bp.produceCannon(925, 925);
-		
 		cann.applyEngine(engine);
 		
 		CannonPanel cannonPanel = new CannonPanel(cann);

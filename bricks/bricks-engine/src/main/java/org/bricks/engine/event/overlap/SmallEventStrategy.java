@@ -17,7 +17,8 @@ public class SmallEventStrategy extends OverlapStrategy{
 		if(target.equals(se)){
 			return false;
 		}
-		float r = target.getWeight() - se.getWeight();
+//		float r = target.getWeight() - se.getWeight();
+		int r = target.hashCode() - se.hashCode();
 		if(r > 0){
 			return false;
 		}

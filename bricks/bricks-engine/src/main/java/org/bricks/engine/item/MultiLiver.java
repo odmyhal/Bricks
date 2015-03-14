@@ -18,7 +18,7 @@ import org.bricks.engine.staff.Liver;
 import org.bricks.engine.tool.Live;
 import org.bricks.engine.tool.Logger;
 
-public abstract class MultiLiver<S extends Subject, P extends EntityPrint> extends MultiSubjectEntity<S, P> implements Liver<P>{
+public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> extends MultiSubjectEntity<S, P, C> implements Liver<P>{
 	
 	private Live live;
 	private Logger logger = new Logger();

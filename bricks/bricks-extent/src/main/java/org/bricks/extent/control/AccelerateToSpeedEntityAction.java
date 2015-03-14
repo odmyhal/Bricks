@@ -1,12 +1,13 @@
 package org.bricks.extent.control;
 
+import org.bricks.core.entity.Fpoint;
 import org.bricks.engine.event.check.AccelerateToSpeedProcessorChecker;
 import org.bricks.engine.staff.Walker;
 import org.bricks.enterprise.control.widget.tool.FlowSlider;
 import org.bricks.extent.entity.DefaultSpeedProvider;
 import org.bricks.extent.entity.SpeedProvider;
 
-public class AccelerateToSpeedEntityAction<T extends Walker> extends EventCheckRegAction<T, FlowSlider> {
+public class AccelerateToSpeedEntityAction<T extends Walker<?, Fpoint>> extends EventCheckRegAction<T, FlowSlider> {
 	
 	private AccelerateToSpeedProcessorChecker<T> accProcessor;
 	private SpeedProvider speedProvider;

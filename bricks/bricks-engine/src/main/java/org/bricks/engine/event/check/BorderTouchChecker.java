@@ -13,6 +13,7 @@ import org.bricks.engine.event.BorderEvent;
 import org.bricks.engine.event.Event;
 import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.pool.Boundary;
+import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Liver;
 
@@ -47,7 +48,7 @@ public class BorderTouchChecker<T extends Liver> extends EventChecker<T>{
 		eventState.checkNew(targetP);
 		int entityNum = eventState.getEntityState();
 		while(entityNum < targetP.getStaff().size()){
-			Subject target = (Subject) targetP.getStaff().get(entityNum);
+			BrickSubject target = (BrickSubject) targetP.getStaff().get(entityNum);
 			bloop: while(true){
 				int borderNum = eventState.getAndIncrementAreaState();
 				Boundary border = target.getDistrict().getBoundary(borderNum);
@@ -79,7 +80,7 @@ public class BorderTouchChecker<T extends Liver> extends EventChecker<T>{
 		return null;
 	}
 	
-	private BorderEvent checkTouch(Subject<?, ? extends SubjectPrint> target, Boundary border){
+	private BorderEvent checkTouch(BrickSubject<?, ? extends SubjectPrint> target, Boundary border){
 		SubjectPrint sv = target.getInnerPrint();
 		if(sv == null){
 			return null;

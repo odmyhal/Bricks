@@ -1,10 +1,10 @@
 package org.bricks.engine.staff;
 
-import org.bricks.core.entity.Point;
+import org.bricks.engine.tool.Origin;
 
-public interface Satellite {
+public interface Satellite<C> {
 	
-	public void translate(int x, int y);
-	public void rotate(float rad, Point central);
+	public void translate(Origin<C> vector);
+	public void rotate(float rad, Origin<C> central);
 	public void update();
 }

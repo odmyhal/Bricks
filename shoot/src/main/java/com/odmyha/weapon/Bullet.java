@@ -15,10 +15,12 @@ import org.bricks.core.help.PointHelper;
 import org.bricks.engine.event.OverlapEvent;
 import org.bricks.engine.event.check.OverlapChecker;
 import org.bricks.engine.event.overlap.OverlapStrategy;
+import org.bricks.engine.item.MultiWalkRoller;
 import org.bricks.engine.item.MultiWalker;
 import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.neve.WalkPrint;
 import org.bricks.engine.pool.Subject;
+import org.bricks.engine.tool.Origin2D;
 import org.bricks.extent.entity.mesh.ModelSubject;
 import org.bricks.extent.entity.mesh.ModelSubjectPrint;
 import org.bricks.extent.entity.mesh.ModelSubjectSync;
@@ -30,7 +32,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.odmyha.shoot.Ball;
 
-public class Bullet extends MultiWalker<ModelSubjectSync, WalkPrint> implements RenderableProvider{
+public class Bullet extends MultiWalkRoller<ModelSubjectSync, WalkPrint> implements RenderableProvider{
 	
 	public static final String BULLET_SOURCE = "BulletSource@shoot.odmyha.com";
 	private static final float speed = 1000;
@@ -44,7 +46,7 @@ public class Bullet extends MultiWalker<ModelSubjectSync, WalkPrint> implements 
 	private Bullet(ModelSubjectSync<Bullet, SubjectPrint> s){
 		addSubject(s);
 		registerEventChecker(OverlapChecker.instance());
-		setVector(new Fpoint(speed, 0f));
+		setVector(new Origin2D(new Fpoint(speed, 0f)));
 	}
 	
 	public static Bullet produce(){
@@ -79,7 +81,7 @@ public class Bullet extends MultiWalker<ModelSubjectSync, WalkPrint> implements 
 	@Override
 	public void setRotation(float radians){
 		double dr = radians;
-		Fpoint mVector = getVector();
+		Fpoint mVector = getVector().source;
 		mVector.setX((float)Math.cos(dr));
 		mVector.setY((float)Math.sin(dr));
 		PointHelper.normalize(mVector, speed);

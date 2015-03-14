@@ -9,22 +9,25 @@ import org.bricks.engine.event.EventSource;
 import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.neve.Printable;
 import org.bricks.engine.pool.Subject;
+import org.bricks.engine.tool.Origin;
 
 public interface Entity<P extends Imprint> extends EventSource, Printable<P>{
 	
 	public void applyEngine(Engine engine);
 	public Engine getEngine();
 	public boolean isEventTarget();
-	public float getWeight();
+//	public float getWeight();
 	public List<? extends Subject> getStaff();
-	public void translate(int x, int y);
+	public void translate(Origin origin);
 
 	public void setToRotation(float radians);
-	public Ipoint getOrigin();
+	public Origin origin();
 	
 //	public LinkedList<EntityView> getViewCache();
 //	public EntityView getCurrentView();
 //	public void adjustCurrentView();
 	public void outOfWorld();
+	
+	public Origin provideInitialOrigin();
 
 }

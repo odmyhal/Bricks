@@ -1,14 +1,17 @@
 package org.bricks.engine.event.check;
 
+import org.bricks.core.entity.Fpoint;
 import org.bricks.engine.event.control.SpeedChangeEvent;
 import org.bricks.engine.event.processor.ChangeAccelerationProcessor;
 import org.bricks.engine.event.processor.ChangeSpeedProcessor;
 import org.bricks.engine.event.processor.ImmediateActProcessor;
 import org.bricks.engine.event.processor.SingleActProcessor;
 import org.bricks.engine.staff.Walker;
+import org.bricks.engine.tool.Origin;
+import org.bricks.engine.tool.Origin2D;
 import org.bricks.exception.Validate;
 
-public class AccelerateToSpeedProcessorChecker<T extends Walker> extends ChunkEventChecker<T> {
+public class AccelerateToSpeedProcessorChecker<T extends Walker<?, Fpoint>> extends ChunkEventChecker<T> {
 	
 	public static final CheckerType CHECKER_TYPE = CheckerType.registerCheckerType();
 	
@@ -16,9 +19,10 @@ public class AccelerateToSpeedProcessorChecker<T extends Walker> extends ChunkEv
 	private ChangeSpeedProcessor<T> changeSpeedProcessor;
 	private ConditionalAccDisableProcessor accDisableProcessor;
 	private float speed;
-	//One of speed & acceleration should be volatile
-	private volatile float acceleration;
+	//One of speed & directAcceleration should be volatile
+	private volatile float directAcceleration;
 //	private volatile boolean inited = false;
+	private Origin<Fpoint> tmpAcceleration = new Origin2D();
 	
 	public AccelerateToSpeedProcessorChecker(){
 		this(1f, 0f);
@@ -30,7 +34,7 @@ public class AccelerateToSpeedProcessorChecker<T extends Walker> extends ChunkEv
 		
 		this.supplant(CHECKER_TYPE);
 		
-		changeAccelerationProcessor = new ChangeAccelerationProcessor(accelerate);
+		changeAccelerationProcessor = new ChangeAccelerationProcessor(new Origin2D());
 		this.addProcessor(changeAccelerationProcessor);
 		
 		accDisableProcessor = new ConditionalAccDisableProcessor();
@@ -47,7 +51,7 @@ public class AccelerateToSpeedProcessorChecker<T extends Walker> extends ChunkEv
 		/*
 		 * Flush cached values via volatile
 		 */
-		acceleration = accelerate;
+		directAcceleration = accelerate;
 //		inited = true;
 	}
 	
@@ -57,11 +61,21 @@ public class AccelerateToSpeedProcessorChecker<T extends Walker> extends ChunkEv
 		/*
 		 * Flush cached values via volatile
 		 */
-		float curAcceleration = acceleration;
-		changeAccelerationProcessor.setAcceleration(curAcceleration);
+		float curAcceleration = directAcceleration;
+		changeAccelerationProcessor.setAcceleration(applyDirectAcceleration(target, curAcceleration));
 		changeSpeedProcessor.setSpeed(speed);
 		accDisableProcessor.initialize(curAcceleration, speed);
 		super.activate(target, curTime);
+	}
+	
+	private Origin<Fpoint> applyDirectAcceleration(T target, float curAcceleration){
+		/**
+		 * flushes cached values via volation directAcceleration
+		 */
+		double rotation = target.getRotation();
+		tmpAcceleration.source.x = curAcceleration * (float) Math.cos(rotation);
+		tmpAcceleration.source.y = curAcceleration * (float) Math.sin(rotation);
+		return tmpAcceleration;
 	}
 	
 	private class ConditionalAccDisableProcessor extends SingleActProcessor<T>{
@@ -79,8 +93,9 @@ public class AccelerateToSpeedProcessorChecker<T extends Walker> extends ChunkEv
 		
 		@Override
 		protected boolean ready(T target, long processTime) {
-			float vx = target.getVector().getFX();
-			float vy = target.getVector().getFY();
+			Fpoint vector = target.getVector().source;
+			float vx = vector.x;//.getFX();
+			float vy = vector.y;//.getFY();
 			double curSpeed = Math.sqrt(vx * vx + vy * vy);
 			if(curSpeed != 0){
 				double mark1 = vx * Math.cos((double) target.getRotation());
@@ -105,7 +120,9 @@ public class AccelerateToSpeedProcessorChecker<T extends Walker> extends ChunkEv
 
 		@Override
 		protected void processSingle(T target, long processTime) {
-			target.setAcceleration(0f, processTime);
+			tmpAcceleration.source.x = 0f;
+			tmpAcceleration.source.y = 0f;
+			target.setAcceleration(tmpAcceleration, processTime);
 		}
 	}
 }

@@ -9,7 +9,7 @@ import org.bricks.engine.staff.Roller;
 import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.tool.Roll;
 
-public abstract class MultiRoller<S extends Subject, P extends RollPrint> extends MultiLiver<S, P> implements Roller<P>{
+public abstract class MultiRoller<S extends Subject, P extends RollPrint, C> extends MultiLiver<S, P, C> implements Roller<P>{
 	
 	private Roll roll;
 /*
@@ -70,7 +70,7 @@ public abstract class MultiRoller<S extends Subject, P extends RollPrint> extend
 		if(alive() && rotate(currentTime)){
 			this.adjustCurrentPrint(false);
 			for(Satellite satellite : getSatellites()){
-				satellite.rotate(roll.getRotation(), getOrigin());
+				satellite.rotate(roll.getRotation(), this.origin());
 				satellite.update();
 			}
 		}
@@ -78,7 +78,7 @@ public abstract class MultiRoller<S extends Subject, P extends RollPrint> extend
 
 	public void applyRotation(){
 		for(Satellite satellite : getSatellites()){
-			satellite.rotate(roll.getRotation(), getOrigin());
+			satellite.rotate(roll.getRotation(), this.origin());
 		}
 	}
 	
@@ -90,7 +90,7 @@ public abstract class MultiRoller<S extends Subject, P extends RollPrint> extend
 		if(roll.rotateBack(currentTime)){
 			this.adjustCurrentPrint(false);
 			for(Satellite satellite : getSatellites()){
-				satellite.rotate(roll.getRotation(), getOrigin());
+				satellite.rotate(roll.getRotation(), this.origin());
 				satellite.update();
 			}
 		}

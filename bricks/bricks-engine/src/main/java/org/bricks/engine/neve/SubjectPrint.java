@@ -3,10 +3,11 @@ package org.bricks.engine.neve;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bricks.core.entity.impl.PointSetPrint;
+import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Logable;
 
-public class SubjectPrint<P extends Subject, EP extends EntityPrint> extends PointSetPrint<P>{
+public class SubjectPrint<P extends BrickSubject, EP extends EntityPrint> extends PointSetPrint<P> {
 	
 	public EP entityPrint;
 

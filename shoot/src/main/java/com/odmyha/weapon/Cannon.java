@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.bircks.entierprise.model.ModelStorage;
 import org.bricks.annotation.EventHandle;
+import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.impl.PointSetBrick;
 import org.bricks.core.entity.type.Brick;
@@ -22,6 +23,10 @@ import org.bricks.engine.item.MultiRoller;
 import org.bricks.engine.neve.RollPrint;
 import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.staff.Walker;
+import org.bricks.engine.tool.Origin;
+import org.bricks.engine.tool.Origin2D;
+import org.bricks.engine.tool.Walk;
+import org.bricks.engine.tool.Walk2D;
 import org.bricks.extent.entity.mesh.ModelSubject;
 import org.bricks.extent.entity.mesh.ModelSubjectPrint;
 import org.bricks.extent.entity.mesh.ModelSubjectSync;
@@ -35,9 +40,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.odmyha.shoot.Ball;
 
-public class Cannon extends MultiRoller<ModelSubjectSync, RollPrint> implements RenderableProvider{
+public class Cannon extends MultiRoller<ModelSubjectSync, RollPrint, Fpoint> implements RenderableProvider{
 	
 	public static final String CANNON_SOURCE = "CannonSource@shoot.odmyha.com";
+	
+	private Origin<Fpoint> tmpFire = this.provideInitialOrigin();
 
 	public Cannon() {
 		this.addSubject(produceOne());
@@ -98,16 +105,20 @@ public class Cannon extends MultiRoller<ModelSubjectSync, RollPrint> implements 
 		List<Ipoint> gunPoints = gunView.getPoints();
 		Ipoint one = gunPoints.get(0);
 		Ipoint two = gunPoints.get(1);
-		Ipoint firePoint = new Ipoint((int) Math.round((one.getX() + two.getX()) / 2), 
-				(int) Math.round((one.getY() + two.getY()) / 2) );
-		Ipoint v = new Ipoint(two.getX() - firePoint.getX(), two.getY() - firePoint.getY());
+/*		Ipoint firePoint = new Ipoint((int) Math.round((one.getX() + two.getX()) / 2), 
+				(int) Math.round((one.getY() + two.getY()) / 2) );*/
+		tmpFire.source.x = (int) Math.round((one.getX() + two.getX()) / 2);
+		tmpFire.source.y = (int) Math.round((one.getY() + two.getY()) / 2);
+		Ipoint v = new Ipoint(two.getX() - tmpFire.source.getX(), two.getY() - tmpFire.source.getY());
 		PointHelper.rotatePointByZero(v, 1, 0, v);
-		firePoint.translate(v.getX(), v.getY());
+//		firePoint.translate(v.getX(), v.getY());
+		tmpFire.source.x += v.getX();
+		tmpFire.source.y += v.getY();
 		Bullet bullet = Bullet.produce();
 		
 		bullet.setRotation(gunView.entityPrint.getRotation());
 		bullet.applyRotation();
-		bullet.translate(firePoint.getX(), firePoint.getY());
+		bullet.translate(tmpFire);
 		bullet.applyEngine(this.getEngine());
 	}
 
@@ -120,6 +131,10 @@ public class Cannon extends MultiRoller<ModelSubjectSync, RollPrint> implements 
 		cannonStrategy.put(Cannon.CANNON_SOURCE, new SmallEventStrategy(this));
 		cannonStrategy.put(Shield.SHIELD_SOURCE, OverlapStrategy.TRUE);
 		return cannonStrategy;
+	}
+	
+	public Origin<Fpoint> provideInitialOrigin(){
+		return new Origin2D();
 	}
 	
 	@EventHandle(eventType = Cannon.CANNON_SOURCE)

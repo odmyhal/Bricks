@@ -47,6 +47,8 @@ public class ModelSubjectSync<E extends Entity, I extends SubjectPrint> extends 
 			if(edit){
 				modelInstance.transform.set(transform);
 				edit = false;
+//				System.out.println("Editing transform " + this.entity.getClass().getCanonicalName());
+//				System.out.println("Transform is: " + transform);
 			}
 		}
 		modelInstance.getRenderables(renderables, pool);

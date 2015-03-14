@@ -7,15 +7,19 @@ import org.bricks.engine.pool.SectorMonitor;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.staff.Walker;
+import org.bricks.engine.tool.Origin;
 import org.bricks.engine.tool.Roll;
 import org.bricks.engine.tool.Walk;
+import org.bricks.engine.tool.Walk2D;
 import org.bricks.exception.Validate;
 
-public abstract class MultiWalker<S extends Subject, P extends WalkPrint> extends MultiRoller<S, P> implements Walker<P>{
+public abstract class MultiWalker<S extends Subject, P extends WalkPrint, C> extends MultiRoller<S, P, C> implements Walker<P, C>{
 
-	private Walk legs;
-	private Fpoint vector;
-	private float acceleration;
+	private Walk<C> legs;
+	private Origin<C> vector;
+//	private float acceleration;
+	protected Origin<C> acceleration;
+	private Origin<C> tmpAcceleration;
 	private long accelerationTime;
 /*
 	protected MultiWalker() {
@@ -25,10 +29,14 @@ public abstract class MultiWalker<S extends Subject, P extends WalkPrint> extend
 */	
 	@Override
 	protected void init(){
-		legs = new Walk(this);
-		vector = new Fpoint(0f, 0f);
+		legs = provideInitialLegs();
+		vector = this.provideInitialOrigin();
+		acceleration = this.provideInitialOrigin();
+		tmpAcceleration = this.provideInitialOrigin();
 		super.init();
 	}
+	
+	protected abstract Walk<C> provideInitialLegs();
 	
 	@Override
 	public void motorProcess(long currentTime){
@@ -41,34 +49,38 @@ public abstract class MultiWalker<S extends Subject, P extends WalkPrint> extend
 			applyRotation();
 		}
 		applyAcceleration(currentTime);
-		boolean move = legs.move(currentTime, vector.getFX(), vector.getFY());
+		boolean move = legs.move(currentTime, vector.source);
 		if(rotate || move){
 			adjustCurrentPrint(false);
 			for(Satellite satellite : getSatellites()){
 				satellite.update();
 			}
-/*			this.log("Center is: " + this.getStaff().get(0).getCenter()
-					+ "\n Speed is: " + this.getVector());*/
 		}
 	}
 	
 	private void applyAcceleration(long curTime){
-		if(acceleration != 0){
+		if(acceleration.isZero()){
+			return;
+		}
+		float diff = (curTime - accelerationTime) / 1000f;
+		tmpAcceleration.set(acceleration);
+		tmpAcceleration.mult(diff);
+		vector.add(tmpAcceleration);
+		accelerationTime = curTime;
+/*		if(acceleration != 0){
 			float diff = (curTime - accelerationTime) / 1000f;
 			Validate.isTrue(diff >= 0, "Need to check accelaration time...");
-			if(diff < 0.01){
-//				System.out.println(curTime + " - Dmall diff " + diff);
+			if(diff < 0.1){
 				return;
 			}
 			double rotation = getRotation();
 			float absAcc = acceleration * diff;
 			vector.setX(vector.getFX() + absAcc * (float) Math.cos(rotation));
 			vector.setY(vector.getFY() + absAcc * (float) Math.sin(rotation));
-//			System.out.println(curTime + " -- AccTime " + accelerationTime + " - Up speed on " + absAcc + ", new speed " + vector.getFX() + ", diff was " + diff);
 			Validate.isTrue(vector.getFX() < 3000, "Speed X is to hie");
 			Validate.isTrue(vector.getFY() < 3000, "Speed Y is to hie");
 			accelerationTime = curTime;
-		}
+		}*/
 	}
 	
 	@Override
@@ -78,27 +90,21 @@ public abstract class MultiWalker<S extends Subject, P extends WalkPrint> extend
 //		System.out.println("CHECK: " + this.getClass().getCanonicalName() + " has flushed timer!!!");
 	}
 
-	public void setVector(Fpoint vector) {
-		this.vector.setX(vector.getFX());
-		this.vector.setY(vector.getFY());
+	public void setVector(Origin<C> v) {
+		this.vector.set(v);
 	}
 	
-	public void setVector(float x, float y){
-		this.vector.setX(x);
-		this.vector.setY(y);
-	}
-
-	public Fpoint getVector() {
+	public Origin<C> getVector() {
 		return vector;
 	}
 	
 
-	public void setAcceleration(float acceleration, long accTime){
-		this.acceleration = acceleration;
+	public void setAcceleration(Origin<C> acc, long accTime){
+		this.acceleration.set(acc);
 		accelerationTime = accTime;
 	}
 	
-	public float getAcceleration(){
+	public Origin<C> getAcceleration(){
 		return this.acceleration;
 	}
 	
@@ -123,8 +129,8 @@ public abstract class MultiWalker<S extends Subject, P extends WalkPrint> extend
 	}
 	
 //	@Override
-	public void translateNoView(int x, int y){
-		this.translate(x, y, false);
+	public void translateNoView(Origin origin){
+		this.translate(origin, false);
 	}
 	
 	@Override

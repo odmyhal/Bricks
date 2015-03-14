@@ -8,7 +8,7 @@ import org.bricks.exception.Validate;
 import org.bricks.extent.entity.mesh.ModelSubjectOperable;
 import org.bricks.extent.entity.mesh.NodeOperator;
 
-public class NodeRollProcessor<T extends MultiLiver<ModelSubjectOperable, ?>> extends WorkToConditionProcessor<T>{
+public class NodeRollProcessor<T extends MultiLiver<ModelSubjectOperable, ?, ?>> extends WorkToConditionProcessor<T>{
 	
 	private static final float minRotationRad = (float) Math.PI / 180;
 //	private static final CheckerType NODE_ROLL_CH_TYPE = CheckerType.registerCheckerType();
