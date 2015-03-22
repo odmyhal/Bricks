@@ -7,15 +7,16 @@ import org.bricks.engine.item.MultiWalker;
 import org.bricks.engine.neve.WalkPrint;
 import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.tool.Origin;
+import org.bricks.engine.tool.Roll;
 import org.bricks.enterprise.control.widget.tool.RotationDependAction.RotationProvider;
 import org.bricks.exception.Validate;
 
 import com.badlogic.gdx.graphics.Camera;
 
-public class CameraSatellite implements Satellite<Point>, RotationProvider{
+public class CameraSatellite implements Satellite<Point, Roll>, RotationProvider{
 	
 	public Camera camera;
-	private MultiWalker target;
+//	private MultiWalker target;
 	
 	private static final int cap = 50;
 	private final int[] trX = new int[cap], trY = new int[cap], q = new int[cap], orgX = new int[cap], orgY = new int[cap];
@@ -28,18 +29,28 @@ public class CameraSatellite implements Satellite<Point>, RotationProvider{
 
 	Fpoint tmp = new Fpoint(0f, 0f);
 	
-	public CameraSatellite(Camera camera, MultiWalker target){
+	public CameraSatellite(Camera camera, float startRotation/*MultiWalker target*/){
 		this.camera = camera;
-		this.target = target;
+		generalRotation = startRotation;
+/*		this.target = target;
 		WalkPrint wv = (WalkPrint)target.getSafePrint();
 		generalRotation = wv.getRotation();
-		wv.free();
+		wv.free();*/
 	}
 
 	/**
 	 * Method called in motor thread
 	 */
-	public void rotate(float rad, Origin<Point> central) {
+	public void rotate(Roll roll, Origin<Point> central){
+		q[curIndex] = 1;
+		rotate[curIndex] = roll.lastRotation();
+		orgX[curIndex] = central.source.getX();
+		orgY[curIndex] = central.source.getY();
+//		rotation[curIndex] = target.getRotation();
+		generalRotation = roll.getRotation();
+	}
+/*	
+	private void rotate(float rad, Origin<Point> central) {
 		q[curIndex] = 1;
 		rotate[curIndex] = target.lastRotation();
 		orgX[curIndex] = central.source.getX();
@@ -47,7 +58,7 @@ public class CameraSatellite implements Satellite<Point>, RotationProvider{
 //		rotation[curIndex] = target.getRotation();
 		generalRotation = target.getRotation();
 	}
-
+*/
 	/**
 	 * Method called in motor thread
 	 */
@@ -108,8 +119,8 @@ public class CameraSatellite implements Satellite<Point>, RotationProvider{
 		tmp.setX(dx);
 		tmp.setY(dy);
 		PointHelper.rotatePointByZero(tmp, Math.sin(radians), Math.cos(radians), tmp);
-		camera.position.x += tmp.getFX() - dx;
-		camera.position.y += tmp.getFY() - dy;
+		camera.position.x += tmp.x - dx;
+		camera.position.y += tmp.y - dy;
 	}
 
 	public float provideRotation() {

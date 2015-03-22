@@ -1,5 +1,10 @@
 package org.bricks.engine.help;
 
+import org.bricks.core.entity.Fpoint;
+import org.bricks.engine.item.MultiSubjectEntity;
+import org.bricks.engine.item.Stone;
+import org.bricks.engine.staff.Satellite;
+import org.bricks.engine.tool.Roll;
 import org.bricks.exception.Validate;
 
 public class RotationHelper {
@@ -9,6 +14,12 @@ public class RotationHelper {
 	private static final ThreadLocal<RotationData> rotationData = new ThreadLocal<RotationData>(){
 		@Override protected RotationData initialValue() {
             return new RotationData();
+        }
+	};
+	
+	private static final ThreadLocal<Roll> tmpRoll = new ThreadLocal<Roll>(){
+		@Override protected Roll initialValue() {
+            return new Roll();
         }
 	};
 
@@ -94,5 +105,14 @@ public class RotationHelper {
 			targetMark = false;
 			return calculatedTargetRotation;
 		}
+	}
+	
+	public static void setToRotation(float rad, Stone<?, ?> target){
+		Roll roll = tmpRoll.get();
+		roll.setRotation(rad);
+		for(Satellite satellite : target.getSatellites()){
+			satellite.rotate(roll, target.origin());
+		}
+		target.adjustCurrentPrint();
 	}
 }

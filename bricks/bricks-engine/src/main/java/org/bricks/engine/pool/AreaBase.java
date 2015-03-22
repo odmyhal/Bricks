@@ -38,11 +38,11 @@ public abstract class AreaBase<E extends Entity> extends BrickWrap<PointSetPrint
 		return x && y;
 	}
 	
-	protected Subject<E, ?, ?> freeSubject(int i){
+	protected Subject<E, ?, ?, ?> freeSubject(int i){
 		return pool[i].freeSubject();
 	}
 	
-	protected int addSubject(Subject<E, ?, ?> subject){
+	protected int addSubject(Subject<E, ?, ?, ?> subject){
 		for(int i=0; i<pool.length; i++){
 			if(pool[i].setSubject(subject)){
 				return i;

@@ -1,19 +1,15 @@
 package org.bricks.engine.item;
 
-import org.bricks.core.entity.Fpoint;
-import org.bricks.core.entity.Point;
 import org.bricks.engine.neve.WalkPrint;
-import org.bricks.engine.pool.SectorMonitor;
 import org.bricks.engine.pool.Subject;
+import org.bricks.engine.staff.Roller;
 import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.staff.Walker;
 import org.bricks.engine.tool.Origin;
 import org.bricks.engine.tool.Roll;
 import org.bricks.engine.tool.Walk;
-import org.bricks.engine.tool.Walk2D;
-import org.bricks.exception.Validate;
 
-public abstract class MultiWalker<S extends Subject, P extends WalkPrint, C> extends MultiRoller<S, P, C> implements Walker<P, C>{
+public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkPrint, C, R extends Roll> extends MultiRoller<S, P, C, R> implements Walker<P, C>{
 
 	private Walk<C> legs;
 	private Origin<C> vector;
@@ -129,7 +125,7 @@ public abstract class MultiWalker<S extends Subject, P extends WalkPrint, C> ext
 	}
 	
 //	@Override
-	public void translateNoView(Origin origin){
+	public void translateNoView(Origin<C> origin){
 		this.translate(origin, false);
 	}
 	

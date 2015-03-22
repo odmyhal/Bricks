@@ -1,20 +1,22 @@
 package org.bricks.engine.pool;
 
+import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Point;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.engine.neve.PrintableBrickWrap;
 import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.staff.Entity;
 import org.bricks.engine.tool.Origin;
+import org.bricks.engine.tool.Roll;
 
-public abstract class BrickSubject<E extends Entity, I extends SubjectPrint> extends Subject<E, I, Point>  implements PrintableBrickWrap<I>{
+public class BrickSubject<E extends Entity, I extends SubjectPrint> extends Subject<E, I, Fpoint, Roll>  implements PrintableBrickWrap<I>{
 
 	protected Brick brick;
 //	protected PrintStore<? extends BrickWrap, I> printStore;
 	
 	public BrickSubject(Brick brick){
 		this.brick = brick;
-		initPrintStore();
+//		initPrintStore();
 //		printStore = new PrintStore(this);
 	}
 	
@@ -30,7 +32,7 @@ public abstract class BrickSubject<E extends Entity, I extends SubjectPrint> ext
 		return brick.getWeight();
 	}
 	
-	public void translate(Origin<Point> origin){
+	public void translate(Origin<Fpoint> origin){
 		this.translate(origin.source);
 	}
 	
@@ -40,6 +42,10 @@ public abstract class BrickSubject<E extends Entity, I extends SubjectPrint> ext
 	
 	public void translate(int x, int y){
 		brick.translate(x, y);
+	}
+	
+	public void rotate(Roll roll, Origin<Fpoint> central){
+		this.rotate(roll.getRotation(), central.source);
 	}
 	
 	public void rotate(float rad, Origin<Point> origin){

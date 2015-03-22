@@ -15,8 +15,10 @@ import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.pool.World;
+import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.tool.Origin;
 import org.bricks.engine.tool.Origin2D;
+import org.bricks.engine.tool.Roll;
 
 @SuppressWarnings("rawtypes")
 public abstract class Stone<S extends BrickSubject, P extends EntityPrint> extends MultiSubjectEntity<S, P, Fpoint>{

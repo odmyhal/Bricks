@@ -10,7 +10,7 @@ import org.bricks.extent.entity.mesh.ModelSubjectOperable;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class NodeRollProcessorAction<T extends MultiLiver<ModelSubjectOperable, ?, ?>, W extends FlowTouchPad> extends EventCheckRegAction<T, W> {
+public class NodeRollProcessorAction<T extends MultiLiver<ModelSubjectOperable<?, ?>, ?, ?>, W extends FlowTouchPad> extends EventCheckRegAction<T, W> {
 
 	private NodeRollProcessor<T> nodeRollProcessor;
 	private Vector2 touchPercentile = new Vector2();

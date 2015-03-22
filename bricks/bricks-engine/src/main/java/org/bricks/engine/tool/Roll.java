@@ -9,11 +9,11 @@ public class Roll {
 	/**
 	 * Rotation stored in range [0; 2*PI)
 	 */
-	private float rotation;
+	protected float rotation;
 	private float rotationSpeed;
-	private float rotationBuff = (float) (Math.PI / 180);
+	private float rotationBuff = (float) (Math.PI / 360);
 	private long rotateTime = System.currentTimeMillis();
-	private float lastRotation;
+	protected float lastRotation;
 
 
 	public float getRotationSpeed() {

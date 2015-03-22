@@ -11,10 +11,11 @@ import org.bricks.engine.neve.PrintableBase;
 import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.staff.Entity;
 import org.bricks.engine.staff.Satellite;
+import org.bricks.engine.tool.Roll;
 import org.bricks.exception.Validate;
 import org.bricks.core.entity.type.Brick;
 
-public abstract class Subject<E extends Entity, I extends Imprint, C> extends PrintableBase<I> implements Satellite<C>{
+public abstract class Subject<E extends Entity, I extends Imprint, C, R extends Roll> extends PrintableBase<I> implements Satellite<C, R>{
 	
 	private final Map<AreaBase, Integer> pools = new HashMap<AreaBase, Integer>();
 	private District<?, E> district;
@@ -25,6 +26,10 @@ public abstract class Subject<E extends Entity, I extends Imprint, C> extends Pr
 		super(brick, origin);
 	}
 */	
+	
+	public Subject(){
+		this.initPrintStore();
+	}
 	
 	public abstract Point getCenter();
 
@@ -103,6 +108,9 @@ public abstract class Subject<E extends Entity, I extends Imprint, C> extends Pr
 	}
 	
 	public void moveToDistrict(District<?, E> newOne){
+		if(district.equals(newOne)){
+			System.out.println("Wrong district found for point: " + this.getCenter());
+		}
 		Validate.isTrue(!(district.equals(newOne)));
 		District<?, E> oldOne = district;
 		int oldDistrictNum = -1;

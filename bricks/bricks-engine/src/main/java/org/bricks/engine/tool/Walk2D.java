@@ -5,17 +5,18 @@ import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Point;
 import org.bricks.engine.staff.Walker;
 
-public class Walk2D implements Walk<Fpoint>{
+public class Walk2D extends Walk<Fpoint>{
 
 	private double moveXTime = System.currentTimeMillis();
 	private double moveYTime = moveXTime;
-	private Walker<?, Fpoint> owner;
-//	private int lastMoveX, lastMoveY;
-	private Origin2D lastMove = new Origin2D(new Fpoint(0f, 0f));
-	private static final int moveLimit = 14;
+	
 	
 	public Walk2D(Walker<?, Fpoint> walker){
-		this.owner = walker;
+		super(walker);
+	}
+	
+	protected Origin<Fpoint> initLastMoveOrigin(){
+		return new Origin2D();
 	}
 	
 	public void flushTimer(long nTime){
@@ -57,13 +58,13 @@ public class Walk2D implements Walk<Fpoint>{
 	}
 	
 	public boolean moveBack(long checkTime){
-		if(lastMove.source.x == 0 && lastMove.source.y == 0){
+		if(lastMove.isZero()){
 			return false;
 		}
 		Validate.isTrue(checkTime >= moveXTime && checkTime >= moveYTime);
-		lastMove.set(-lastMove.source.x, -lastMove.source.y);
+		lastMove.mult(-1f);
 		owner.translate(lastMove);
-		lastMove.set(0f, 0f);
+		lastMove.mult(0f);
 		moveXTime = moveYTime = checkTime;
 		return true;
 	}

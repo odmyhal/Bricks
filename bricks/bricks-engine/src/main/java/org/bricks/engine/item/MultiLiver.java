@@ -78,7 +78,7 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 	}
 	
 	public void motorProcess(long currentTime){
-		System.out.println(this.getClass().getCanonicalName() + " motor process");
+//		System.out.println(this.getClass().getCanonicalName() + " motor process");
 		processEvents(currentTime);
 	}
 	

@@ -32,7 +32,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.odmyha.shoot.Ball;
 
-public class Bullet extends MultiWalkRoller<ModelSubjectSync, WalkPrint> implements RenderableProvider{
+public class Bullet extends MultiWalkRoller<ModelSubjectSync<?, ?>, WalkPrint> implements RenderableProvider{
 	
 	public static final String BULLET_SOURCE = "BulletSource@shoot.odmyha.com";
 	private static final float speed = 1000;

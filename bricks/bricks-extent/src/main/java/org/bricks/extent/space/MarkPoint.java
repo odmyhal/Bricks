@@ -1,4 +1,4 @@
-package org.bricks.extent.tool;
+package org.bricks.extent.space;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,9 +10,10 @@ import com.badlogic.gdx.math.Vector3;
 public class MarkPoint {
 
 	private Vector3[] marks;
-	private Vector3[] modifiedMarks;
-	private Collection<Matrix4> transforms = new ArrayList<Matrix4>();
+	protected Vector3[] modifiedMarks;
+	public Collection<Matrix4> transforms = new ArrayList<Matrix4>();
 	private Matrix4 helpMatrix = new Matrix4();
+	public int size;
 	
 	public MarkPoint(Vector3... points){
 		marks = points;
@@ -20,12 +21,18 @@ public class MarkPoint {
 		for(int i = 0; i < marks.length; i++){
 			modifiedMarks[i] = new Vector3(marks[i].x, marks[i].y, marks[i].z);
 		}
+		size = marks.length;
 	}
 	
 	public Vector3 getMark(int num){
 		return modifiedMarks[num];
 	}
 	
+	/**
+	 * Global transform matrix should be added first!!!
+	 * Because Vect3.mul(Matirix4) means: Matrix * Vector
+	 * @param transform
+	 */
 	public void addTransform(Matrix4 transform){
 		transforms.add(transform);
 	}

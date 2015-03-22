@@ -1,10 +1,24 @@
 package org.bricks.engine.tool;
 
-public interface Walk<C> {
+import org.bricks.engine.staff.Walker;
 
-	public boolean move(long time, C trn);
+public abstract class Walk<C> {
 	
-	public void flushTimer(long time);
+	protected Walker<?, C> owner;
+	protected Origin<C> lastMove;
+
+	protected static final int moveLimit = 14;
 	
-	public boolean moveBack(long checkTime);
+	public Walk(Walker<?, C> walker){
+		this.owner = walker;
+		lastMove = initLastMoveOrigin();
+	}
+	
+	protected abstract Origin<C> initLastMoveOrigin();
+
+	public abstract boolean move(long time, C trn);
+	
+	public abstract void flushTimer(long time);
+	
+	public abstract boolean moveBack(long checkTime);
 }

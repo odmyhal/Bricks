@@ -20,7 +20,7 @@ public interface Entity<P extends Imprint> extends EventSource, Printable<P>{
 	public List<? extends Subject> getStaff();
 	public void translate(Origin origin);
 
-	public void setToRotation(float radians);
+//	public void setToRotation(float radians);
 	public Origin origin();
 	
 //	public LinkedList<EntityView> getViewCache();

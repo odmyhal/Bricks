@@ -8,7 +8,7 @@ import org.bricks.exception.Validate;
 
 public class PoolSlot<E extends Entity> {
 	
-	private volatile Subject<E, ?, ?> subject;
+	private volatile Subject<E, ?, ?, ?> subject;
 	private final AtomicBoolean exists = new AtomicBoolean(false);
 /*	
 	public synchronized boolean setSubject(Subject<E, ?> s){
@@ -19,7 +19,7 @@ public class PoolSlot<E extends Entity> {
 		return false;
 	}
 */
-	public boolean setSubject(Subject<E, ?, ?> s){
+	public boolean setSubject(Subject<E, ?, ?, ?> s){
 		if(exists.compareAndSet(false, true)){
 			subject = s;
 			return true;
@@ -36,7 +36,7 @@ public class PoolSlot<E extends Entity> {
 		return res;
 	}
 */
-	public Subject<E, ?, ?> freeSubject(){
+	public Subject<E, ?, ?, ?> freeSubject(){
 		Validate.isTrue(exists.get(), "Slot is empty");
 		Subject res = subject;
 		subject = null;
@@ -44,7 +44,7 @@ public class PoolSlot<E extends Entity> {
 		return res;
 	}
 	
-	public Subject<E, ?, ?> getSubject(){
+	public Subject<E, ?, ?, ?> getSubject(){
 		return this.subject;
 	}
 

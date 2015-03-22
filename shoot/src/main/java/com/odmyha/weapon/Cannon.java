@@ -16,19 +16,14 @@ import org.bricks.core.help.PointHelper;
 import org.bricks.engine.event.BaseEvent;
 import org.bricks.engine.event.OverlapEvent;
 import org.bricks.engine.event.check.OverlapChecker;
-import org.bricks.engine.event.control.RotationSpeedEvent;
 import org.bricks.engine.event.overlap.OverlapStrategy;
 import org.bricks.engine.event.overlap.SmallEventStrategy;
 import org.bricks.engine.item.MultiRoller;
 import org.bricks.engine.neve.RollPrint;
 import org.bricks.engine.neve.SubjectPrint;
-import org.bricks.engine.staff.Walker;
 import org.bricks.engine.tool.Origin;
 import org.bricks.engine.tool.Origin2D;
-import org.bricks.engine.tool.Walk;
-import org.bricks.engine.tool.Walk2D;
-import org.bricks.extent.entity.mesh.ModelSubject;
-import org.bricks.extent.entity.mesh.ModelSubjectPrint;
+import org.bricks.engine.tool.Roll;
 import org.bricks.extent.entity.mesh.ModelSubjectSync;
 import org.bricks.extent.event.ExtentEventGroups;
 import org.bricks.extent.event.FireEvent;
@@ -40,7 +35,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.odmyha.shoot.Ball;
 
-public class Cannon extends MultiRoller<ModelSubjectSync, RollPrint, Fpoint> implements RenderableProvider{
+public class Cannon extends MultiRoller<ModelSubjectSync<?, ?>, RollPrint, Fpoint, Roll> implements RenderableProvider{
 	
 	public static final String CANNON_SOURCE = "CannonSource@shoot.odmyha.com";
 	
@@ -162,5 +157,10 @@ public class Cannon extends MultiRoller<ModelSubjectSync, RollPrint, Fpoint> imp
 	@EventHandle(eventType = ExtentEventGroups.USER_SOURCE_TYPE)
 	public void shoot(FireEvent e){
 		this.fire();
+	}
+
+	@Override
+	protected Roll initializeRoll() {
+		return new Roll();
 	}
 }

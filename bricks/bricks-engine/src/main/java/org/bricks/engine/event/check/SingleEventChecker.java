@@ -3,7 +3,7 @@ package org.bricks.engine.event.check;
 import org.bricks.engine.event.Event;
 import org.bricks.engine.staff.Liver;
 
-public abstract class SingleEventChecker<T extends Liver> extends EventChecker<T>{
+public abstract class SingleEventChecker<T extends Liver> extends CommonEventChecker<T>{
 	
 	public SingleEventChecker(){
 		super(CheckerType.NO_SUPLANT);
@@ -22,9 +22,9 @@ public abstract class SingleEventChecker<T extends Liver> extends EventChecker<T
 		}
 		return null;
 	}
-	
+/*	
 	protected abstract boolean ready(T target);
 	
 	protected abstract Event produceEvent(T target);
-
+*/
 }

@@ -226,7 +226,7 @@ public final class District<R, E extends Entity> extends AreaBase<E> implements 
 		}
 
 		public R next() {
-			Subject<E, ?, ?> sbj =  pool[cursor++].getSubject();
+			Subject<E, ?, ?, ?> sbj =  pool[cursor++].getSubject();
 			if(sbj == null){
 				return null;
 			}

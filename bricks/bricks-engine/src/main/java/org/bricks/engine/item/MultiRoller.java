@@ -9,9 +9,9 @@ import org.bricks.engine.staff.Roller;
 import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.tool.Roll;
 
-public abstract class MultiRoller<S extends Subject, P extends RollPrint, C> extends MultiLiver<S, P, C> implements Roller<P>{
+public abstract class MultiRoller<S extends Subject<?, ?, C, R>, P extends RollPrint, C, R extends Roll> extends MultiLiver<S, P, C> implements Roller<P>{
 	
-	private Roll roll;
+	private R roll;
 /*
 	protected MultiRoller() {
 		roll = new Roll();
@@ -19,8 +19,14 @@ public abstract class MultiRoller<S extends Subject, P extends RollPrint, C> ext
 */	
 	@Override
 	protected void init(){
-		roll = new Roll();
+		roll = initializeRoll();
 		super.init();
+	}
+	
+	protected abstract R initializeRoll();
+	
+	public R linkRoll(){
+		return roll;
 	}
 
 	public float getRotationSpeed() {
@@ -54,6 +60,9 @@ public abstract class MultiRoller<S extends Subject, P extends RollPrint, C> ext
 	public void setToRotation(float radians){
 		setRotation(radians);
 		applyRotation();
+		/**
+		 * Method is suppose to be used before applyEngine, so do not need adjustCurrentPrint
+		 */
 	}
 
 	public void flushTimer(long nTime) {
@@ -70,7 +79,7 @@ public abstract class MultiRoller<S extends Subject, P extends RollPrint, C> ext
 		if(alive() && rotate(currentTime)){
 			this.adjustCurrentPrint(false);
 			for(Satellite satellite : getSatellites()){
-				satellite.rotate(roll.getRotation(), this.origin());
+				satellite.rotate(roll/*.getRotation()*/, this.origin());
 				satellite.update();
 			}
 		}
@@ -78,7 +87,7 @@ public abstract class MultiRoller<S extends Subject, P extends RollPrint, C> ext
 
 	public void applyRotation(){
 		for(Satellite satellite : getSatellites()){
-			satellite.rotate(roll.getRotation(), this.origin());
+			satellite.rotate(roll/*.getRotation()*/, this.origin());
 		}
 	}
 	
@@ -90,7 +99,7 @@ public abstract class MultiRoller<S extends Subject, P extends RollPrint, C> ext
 		if(roll.rotateBack(currentTime)){
 			this.adjustCurrentPrint(false);
 			for(Satellite satellite : getSatellites()){
-				satellite.rotate(roll.getRotation(), this.origin());
+				satellite.rotate(roll/*.getRotation()*/, this.origin());
 				satellite.update();
 			}
 		}

@@ -9,8 +9,10 @@ import org.bricks.engine.neve.EntityPrint;
 import org.bricks.engine.neve.PrintableBase;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Entity;
+import org.bricks.engine.staff.Roller;
 import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.tool.Origin;
+import org.bricks.engine.tool.Roll;
 
 public abstract class MultiSubjectEntity<S extends Subject, P extends EntityPrint, C> extends PrintableBase<P> implements Entity<P>{
 
@@ -46,16 +48,8 @@ public abstract class MultiSubjectEntity<S extends Subject, P extends EntityPrin
 		}
 	}
 	
-	public void setToRotation(float radians){
-		for(Satellite satellite : getSatellites()){
-			satellite.rotate(radians, this.origin);
-		}
-		this.adjustCurrentPrint();
-	}
-	
 	public boolean addSubject(S subject){
 		if(staff.add(subject)){
-//			subject.setEntity(this);
 			subject.setEntity(this);
 			subject.translate(origin);
 			addSatellite(subject);

@@ -7,10 +7,11 @@ import org.bricks.engine.neve.WalkPrint;
 import org.bricks.engine.pool.Subject;
 import org.bricks.engine.tool.Origin;
 import org.bricks.engine.tool.Origin2D;
+import org.bricks.engine.tool.Roll;
 import org.bricks.engine.tool.Walk;
 import org.bricks.engine.tool.Walk2D;
 
-public abstract class MultiWalkRoller<S extends Subject, P extends WalkPrint> extends MultiWalker<S, P, Fpoint> {
+public abstract class MultiWalkRoller<S extends Subject<?, ?, Fpoint, Roll>, P extends WalkPrint> extends MultiWalker<S, P, Fpoint, Roll> {
 /*
 	protected MultiWalkRoller() {
 	}
@@ -29,6 +30,10 @@ public abstract class MultiWalkRoller<S extends Subject, P extends WalkPrint> ex
 		if(!this.acceleration.isZero()){
 			PointHelper.rotatePointByZero(acceleration.source, sin, cos, acceleration.source);
 		}
+	}
+	
+	protected Roll initializeRoll(){
+		return new Roll();
 	}
 	
 	protected Walk<Fpoint> provideInitialLegs(){

@@ -69,7 +69,7 @@ public class OverlapChecker<T extends Liver> extends EventChecker<T>{
 			Area area = target.getDistrict().getBuffer();
 			int areaNum = curState.getAndIncrementAreaState();
 			while(areaNum < area.capacity()){
-				Subject<?, SubjectPrint, ?> sv = area.getSubject(areaNum);
+				Subject<?, SubjectPrint, ?, ?> sv = area.getSubject(areaNum);
 				areaNum = curState.getAndIncrementAreaState();
 				if(sv == null || sv == curState.getLast() || sv == target){
 					continue;
