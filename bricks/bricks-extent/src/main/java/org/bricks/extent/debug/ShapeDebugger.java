@@ -9,11 +9,14 @@ import org.bricks.engine.pool.Boundary;
 import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.pool.Subject;
+import org.bricks.extent.space.MarkPoint;
+import org.bricks.extent.space.SpaceSubject;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
 public class ShapeDebugger implements Disposable{
@@ -56,6 +59,11 @@ public class ShapeDebugger implements Disposable{
 				for(Subject sv : msubjecte.getStaff()){
 					if(sv instanceof BrickSubject){
 						drawPoints(((BrickSubject)sv).getBrick().getPoints(), cameraMatrix);
+					}else if(sv instanceof SpaceSubject){
+						MarkPoint markPoint = ((SpaceSubject) sv).markPoint;
+						Vector3 one = markPoint.getMark(1);
+						Vector3 two = markPoint.getMark(2);
+						shR.line(one.x, one.y, two.x, two.y);
 					}
 				}
 			}

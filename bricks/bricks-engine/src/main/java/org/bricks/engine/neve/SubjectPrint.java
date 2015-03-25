@@ -15,6 +15,7 @@ public class SubjectPrint<P extends BrickSubject, EP extends EntityPrint> extend
 		super(ps);
 	}
 
+	@Override
 	protected void init(){
 		super.init();
 		entityPrint = (EP) getTarget().getEntity().getSafePrint();

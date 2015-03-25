@@ -16,13 +16,9 @@ import org.bricks.engine.event.OverlapEvent;
 import org.bricks.engine.event.check.OverlapChecker;
 import org.bricks.engine.event.overlap.OverlapStrategy;
 import org.bricks.engine.item.MultiWalkRoller;
-import org.bricks.engine.item.MultiWalker;
 import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.neve.WalkPrint;
-import org.bricks.engine.pool.Subject;
 import org.bricks.engine.tool.Origin2D;
-import org.bricks.extent.entity.mesh.ModelSubject;
-import org.bricks.extent.entity.mesh.ModelSubjectPrint;
 import org.bricks.extent.entity.mesh.ModelSubjectSync;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;

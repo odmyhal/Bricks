@@ -10,17 +10,11 @@ import org.bricks.core.entity.type.Brick;
 import org.bricks.engine.item.Stone;
 import org.bricks.engine.neve.EntityPrint;
 import org.bricks.engine.neve.SubjectPrint;
-import org.bricks.engine.pool.Subject;
-import org.bricks.extent.entity.mesh.ModelSubject;
-import org.bricks.extent.entity.mesh.ModelSubjectPrint;
 import org.bricks.extent.entity.mesh.ModelSubjectSync;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 

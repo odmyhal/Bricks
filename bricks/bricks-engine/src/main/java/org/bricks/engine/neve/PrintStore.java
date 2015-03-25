@@ -90,10 +90,10 @@ public final class PrintStore<T extends Printable, P extends Imprint> {
 	private P getPrint(){
 		int getNum = getIndex % size;
 		P print = cache[getNum].get();
+		getIndex++;
 		if(print == null){
 			return (P) target.print();
 		}
-		getIndex++;
 		return print;
 	}
 	

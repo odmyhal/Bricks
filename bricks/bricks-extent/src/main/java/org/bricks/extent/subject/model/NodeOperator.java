@@ -1,4 +1,4 @@
-package org.bricks.extent.entity.mesh;
+package org.bricks.extent.subject.model;
 
 import java.util.HashMap;
 import java.util.Map;

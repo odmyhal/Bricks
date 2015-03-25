@@ -6,6 +6,7 @@ public class Logger {
 
 	private StringBuffer tmpLog;
 	private LinkedList<String> log = new LinkedList<String>();
+	private static final int logSize = 15;
 	
 	public synchronized void startLog(){
 		tmpLog = new StringBuffer(System.currentTimeMillis() + "-----" + this + "-----thread:------" + Thread.currentThread().getName());
@@ -18,7 +19,7 @@ public class Logger {
 	public synchronized void finishLog(){
 		tmpLog.append("\n------------------------------------------");
 		log.addLast(tmpLog.toString());
-		while(log.size() > 12){
+		while(log.size() > logSize){
 			log.removeFirst();
 		}
 	}
@@ -43,5 +44,9 @@ public class Logger {
 			res.append(lg + "\n");
 		}
 		return res.toString();
+	}
+	
+	public synchronized void clearLog(){
+		log.clear();
 	}
 }

@@ -3,26 +3,28 @@ package org.bricks.extent.entity.mesh;
 import org.bricks.core.entity.Point;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.staff.Entity;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Renderable;
+import com.badlogic.gdx.graphics.g3d.RenderableProvider;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 
-public class ModelSubjectSync<E extends Entity, I extends SubjectPrint> extends ModelSubjectBase<E, I>{
+public class ModelSubjectSync<E extends Entity, I extends SubjectPrint> extends BrickSubject<E, I> implements RenderableProvider{
 	
 	private boolean edit = true;
+	private ModelInstance modelInstance;
+	private Matrix4 transform = new Matrix4();
 
 	public ModelSubjectSync(Brick brick, ModelInstance modelInstance) {
-		super(brick, modelInstance);
+		super(brick);
+		this.modelInstance = modelInstance;
+		this.transform.set(modelInstance.transform);
 	}
-/*	
-	public ModelSubjectSync(Brick brick, ModelInstance modelInstance, Matrix4 initialTransform){
-		super(brick, modelInstance, initialTransform);
-	}
-*/
+
 	@Override
 	public void translate(int x, int y){
 		super.translate(x, y);
@@ -47,12 +49,13 @@ public class ModelSubjectSync<E extends Entity, I extends SubjectPrint> extends 
 			if(edit){
 				modelInstance.transform.set(transform);
 				edit = false;
-//				System.out.println("Editing transform " + this.entity.getClass().getCanonicalName());
-//				System.out.println("Transform is: " + transform);
 			}
 		}
 		modelInstance.getRenderables(renderables, pool);
 	}
 	
-
+	@Override
+	public I print(){
+		return (I) new SubjectPrint(this.printStore);
+	}
 }

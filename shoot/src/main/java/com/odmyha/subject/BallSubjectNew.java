@@ -7,9 +7,6 @@ import org.bricks.core.entity.type.Brick;
 import org.bricks.core.help.VectorHelper;
 import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.pool.District;
-import org.bricks.extent.entity.mesh.ModelSubject;
-import org.bricks.extent.entity.mesh.ModelSubjectOperable;
-import org.bricks.extent.entity.mesh.ModelSubjectPrint;
 import org.bricks.extent.entity.mesh.ModelSubjectSync;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;

@@ -1,4 +1,4 @@
-package org.bricks.extent.entity.mesh;
+package org.bricks.extent.subject.model;
 
 import org.bricks.engine.neve.PrintableBase;
 

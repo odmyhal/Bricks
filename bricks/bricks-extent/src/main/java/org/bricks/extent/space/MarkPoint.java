@@ -11,9 +11,9 @@ public class MarkPoint {
 
 	private Vector3[] marks;
 	protected Vector3[] modifiedMarks;
-	public Collection<Matrix4> transforms = new ArrayList<Matrix4>();
+	private Collection<Matrix4> transforms = new ArrayList<Matrix4>();
 	private Matrix4 helpMatrix = new Matrix4();
-	public int size;
+	protected int size;
 	
 	public MarkPoint(Vector3... points){
 		marks = points;

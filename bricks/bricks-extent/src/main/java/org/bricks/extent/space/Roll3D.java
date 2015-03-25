@@ -15,6 +15,11 @@ public class Roll3D extends Roll{
 		this.setSpin(nsp, 0f, cTime);
 	}
 	
+	public void setRotation(float rotation){
+		this.lastRotation = rotation - this.rotation;
+		this.rotation = rotation;
+	}
+	
 	public void setSpin(Vector3 nsp, float startRotation, long cTime){
 		this.rotation = startRotation;
 		flushTimer(cTime);
@@ -23,11 +28,6 @@ public class Roll3D extends Roll{
 	
 	private void setSpeen(float x, float y, float z){
 		spin.set(x, y, z);
-	}
-	
-	public void setRotation(float nRotation){
-		this.lastRotation = nRotation - this.rotation;
-		this.rotation = nRotation;
 	}
 	
 	public Vector3 getSpin(){

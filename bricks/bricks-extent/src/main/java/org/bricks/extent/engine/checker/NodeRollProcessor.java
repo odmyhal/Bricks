@@ -6,9 +6,10 @@ import org.bricks.engine.help.RotationHelper;
 import org.bricks.engine.item.MultiLiver;
 import org.bricks.exception.Validate;
 import org.bricks.extent.entity.mesh.ModelSubjectOperable;
-import org.bricks.extent.entity.mesh.NodeOperator;
+import org.bricks.extent.subject.model.ModelBrickOperable;
+import org.bricks.extent.subject.model.NodeOperator;
 
-public class NodeRollProcessor<T extends MultiLiver<ModelSubjectOperable<?, ?>, ?, ?>> extends WorkToConditionProcessor<T>{
+public class NodeRollProcessor<T extends MultiLiver<ModelSubjectOperable<?, ?, ModelBrickOperable>, ?, ?>> extends WorkToConditionProcessor<T>{
 	
 	private static final float minRotationRad = (float) Math.PI / 180;
 //	private static final CheckerType NODE_ROLL_CH_TYPE = CheckerType.registerCheckerType();
@@ -25,8 +26,8 @@ public class NodeRollProcessor<T extends MultiLiver<ModelSubjectOperable<?, ?>, 
 	public NodeRollProcessor(T target, String nodeOperatorName){
 		super(CheckerType.registerCheckerType());
 		supplant(checkerType());
-		for(ModelSubjectOperable ms : target.getStaff() ){
-			nodeOperator = ms.getNodeOperator(nodeOperatorName);
+		for(ModelSubjectOperable<?, ?, ModelBrickOperable> ms : target.getStaff() ){
+			nodeOperator = ms.modelBrick.getNodeOperator(nodeOperatorName);
 			if(nodeOperator != null){
 				subject = ms;
 				break;

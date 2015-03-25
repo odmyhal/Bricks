@@ -8,5 +8,6 @@ public interface Logable {
 	public void log(String s);
 	public void logStackTrace(String s);
 	public String getlog();
+	public void clearLog();
 	
 }

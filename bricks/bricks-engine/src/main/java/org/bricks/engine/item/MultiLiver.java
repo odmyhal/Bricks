@@ -101,6 +101,7 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 		return os.hasToCheckOverlap(s);
 	}
 	
+//	public volatile int applyPrint = 0;
 	@Override
 	public void applyEngine(Engine engine){
 		super.applyEngine(engine);
@@ -112,6 +113,7 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 			Validate.isFalse(d == null, "Could not find district for point: " + subject.getCenter());
 			subject.joinDistrict(d);
 			subject.adjustCurrentPrint();
+//			subject.update();
 		}
 		alive = true;
 		Motor motor = engine.getLazyMotor();
@@ -153,5 +155,9 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 	
 	public void logStackTrace(String s){
 		logger.logStackTrace(s);
+	}
+	
+	public void clearLog(){
+		logger.clearLog();
 	}
 }
