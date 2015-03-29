@@ -1,6 +1,6 @@
 package org.bricks.engine.event.overlap;
 
-import org.bricks.engine.pool.Subject;
+import org.bricks.engine.staff.Subject;
 
 public abstract class OverlapStrategy {
 

@@ -7,40 +7,27 @@ import org.bricks.engine.item.MultiLiver;
 import org.bricks.exception.Validate;
 import org.bricks.extent.entity.mesh.ModelSubjectOperable;
 import org.bricks.extent.subject.model.ModelBrickOperable;
+import org.bricks.extent.subject.model.ModelBrickSubject;
 import org.bricks.extent.subject.model.NodeOperator;
 
-public class NodeRollProcessor<T extends MultiLiver<ModelSubjectOperable<?, ?, ModelBrickOperable>, ?, ?>> extends WorkToConditionProcessor<T>{
+public class NodeRollProcessor<T extends MultiLiver<ModelBrickSubject<?, ?, ?, ?, ModelBrickOperable>, ?, ?>> extends NodeModifyProcessor<T>{
 	
 	private static final float minRotationRad = (float) Math.PI / 180;
-//	private static final CheckerType NODE_ROLL_CH_TYPE = CheckerType.registerCheckerType();
-	private ModelSubjectOperable subject;
-//	private AtomicInteger one;
-//	private volatile boolean inited = false;
+
+//	private ModelSubjectOperable subject;
 	private float targetRotation, rotationSpeed, tmpRotation;
 	//One of tmpRotation, tmpSpeed should be volatile
 	private volatile float tmpSpeed;
-	private NodeOperator nodeOperator;
-	private long lastCheckTime;
-	private T checkEntity;
+//	private NodeOperator nodeOperator;
+//	private long lastCheckTime;
+//	private T checkEntity;
 	
 	public NodeRollProcessor(T target, String nodeOperatorName){
-		super(CheckerType.registerCheckerType());
+		super(target, CheckerType.registerCheckerType(), nodeOperatorName);
 		supplant(checkerType());
-		for(ModelSubjectOperable<?, ?, ModelBrickOperable> ms : target.getStaff() ){
-			nodeOperator = ms.modelBrick.getNodeOperator(nodeOperatorName);
-			if(nodeOperator != null){
-				subject = ms;
-				break;
-			}
-		}
-		Validate.isFalse(nodeOperator == null, target.getClass().getCanonicalName() +
-				" could not find operator by name \"" + nodeOperatorName + "\"");
-		this.checkEntity = target;
 	}
 	
-	public NodeOperator getOperator(){
-		return nodeOperator;
-	}
+	
 
 	@Override
 	public void doJob(T target, long processTime) {
@@ -87,15 +74,11 @@ public class NodeRollProcessor<T extends MultiLiver<ModelSubjectOperable<?, ?, M
 	 */
 	@Override
 	public void activate(T target, long curTime){
-		Validate.isTrue(checkEntity.equals(target));
-//		Validate.isTrue(inited, "Processor should be inited before activated");
 		/*
 		 * Flush cached values via volatile
 		 */
 		this.rotationSpeed = this.tmpSpeed;
 		this.targetRotation = this.tmpRotation;
-//		inited = false;
-		lastCheckTime = curTime;
 		super.activate(target, curTime);
 	}
 

@@ -57,10 +57,22 @@ public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
 		lastPrintModified = currentPrint;
 	}
 	
-	public void translate(float x, float y, float z){
+	protected void translate(float x, float y, float z){
 		translation.add(x, y, z);
 	}
 	
+	public void scale(Vector3 scl, Vector3 point){
+		this.scale(scl.x, scl.y, scl.z, point);
+	}
+	
+	public void scale(float scaleX, float scaleY, float scaleZ, Vector3 point){
+		translation.x = point.x + (translation.x - point.x) * scaleX;
+		translation.y = point.y + (translation.y - point.y) * scaleY;
+		translation.z = point.z + (translation.z - point.z) * scaleZ;
+		scale.scl(scaleX, scaleY, scaleZ);
+		lastPrintModified = currentPrint;
+	}
+
 	protected boolean renderOutdated(int modifiedPrint){
 		if(renderLastPrint < modifiedPrint){
 			renderLastPrint = modifiedPrint;
@@ -80,6 +92,10 @@ public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
 	 */
 	protected void calculateTransform(){
 		transformMatrix.set(translation, rotation, scale);
+	}
+	
+	public void flushScale(Vector3 dest){
+		dest.set(scale);
 	}
 	
 	/**

@@ -16,7 +16,7 @@ import org.bricks.engine.event.OverlapEvent;
 import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.pool.Area;
 import org.bricks.engine.pool.BrickSubject;
-import org.bricks.engine.pool.Subject;
+import org.bricks.engine.staff.Subject;
 import org.bricks.engine.staff.Liver;
 
 public class OverlapChecker<T extends Liver> extends EventChecker<T>{

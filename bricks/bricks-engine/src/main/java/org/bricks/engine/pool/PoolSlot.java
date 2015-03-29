@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.bricks.engine.staff.Entity;
 import org.bricks.exception.Validate;
-
+import org.bricks.engine.staff.Subject;
 
 public class PoolSlot<E extends Entity> {
 	

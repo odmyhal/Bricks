@@ -80,6 +80,16 @@ public class NodeOperator implements RotationProvider{
 		}
 	}
 	
+	public void scale(Vector3 scl){
+		this.scale(scl.x, scl.y, scl.z);
+	}
+	
+	public void scale(float scaleX, float scaleY, float scaleZ){
+		for(NodeData nd : nodes.values()){
+			nd.scale(scaleX, scaleY, scaleZ, point);
+		}
+	}
+	
 	public void updatePrint(){
 		for(NodeData nd : nodes.values()){
 			nd.adjustCurrentPrint();

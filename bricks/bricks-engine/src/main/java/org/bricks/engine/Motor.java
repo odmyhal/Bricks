@@ -3,14 +3,7 @@ package org.bricks.engine;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.bricks.engine.event.Event;
-import org.bricks.engine.event.check.EventChecker;
-import org.bricks.engine.event.handler.EventHandlerManager;
 import org.bricks.engine.item.Motorable;
-import org.bricks.engine.pool.SectorMonitor;
-import org.bricks.engine.pool.Subject;
-import org.bricks.engine.staff.Liver;
 
 public class Motor implements Runnable {
 	
@@ -56,7 +49,7 @@ public class Motor implements Runnable {
 		run = false;
 	}
 	
-	public boolean addSubject(Motorable subject){
+	public boolean addLiver(Motorable subject){
 		capacity.incrementAndGet();
 		synchronized(added){
 			boolean res = added.add(subject);
@@ -65,7 +58,7 @@ public class Motor implements Runnable {
 		}
 	}
 	
-	public boolean removeSubject(Motorable subject){
+	public boolean removeLiver(Motorable subject){
 		capacity.decrementAndGet();
 		synchronized(dead){
 			return dead.add(subject);

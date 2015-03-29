@@ -44,6 +44,8 @@ public class BallGame implements ApplicationListener {
 	boolean debugEnabled = false;
 	
 	private int initWidth, initHeight;
+	private float totalDeltaTime = 0;
+	private int totalFramesCount = 0;
 	
 	public BallGame(int width, int height){
 		initWidth = width;
@@ -171,11 +173,15 @@ public class BallGame implements ApplicationListener {
 		engine.stop();
 		debug.dispose();
 //		Gdx.app.debug("OLEH-TEST", "Views created: " + Subject.createdView.get());
+		Gdx.app.debug("OLEH-TEST", "Average frame time: " + (this.totalDeltaTime / this.totalFramesCount));
 		Gdx.app.debug("OLEH-CHECK", "GAme disposed");
 	}
 
 	@Override
 	public void render() {
+		
+		this.totalDeltaTime += Gdx.graphics.getDeltaTime();
+		this.totalFramesCount++;
 		
 		if(cameraMove.x != 0 || cameraMove.y != 0 || cameraMove.z != 0){
 			float dTime = Gdx.graphics.getDeltaTime();
@@ -198,7 +204,7 @@ public class BallGame implements ApplicationListener {
 			debug.drawEntityShapes(entities, camera.combined);
 		}
 //		entitiesPool.free();
-
+		
 		panelManager.render(Gdx.graphics.getDeltaTime());
 //		renderControl();
 	}

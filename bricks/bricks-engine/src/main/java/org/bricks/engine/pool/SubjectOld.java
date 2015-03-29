@@ -1,21 +1,18 @@
 package org.bricks.engine.pool;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 import org.bricks.core.entity.Point;
-import org.bricks.core.entity.impl.BrickWrap;
 import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.neve.PrintableBase;
-import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.staff.Entity;
 import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.tool.Roll;
 import org.bricks.exception.Validate;
-import org.bricks.core.entity.type.Brick;
 
-public abstract class Subject<E extends Entity, I extends Imprint, C, R extends Roll> extends PrintableBase<I> implements Satellite<C, R>{
+@Deprecated
+public abstract class SubjectOld<E extends Entity, I extends Imprint, C, R extends Roll> extends PrintableBase<I> implements Satellite<C, R>{
 	
 	private final Map<AreaBase, Integer> pools = new HashMap<AreaBase, Integer>();
 	private District<?, E> district;
@@ -27,7 +24,7 @@ public abstract class Subject<E extends Entity, I extends Imprint, C, R extends 
 	}
 */	
 	
-	public Subject(){
+	public SubjectOld(){
 		this.initPrintStore();
 	}
 	
@@ -57,7 +54,7 @@ public abstract class Subject<E extends Entity, I extends Imprint, C, R extends 
 		if(pools.containsKey(pool)){
 			return false;
 		}
-		pools.put(pool, pool.addSubject(this));
+		//Old comment		pools.put(pool, pool.addSubject(this));
 		return true;
 	}
 	
@@ -83,7 +80,7 @@ public abstract class Subject<E extends Entity, I extends Imprint, C, R extends 
 		if(result){
 			this.district = sector;
 			joinPool(sector.getBuffer());
-			SectorMonitor.monitor(this);
+			//Old comment			SectorMonitor.monitor(this);
 		}
 		return result;
 	}
@@ -136,7 +133,8 @@ public abstract class Subject<E extends Entity, I extends Imprint, C, R extends 
 	}
 
 	public void update() {
-		SectorMonitor.monitor(this);
+
+//Old comment		SectorMonitor.monitor(this);
 		this.adjustCurrentPrint();
 	}
 	

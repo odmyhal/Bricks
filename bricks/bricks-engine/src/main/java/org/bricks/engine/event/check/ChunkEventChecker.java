@@ -16,7 +16,7 @@ import org.bricks.engine.staff.Liver;
  * After last inner checker finish it's job, main checker is removed from target object
  * @param <T>
  */
-public abstract class ChunkEventChecker<T extends Liver> extends EventChecker<T> {
+public class ChunkEventChecker<T extends Liver> extends EventChecker<T> {
 	
 	private List<EventChecker<T>> checkers = new ArrayList<EventChecker<T>>();
 	private int nextIndex = 0;
@@ -36,6 +36,7 @@ public abstract class ChunkEventChecker<T extends Liver> extends EventChecker<T>
 		while(currentChecker == null || !currentChecker.isActive()){
 			if(checkers.size() > nextIndex){
 				currentChecker = checkers.get(nextIndex++);
+				currentChecker.activate(target, eventTime);
 			}else{
 				disable();
 				target.unregisterEventChecker(this);
@@ -47,9 +48,9 @@ public abstract class ChunkEventChecker<T extends Liver> extends EventChecker<T>
 	
 	@Override
 	public void activate(T target, long curTime){
-		for(EventChecker<T> checker : checkers){
+/*		for(EventChecker<T> checker : checkers){
 			checker.activate(target, curTime);
-		}
+		}*/
 		currentChecker = null;
 		nextIndex = 0;
 		super.activate(target, curTime);

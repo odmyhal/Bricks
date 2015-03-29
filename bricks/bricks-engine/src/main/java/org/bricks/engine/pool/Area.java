@@ -1,7 +1,7 @@
 package org.bricks.engine.pool;
 
 import java.util.Iterator;
-
+import org.bricks.engine.staff.Subject;
 import org.bricks.core.entity.Ipoint;
 
 public class Area extends AreaBase implements Iterable<Subject>{

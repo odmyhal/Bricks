@@ -9,6 +9,7 @@ import org.bricks.core.entity.impl.BrickWrap;
 import org.bricks.core.entity.impl.PointSetBrick;
 import org.bricks.core.entity.impl.PointSetPrint;
 import org.bricks.engine.staff.Entity;
+import org.bricks.engine.staff.Subject;
 
 public abstract class AreaBase<E extends Entity> extends BrickWrap<PointSetPrint> implements Pool{
 

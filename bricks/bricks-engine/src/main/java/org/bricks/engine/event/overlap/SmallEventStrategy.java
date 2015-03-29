@@ -1,6 +1,6 @@
 package org.bricks.engine.event.overlap;
 
-import org.bricks.engine.pool.Subject;
+import org.bricks.engine.staff.Subject;
 import org.bricks.engine.staff.Entity;
 import org.bricks.engine.staff.Liver;
 

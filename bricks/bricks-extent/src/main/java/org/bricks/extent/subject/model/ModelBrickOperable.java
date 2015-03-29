@@ -22,7 +22,8 @@ public class ModelBrickOperable<I extends MBOPrint<?>> extends ModelBrick<I>{
 
 	public void initiateNodeOperators(String... nodes){
 		for(String node: nodes){
-			addNodeOperator(node);
+			NodeOperator no = addNodeOperator(node);
+			Validate.isFalse(no == null, "Could not find node by path: " + node);
 		}
 	}
 	

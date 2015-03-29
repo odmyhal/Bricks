@@ -1,28 +1,26 @@
 package org.bricks.extent.space;
 
-import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.Point;
-import org.bricks.engine.pool.Subject;
+import org.bricks.engine.pool.BaseSubject;
 import org.bricks.engine.staff.Entity;
 import org.bricks.engine.tool.Origin;
 import org.bricks.exception.Validate;
 import org.bricks.extent.subject.model.ModelBrick;
+import org.bricks.extent.subject.model.ModelBrickSubject;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;
-import com.badlogic.gdx.graphics.g3d.model.Node;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
-import org.bricks.engine.item.MultiLiver;
 
-public class SpaceSubject<E extends Entity, I extends SSPrint> extends Subject<E, I, Vector3, Roll3D> implements RenderableProvider{
+public class SpaceSubject<E extends Entity, I extends SSPrint, M extends ModelBrick> 
+	extends BaseSubject<E, I, Vector3, Roll3D> 
+	implements RenderableProvider, ModelBrickSubject<E, I, Vector3, Roll3D, M>{
 
-	protected ModelBrick modelBrick;
+	public M modelBrick;
 	public final MarkPoint markPoint;
 	private final Ipoint monitorCenter = new Ipoint(0, 0);
 	
@@ -30,11 +28,19 @@ public class SpaceSubject<E extends Entity, I extends SSPrint> extends Subject<E
 	 * First point of "ctr" should be center processed be SectorMonitor
 	 */
 	public SpaceSubject(ModelInstance ms, Vector3...ctr){
-		modelBrick = new ModelBrick(ms);
+		modelBrick = provideModelBrick(ms);
 		modelBrick.adjustCurrentPrint();
 		Validate.isTrue(ctr.length > 0, "At least central point should exists");
 		markPoint = new MarkPoint(ctr);
 		markPoint.addTransform(modelBrick.linkTransform());
+	}
+	
+	protected M provideModelBrick(ModelInstance modelInstance){
+		return (M) new ModelBrick(modelInstance);
+	}
+	
+	public M linkModelBrick(){
+		return modelBrick;
 	}
 
 	public void translate(Origin<Vector3> vector) {

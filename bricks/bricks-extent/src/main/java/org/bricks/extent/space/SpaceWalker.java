@@ -7,7 +7,7 @@ import org.bricks.engine.tool.Walk;
 
 import com.badlogic.gdx.math.Vector3;
 
-public abstract class SpaceWalker<S extends SpaceSubject<?, ?>, P extends WalkPrint<?, Vector3>> extends MultiWalker<S, P, Vector3, Roll3D>{
+public abstract class SpaceWalker<S extends SpaceSubject<?, ?, ?>, P extends WalkPrint<?, Vector3>> extends MultiWalker<S, P, Vector3, Roll3D>{
 
 	@Override
 	protected Walk<Vector3> provideInitialLegs() {

@@ -12,7 +12,7 @@ import org.bricks.engine.event.overlap.OverlapStrategy;
 import org.bricks.engine.neve.EntityPrint;
 import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.pool.District;
-import org.bricks.engine.pool.Subject;
+import org.bricks.engine.staff.Subject;
 import org.bricks.engine.pool.World;
 import org.bricks.engine.staff.Liver;
 import org.bricks.engine.tool.Live;
@@ -117,7 +117,7 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 		}
 		alive = true;
 		Motor motor = engine.getLazyMotor();
-		motor.addSubject(this);
+		motor.addLiver(this);
 		this.motor = motor;
 	}
 	
@@ -129,7 +129,7 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 	public void outOfWorld(){
 		alive = false;
 		super.outOfWorld();
-		boolean removed = this.motor.removeSubject(this);
+		boolean removed = this.motor.removeLiver(this);
 		Validate.isTrue(removed);
 	}
 

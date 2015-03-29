@@ -10,7 +10,7 @@ import org.bricks.core.entity.impl.PointSetBrick;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.core.help.VectorHelper;
 import org.bricks.engine.help.VectorSwapHelper;
-import org.bricks.engine.pool.Subject;
+import org.bricks.engine.staff.Subject;
 import org.junit.Test;
 
 

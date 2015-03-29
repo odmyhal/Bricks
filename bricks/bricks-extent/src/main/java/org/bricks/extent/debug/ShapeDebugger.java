@@ -8,7 +8,7 @@ import org.bricks.engine.item.MultiSubjectEntity;
 import org.bricks.engine.pool.Boundary;
 import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.pool.District;
-import org.bricks.engine.pool.Subject;
+import org.bricks.engine.staff.Subject;
 import org.bricks.extent.space.MarkPoint;
 import org.bricks.extent.space.SpaceSubject;
 

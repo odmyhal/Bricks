@@ -2,23 +2,16 @@ package org.bricks.engine.item;
 
 import org.bricks.core.entity.Dimentions;
 import org.bricks.core.entity.Fpoint;
-import org.bricks.core.entity.Ipoint;
-import org.bricks.core.entity.Point;
 import org.bricks.core.help.PointSetHelper;
 import org.bricks.engine.Engine;
-import org.bricks.engine.event.EventSource;
 import org.bricks.engine.event.check.OverlapChecker;
 import org.bricks.engine.neve.EntityPrint;
-import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.pool.District;
-import org.bricks.engine.pool.Subject;
 import org.bricks.engine.pool.World;
-import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.tool.Origin;
 import org.bricks.engine.tool.Origin2D;
-import org.bricks.engine.tool.Roll;
 
 @SuppressWarnings("rawtypes")
 public abstract class Stone<S extends BrickSubject, P extends EntityPrint> extends MultiSubjectEntity<S, P, Fpoint>{

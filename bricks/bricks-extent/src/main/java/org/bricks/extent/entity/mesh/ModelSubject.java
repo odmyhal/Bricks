@@ -1,25 +1,24 @@
 package org.bricks.extent.entity.mesh;
 
 import org.bricks.core.entity.Fpoint;
-import org.bricks.core.entity.Point;
 import org.bricks.core.entity.type.Brick;
-import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.pool.BrickSubject;
-import org.bricks.engine.pool.Subject;
 import org.bricks.engine.staff.Entity;
 import org.bricks.engine.tool.Origin;
 import org.bricks.engine.tool.Roll;
 import org.bricks.extent.subject.model.ModelBrick;
+import org.bricks.extent.subject.model.ModelBrickSubject;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 
-public class ModelSubject<E extends Entity, I extends ModelSubjectPrint, M extends ModelBrick> extends BrickSubject<E, I> implements RenderableProvider{
+public class ModelSubject<E extends Entity, I extends ModelSubjectPrint, M extends ModelBrick>
+	extends BrickSubject<E, I>
+	implements RenderableProvider, ModelBrickSubject<E, I, Fpoint, Roll, M>{
 
 	public M modelBrick;
 	private static final Vector3 spin = new Vector3(0f, 0f, 99f);
@@ -32,6 +31,10 @@ public class ModelSubject<E extends Entity, I extends ModelSubjectPrint, M exten
 	
 	protected M provideModelBrick(ModelInstance modelInstance){
 		return (M) new ModelBrick(modelInstance);
+	}
+	
+	public M linkModelBrick(){
+		return modelBrick;
 	}
 	
 	public void translate(Origin<Fpoint> origin){

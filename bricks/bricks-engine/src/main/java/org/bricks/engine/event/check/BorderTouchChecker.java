@@ -14,7 +14,7 @@ import org.bricks.engine.event.Event;
 import org.bricks.engine.neve.SubjectPrint;
 import org.bricks.engine.pool.Boundary;
 import org.bricks.engine.pool.BrickSubject;
-import org.bricks.engine.pool.Subject;
+import org.bricks.engine.staff.Subject;
 import org.bricks.engine.staff.Liver;
 
 public class BorderTouchChecker<T extends Liver> extends EventChecker<T>{

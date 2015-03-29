@@ -3,17 +3,13 @@ package org.bricks.engine;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.prefs.Preferences;
 
 import org.bricks.engine.pool.District;
-import org.bricks.engine.pool.Subject;
 import org.bricks.engine.pool.World;
-import org.bricks.engine.staff.Entity;
 import org.bricks.engine.event.handler.EventHandleRegistrator;
 
 public class Engine<R> 

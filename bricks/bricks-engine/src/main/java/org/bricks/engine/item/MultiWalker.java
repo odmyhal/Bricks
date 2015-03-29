@@ -1,8 +1,7 @@
 package org.bricks.engine.item;
 
 import org.bricks.engine.neve.WalkPrint;
-import org.bricks.engine.pool.Subject;
-import org.bricks.engine.staff.Roller;
+import org.bricks.engine.staff.Subject;
 import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.staff.Walker;
 import org.bricks.engine.tool.Origin;

@@ -1,10 +1,7 @@
 package org.bricks.engine.item;
 
-import org.bricks.core.entity.Point;
-import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.neve.RollPrint;
-import org.bricks.engine.pool.SectorMonitor;
-import org.bricks.engine.pool.Subject;
+import org.bricks.engine.staff.Subject;
 import org.bricks.engine.staff.Roller;
 import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.tool.Roll;

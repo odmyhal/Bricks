@@ -3,7 +3,7 @@ package org.bricks.engine.event.overlap;
 import java.util.Map;
 
 import org.bricks.engine.event.EventTarget;
-import org.bricks.engine.pool.Subject;
+import org.bricks.engine.staff.Subject;
 
 public interface OverlapTarget extends EventTarget {
 	

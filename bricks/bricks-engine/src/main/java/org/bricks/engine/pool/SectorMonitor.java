@@ -2,6 +2,7 @@ package org.bricks.engine.pool;
 
 import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.Point;
+import org.bricks.engine.staff.Subject;
 
 public class SectorMonitor {
 	

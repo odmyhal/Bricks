@@ -1,6 +1,7 @@
 package org.bricks.engine.pool;
 
 import org.bricks.core.entity.impl.PointSetPrint;
+import org.bricks.engine.staff.Subject;
 
 public interface Pool {
 	

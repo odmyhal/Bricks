@@ -1,10 +1,9 @@
 package org.bricks.engine.item;
 
 import org.bricks.core.entity.Fpoint;
-import org.bricks.core.entity.Point;
 import org.bricks.core.help.PointHelper;
 import org.bricks.engine.neve.WalkPrint;
-import org.bricks.engine.pool.Subject;
+import org.bricks.engine.staff.Subject;
 import org.bricks.engine.tool.Origin;
 import org.bricks.engine.tool.Origin2D;
 import org.bricks.engine.tool.Roll;

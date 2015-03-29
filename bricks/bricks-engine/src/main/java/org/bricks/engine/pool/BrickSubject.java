@@ -9,7 +9,7 @@ import org.bricks.engine.staff.Entity;
 import org.bricks.engine.tool.Origin;
 import org.bricks.engine.tool.Roll;
 
-public class BrickSubject<E extends Entity, I extends SubjectPrint> extends Subject<E, I, Fpoint, Roll>  implements PrintableBrickWrap<I>{
+public class BrickSubject<E extends Entity, I extends SubjectPrint> extends BaseSubject<E, I, Fpoint, Roll>  implements PrintableBrickWrap<I>{
 
 	protected Brick brick;
 //	protected PrintStore<? extends BrickWrap, I> printStore;

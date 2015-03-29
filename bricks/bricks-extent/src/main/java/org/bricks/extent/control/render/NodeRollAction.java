@@ -1,4 +1,4 @@
-package org.bricks.extent.control;
+package org.bricks.extent.control.render;
 
 import java.util.Arrays;
 import java.util.List;

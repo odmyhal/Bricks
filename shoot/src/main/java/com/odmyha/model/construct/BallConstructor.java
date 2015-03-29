@@ -17,7 +17,7 @@ import com.badlogic.gdx.math.Matrix4;
 public class BallConstructor implements ModelConstructor{
 	
 	private static final BallConstructor instance = new BallConstructor();
-	String[] s = new String[]{"ball_60", "ball_30"};
+//	String[] s = new String[]{"ball_60", "ball_30"};
 	
 	private BallConstructor(){}
 	
