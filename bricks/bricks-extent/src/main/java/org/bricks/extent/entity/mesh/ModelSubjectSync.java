@@ -2,7 +2,7 @@ package org.bricks.extent.entity.mesh;
 
 import org.bricks.core.entity.Point;
 import org.bricks.core.entity.type.Brick;
-import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.staff.Entity;
 
@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 
-public class ModelSubjectSync<E extends Entity, I extends SubjectPrint> extends BrickSubject<E, I> implements RenderableProvider{
+public class ModelSubjectSync<E extends Entity, I extends EntityPointsPrint> extends BrickSubject<E, I> implements RenderableProvider{
 	
 	private boolean edit = true;
 	private ModelInstance modelInstance;
@@ -56,6 +56,6 @@ public class ModelSubjectSync<E extends Entity, I extends SubjectPrint> extends 
 	
 	@Override
 	public I print(){
-		return (I) new SubjectPrint(this.printStore);
+		return (I) new EntityPointsPrint(this.printStore);
 	}
 }

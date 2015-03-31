@@ -11,7 +11,7 @@ import org.bricks.core.help.SideLocator;
 import org.bricks.engine.event.BaseEvent;
 import org.bricks.engine.event.BorderEvent;
 import org.bricks.engine.event.Event;
-import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.engine.pool.Boundary;
 import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.staff.Subject;
@@ -80,8 +80,8 @@ public class BorderTouchChecker<T extends Liver> extends EventChecker<T>{
 		return null;
 	}
 	
-	private BorderEvent checkTouch(BrickSubject<?, ? extends SubjectPrint> target, Boundary border){
-		SubjectPrint sv = target.getInnerPrint();
+	private BorderEvent checkTouch(BrickSubject<?, ? extends EntityPointsPrint> target, Boundary border){
+		EntityPointsPrint sv = target.getInnerPrint();
 		if(sv == null){
 			return null;
 		}

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.bricks.exception.Validate;
 import org.bricks.annotation.EventHandle;
+import org.bricks.annotation.OverlapCheck;
 import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Point;
 import org.bricks.core.entity.type.Brick;
@@ -13,17 +14,19 @@ import org.bricks.engine.event.BorderEvent;
 import org.bricks.engine.event.OverlapEvent;
 import org.bricks.engine.event.check.BorderTouchChecker;
 import org.bricks.engine.event.check.OverlapChecker;
+import org.bricks.engine.event.overlap.BrickOverlapAlgorithm;
 import org.bricks.engine.event.overlap.OverlapStrategy;
 import org.bricks.engine.event.overlap.SmallEventStrategy;
 import org.bricks.engine.help.VectorSwapHelper;
-import org.bricks.engine.item.MultiWalker;
 import org.bricks.engine.item.MultiWalkRoller;
 import org.bricks.engine.neve.RollPrint;
-import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.engine.neve.WalkPrint;
 import org.bricks.engine.pool.Boundary;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.staff.ListenDistrictEntity;
+import org.bricks.engine.staff.Subject;
+
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;
 import com.badlogic.gdx.utils.Array;
@@ -36,13 +39,13 @@ import com.odmyha.weapon.Shield;
 public class Ball extends MultiWalkRoller<BallSubjectNew, WalkPrint> implements ListenDistrictEntity<WalkPrint>, RenderableProvider{
 	
 	public static final String BALL_SOURCE_TYPE = "BallSource@shoot.odmyha.com";
-	
+/*	
 	private static final Map<String, OverlapStrategy> ballStrategy = new HashMap<String, OverlapStrategy>();
 	static{
 		ballStrategy.put(Ball.BALL_SOURCE_TYPE, OverlapStrategy.TRUE);
 		ballStrategy.put(Shield.SHIELD_SOURCE, OverlapStrategy.TRUE);
 	}
-
+*/
 	private Ball(BallSubjectNew subj) {
 		addSubject(subj);
 		registerEventChecker(OverlapChecker.instance());
@@ -82,7 +85,7 @@ public class Ball extends MultiWalkRoller<BallSubjectNew, WalkPrint> implements 
 		}
 	}
 	
-	private void reflectOfMoveingPoint(SubjectPrint<?, WalkPrint<?, Fpoint>> target, Point touch, Point mVector, long curTime){
+	private void reflectOfMoveingPoint(EntityPointsPrint<?, WalkPrint<?, Fpoint>> target, Point touch, Point mVector, long curTime){
 		Validate.isTrue(this.equals(target.getTarget().getEntity()));
 		Fpoint swap = VectorSwapHelper.fetchReturnVector(target, touch);
 //Moveing sake	
@@ -107,7 +110,7 @@ public class Ball extends MultiWalkRoller<BallSubjectNew, WalkPrint> implements 
 		}
 	}
 
-	private void reflectOfPoint(SubjectPrint<?, WalkPrint<?, Fpoint>> target, Point touch, long curTime){
+	private void reflectOfPoint(EntityPointsPrint<?, WalkPrint<?, Fpoint>> target, Point touch, long curTime){
 		Validate.isTrue(this.equals(target.getTarget().getEntity()));
 		Fpoint swap = VectorSwapHelper.fetchReturnVector(target, touch);
 		Fpoint V = getVector().source;
@@ -119,59 +122,40 @@ public class Ball extends MultiWalkRoller<BallSubjectNew, WalkPrint> implements 
 		}
 	}
 	
+	@OverlapCheck(algorithm = BrickOverlapAlgorithm.class, sourceType = Ball.BALL_SOURCE_TYPE, strategyClass = SmallEventStrategy.class)
 	@EventHandle(eventType = Ball.BALL_SOURCE_TYPE)
-	public void vectorHit(OverlapEvent e){
-		SubjectPrint<?, WalkPrint<?, Fpoint>> target = (SubjectPrint<?, WalkPrint<?, Fpoint>>) e.getTargetPrint();
+	public void vectorHit(OverlapEvent<EntityPointsPrint<?, WalkPrint<?, Fpoint>>, EntityPointsPrint<?, WalkPrint<?, Fpoint>>, Point> e){
+		EntityPointsPrint<?, WalkPrint<?, Fpoint>> target = e.getTargetPrint();
 		Validate.isTrue(this.equals(target.entityPrint.getTarget()));
-		SubjectPrint<?, WalkPrint<?, Fpoint>> source = (SubjectPrint<?, WalkPrint<?, Fpoint>>) e.getSourcePrint();
+		EntityPointsPrint<?, WalkPrint<?, Fpoint>> source = e.getSourcePrint();
 		Fpoint swap = VectorSwapHelper.fetchSwapVector(target, source);
 		Fpoint myVector = getVector().source;
 		myVector.setX(myVector.x + swap.x);
 		myVector.setY(myVector.y + swap.y);
 		this.adjustCurrentPrint();
-/*		this.startLog();
-		this.appendLog("Hit ball");
-		this.appendLog(String.format("My vector=%s,  my center=%s", target.getEntityView().getVector(), target.getEntityView().getOrigin()));
-		this.appendLog(String.format("Source vector=%s,  source center=%s", source.getEntityView().getVector(), source.getEntityView().getOrigin()));
-		this.appendLog(String.format("Touch point=%s, Result vector=%s", e.getTouchPoint(), myVector));
-		this.finishLog();*/
 		if(swap.getFX() != 0 || swap.getFY() != 0){
 			flushTimer(e.getEventTime());
 		}
 	}
 	
+	@OverlapCheck(algorithm = BrickOverlapAlgorithm.class, sourceType = Shield.SHIELD_SOURCE, strategyClass = OverlapStrategy.TrueOverlapStrategy.class)
 	@EventHandle(eventType = Shield.SHIELD_SOURCE)
-	public void stoneHit(OverlapEvent e){
-/*		this.startLog();
-		this.appendLog("Hit Stone");
-		WalkView wv = (WalkView)e.getTargetView().getEntityView();
-		this.appendLog(String.format("My vector=%s,  my center=%s", wv.getVector(), wv.getOrigin()));
-		this.appendLog(String.format("Touch Point=%s", e.getTouchPoint()));*/
-		reflectOfPoint((SubjectPrint<?, WalkPrint<?, Fpoint>>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
-/*		this.appendLog(String.format("Result vector=%s", getVector()));
-		this.finishLog();*/
+	public void stoneHit(OverlapEvent<EntityPointsPrint<?, WalkPrint<?, Fpoint>>, EntityPointsPrint<?, WalkPrint<?, Fpoint>>, Point> e){
+		reflectOfPoint(e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
 	}
 	
+	@OverlapCheck(algorithm = BrickOverlapAlgorithm.class, sourceType = Cannon.CANNON_SOURCE, strategyClass = OverlapStrategy.TrueOverlapStrategy.class)
 	@EventHandle(eventType = Cannon.CANNON_SOURCE)
-	public void cannonHit(OverlapEvent e){
-		SubjectPrint<?, RollPrint> source = (SubjectPrint<?, RollPrint>) e.getSourcePrint();
+	public void cannonHit(OverlapEvent<EntityPointsPrint<?, WalkPrint<?, Fpoint>>, EntityPointsPrint<?, WalkPrint>, Point> e){
+		EntityPointsPrint<?, WalkPrint> source = e.getSourcePrint();
 		RollPrint rv = source.entityPrint;
-/*		this.appendLog("Hit Cannon");
-		WalkView wv = (WalkView)e.getTargetView().getEntityView();
-		this.appendLog(String.format("My vector=%s,  my center=%s", wv.getVector(), wv.getOrigin()));
-		this.appendLog(String.format("Touch Point=%s", e.getTouchPoint()));
-		this.appendLog(String.format("Cannon rotationSpeed=%.5f, rotation=%.5f", rv.getRotationSpeed(), rv.getRotation()));
-*/		if(rv.getRotationSpeed() == 0){
-//			this.appendLog("Simple reflect");
-			reflectOfPoint((SubjectPrint<?, WalkPrint<?, Fpoint>>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
+		if(rv.getRotationSpeed() == 0){
+			reflectOfPoint(e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
 		}else{
-//			System.out.println(String.format("Reflection of rollable cannon with speed=%.5f", rv.getRotationSpeed()));
 			Point originP = (Point) rv.getOrigin().source;
 			Point mVector = VectorSwapHelper.getRollVector(e.getTouchPoint(), originP, rv.getRotationSpeed());
-			reflectOfMoveingPoint((SubjectPrint<?, WalkPrint<?, Fpoint>>) e.getTargetPrint(), e.getTouchPoint(), mVector, e.getEventTime());
+			reflectOfMoveingPoint((EntityPointsPrint<?, WalkPrint<?, Fpoint>>) e.getTargetPrint(), e.getTouchPoint(), mVector, e.getEventTime());
 		}
-/*		this.appendLog(String.format("Result vector=%s", getVector()));
-		this.finishLog();*/
 	}
 	
 	@EventHandle(eventType = Bullet.BULLET_SOURCE)
@@ -181,24 +165,12 @@ public class Ball extends MultiWalkRoller<BallSubjectNew, WalkPrint> implements 
 	
 	@EventHandle(eventType = Boundary.SIDE_BORDER)
 	public void borderSideTouch(BorderEvent e){
-/*		this.appendLog("Hit Border 1");
-		WalkView wv = (WalkView)e.getTargetView().getEntityView();
-		this.appendLog(String.format("My vector=%s,  my center=%s", wv.getVector(), wv.getOrigin()));
-		this.appendLog(String.format("Touch Point=%s, border=%s", e.getTouchPoint(), e.getEventSource()));
-*/		reflectOfPoint((SubjectPrint<?, WalkPrint<?, Fpoint>>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
-/*		this.appendLog(String.format("Result vector=%s", getVector()));
-		this.finishLog();*/
+		reflectOfPoint((EntityPointsPrint<?, WalkPrint<?, Fpoint>>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
 	}
 	
 	@EventHandle(eventType = Boundary.CORNER_BORDER)
 	public void borderCornerTouch(BorderEvent e){
-/*		this.appendLog("Hit Border 2");
-		WalkView wv = (WalkView)e.getTargetView().getEntityView();
-		this.appendLog(String.format("My vector=%s,  my center=%s", wv.getVector(), wv.getOrigin()));
-		this.appendLog(String.format("Touch Point=%s, border=%s", e.getTouchPoint(), e.getEventSource()));
-*/		reflectOfPoint((SubjectPrint<?, WalkPrint<?, Fpoint>>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
-/*		this.appendLog(String.format("Result vector=%s", getVector()));
-		this.finishLog();*/
+		reflectOfPoint((EntityPointsPrint<?, WalkPrint<?, Fpoint>>) e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
 	}
 
 	public void onDistrictJoin(District d) {
@@ -213,27 +185,14 @@ public class Ball extends MultiWalkRoller<BallSubjectNew, WalkPrint> implements 
 		return BALL_SOURCE_TYPE;
 	}
 
-	public Map<String, OverlapStrategy> initOverlapStrategy() {
+/*	public Map<String, OverlapStrategy> initOverlapStrategy() {
+		BrickOverlapAlgorithm algorithm = new BrickOverlapAlgorithm();
+		OverlapStrategy trueStrategy = new OverlapStrategy.TrueOverlapStrategy(algorithm);
 		Map<String, OverlapStrategy> ballStrategy = new HashMap<String, OverlapStrategy>();
-		ballStrategy.put(Ball.BALL_SOURCE_TYPE, new SmallEventStrategy(this));
-		ballStrategy.put(Shield.SHIELD_SOURCE, OverlapStrategy.TRUE);
-		ballStrategy.put(Cannon.CANNON_SOURCE, OverlapStrategy.TRUE);
+		ballStrategy.put(Ball.BALL_SOURCE_TYPE, new SmallEventStrategy(algorithm));
+		ballStrategy.put(Shield.SHIELD_SOURCE, trueStrategy);
+		ballStrategy.put(Cannon.CANNON_SOURCE, trueStrategy);
 		return ballStrategy;
-	}
-/*
-	public ModelInstance produceModel() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ModelInstance getModel() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void disposeModel() {
-		// TODO Auto-generated method stub
-		
 	}
 */
 }

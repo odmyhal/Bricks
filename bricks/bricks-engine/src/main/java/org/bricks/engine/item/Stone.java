@@ -4,9 +4,9 @@ import org.bricks.core.entity.Dimentions;
 import org.bricks.core.entity.Fpoint;
 import org.bricks.core.help.PointSetHelper;
 import org.bricks.engine.Engine;
-import org.bricks.engine.event.check.OverlapChecker;
+import org.bricks.engine.event.overlap.BrickOverlapAlgorithm;
 import org.bricks.engine.neve.EntityPrint;
-import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.pool.World;
@@ -30,7 +30,7 @@ public abstract class Stone<S extends BrickSubject, P extends EntityPrint> exten
 	public void applyEngine(Engine engine) {
 		super.applyEngine(engine);
 		World world = engine.getWorld();
-		for(BrickSubject<?, SubjectPrint> subject : getStaff()){
+		for(BrickSubject<?, EntityPointsPrint> subject : getStaff()){
 			subject.adjustCurrentPrint();
 			Dimentions dimm = PointSetHelper.fetchDimentions(subject.getBrick().getPoints());
 			int startRow = world.detectSectorRow(dimm.getMinYPoint()) - 1;
@@ -41,10 +41,10 @@ public abstract class Stone<S extends BrickSubject, P extends EntityPrint> exten
 				for(int col = startCol; col <= endCol; col++){
 					District cur = world.getDistrict(row, col);
 					if(cur != null){
-						if(OverlapChecker.isOvarlap(cur.getPrint(), subject.getInnerPrint())){
+						if(BrickOverlapAlgorithm.isPointSetOverlap(cur.getPrint(), subject.getInnerPrint())){
 							subject.joinPool(cur);
 							subject.joinPool(cur.getBuffer());
-						}else if(OverlapChecker.isOvarlap(cur.getBuffer().getPrint(), subject.getInnerPrint())){
+						}else if(BrickOverlapAlgorithm.isPointSetOverlap(cur.getBuffer().getPrint(), subject.getInnerPrint())){
 							subject.joinPool(cur.getBuffer());
 						}
 					}

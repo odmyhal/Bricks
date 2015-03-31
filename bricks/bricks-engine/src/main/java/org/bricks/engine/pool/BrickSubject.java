@@ -4,12 +4,12 @@ import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Point;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.engine.neve.PrintableBrickWrap;
-import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.engine.staff.Entity;
 import org.bricks.engine.tool.Origin;
 import org.bricks.engine.tool.Roll;
 
-public class BrickSubject<E extends Entity, I extends SubjectPrint> extends BaseSubject<E, I, Fpoint, Roll>  implements PrintableBrickWrap<I>{
+public class BrickSubject<E extends Entity, I extends EntityPointsPrint> extends BaseSubject<E, I, Fpoint, Roll>  implements PrintableBrickWrap<I>{
 
 	protected Brick brick;
 //	protected PrintStore<? extends BrickWrap, I> printStore;
@@ -58,6 +58,6 @@ public class BrickSubject<E extends Entity, I extends SubjectPrint> extends Base
 	
 
 	public I print(){
-		return (I) new SubjectPrint(printStore);
+		return (I) new EntityPointsPrint(printStore);
 	}
 }

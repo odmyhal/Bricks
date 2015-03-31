@@ -60,4 +60,25 @@ public abstract class CreateSourceProcessor extends AbstractProcessor {
 		}
         return true;
 	}
+	
+	protected String stripTemplates(String initialName){
+		int markIndex = initialName.indexOf("<");
+		if(markIndex > 0){
+			initialName = initialName.substring(0, markIndex);
+		}
+		return initialName;
+	}
+	
+	protected String fetchSimpleClassName(String canonicalClassName){
+		canonicalClassName = stripTemplates(canonicalClassName);
+		int pointIndex = canonicalClassName.lastIndexOf(".");
+		if(pointIndex > 0){
+			canonicalClassName = canonicalClassName.substring(pointIndex + 1);
+		}
+		return canonicalClassName;
+	}
+	
+	public void error(String msg){
+		throw new RuntimeException(msg);
+	}
 }

@@ -2,33 +2,31 @@ package org.bricks.engine.event;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.bricks.core.entity.Point;
-import org.bricks.engine.neve.EntityPrint;
-import org.bricks.engine.neve.SubjectPrint;
-import org.bricks.engine.pool.BrickSubject;
-import org.bricks.engine.staff.Subject;
+import org.bricks.engine.neve.Imprint;
+import org.bricks.engine.pool.BaseSubject;
 import org.bricks.engine.staff.Entity;
 
-public class OverlapEvent extends BaseEvent<Entity>{
+public class OverlapEvent<T extends Imprint<? extends BaseSubject>, K extends Imprint<? extends BaseSubject>, P> 
+	extends BaseEvent<Entity>{
 	
 	private static final AtomicInteger crashNumberGenerator = new AtomicInteger(0);
-	private SubjectPrint<? extends BrickSubject, ? extends EntityPrint> source;
-	private SubjectPrint<? extends BrickSubject, ? extends EntityPrint> target;
-	private Point touchPoint;
+	private T target;
+	protected K source;
+	protected P touchPoint;
 	private int crashNum;
 	
 	private static int generateCrashNumber(){
 		return crashNumberGenerator.incrementAndGet();
 	}
 	
-	public OverlapEvent(SubjectPrint target, SubjectPrint source, Point touchPoint, int crNumb){
+	public OverlapEvent(T target, K source, P touchPoint, int crNumb){
 		this.target = target;
 		this.source = source;
 		this.touchPoint = touchPoint;
 		this.crashNum = crNumb;
 	}
 	
-	public OverlapEvent(SubjectPrint target, SubjectPrint source, Point touchPoint){
+	public OverlapEvent(T target, K source, P touchPoint){
 		this.target = target;
 		this.source = source;
 		this.touchPoint = touchPoint;
@@ -39,15 +37,15 @@ public class OverlapEvent extends BaseEvent<Entity>{
 		return source.getTarget().getEntity().sourceType();
 	}
 	
-	public Point getTouchPoint(){
+	public P getTouchPoint(){
 		return touchPoint;
 	}
 	
-	public SubjectPrint<? extends Subject, ? extends EntityPrint> getSourcePrint(){
+	public K getSourcePrint(){
 		return source;
 	}
 	
-	public SubjectPrint<? extends Subject, ? extends EntityPrint> getTargetPrint(){
+	public T getTargetPrint(){
 		return target;
 	}
 

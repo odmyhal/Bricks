@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bircks.entierprise.model.ModelStorage;
 import org.bricks.annotation.EventHandle;
+import org.bricks.annotation.OverlapCheck;
 import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.impl.PointSetBrick;
@@ -16,11 +18,12 @@ import org.bricks.core.help.PointHelper;
 import org.bricks.engine.event.BaseEvent;
 import org.bricks.engine.event.OverlapEvent;
 import org.bricks.engine.event.check.OverlapChecker;
+import org.bricks.engine.event.overlap.BrickOverlapAlgorithm;
 import org.bricks.engine.event.overlap.OverlapStrategy;
 import org.bricks.engine.event.overlap.SmallEventStrategy;
 import org.bricks.engine.item.MultiRoller;
 import org.bricks.engine.neve.RollPrint;
-import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.engine.tool.Origin;
 import org.bricks.engine.tool.Origin2D;
 import org.bricks.engine.tool.Roll;
@@ -53,7 +56,7 @@ public class Cannon extends MultiRoller<ModelSubjectSync<?, ?>, RollPrint, Fpoin
 		}
 	}
 	
-	private ModelSubjectSync<Cannon, SubjectPrint> produceOne(){
+	private ModelSubjectSync<Cannon, EntityPointsPrint> produceOne(){
 		Collection<Ipoint> points = new LinkedList<Ipoint>();
 		points.add(new Ipoint(150, 175));
 		points.add(new Ipoint(125, 200));
@@ -73,10 +76,10 @@ public class Cannon extends MultiRoller<ModelSubjectSync<?, ?>, RollPrint, Fpoin
 		Brick brick = new PointSetBrick(points);
 //		brick.rotate((float)(-Math.PI / 2), new Ipoint(0, 0));
 		ModelInstance tower = ModelStorage.instance().getModelInstance("tower");//ModelProvider.produceTowerModel();//
-		return new ModelSubjectSync<Cannon, SubjectPrint>(brick, tower);
+		return new ModelSubjectSync<Cannon, EntityPointsPrint>(brick, tower);
 	}
 	
-	private ModelSubjectSync<Cannon, SubjectPrint> produceTwo(){
+	private ModelSubjectSync<Cannon, EntityPointsPrint> produceTwo(){
 		Collection<Ipoint> points = new LinkedList<Ipoint>();
 		points.add(new Ipoint(100, 300));
 		points.add(new Ipoint(50, 300));
@@ -92,11 +95,11 @@ public class Cannon extends MultiRoller<ModelSubjectSync<?, ?>, RollPrint, Fpoin
 		Brick brick = new PointSetBrick(points);
 //		brick.rotate((float)(-Math.PI / 2), new Ipoint(0, 0));
 		ModelInstance tube = ModelStorage.instance().getModelInstance("tube");//ModelProvider.produceTubeModel()
-		return new ModelSubjectSync<Cannon, SubjectPrint>(brick, tube);
+		return new ModelSubjectSync<Cannon, EntityPointsPrint>(brick, tube);
 	}
 	
 	private void fire(){
-		SubjectPrint<?, RollPrint> gunView = (SubjectPrint<?, RollPrint>) this.getStaff().get(1).getInnerPrint();// getStaff().get(1).getInnerPrint();
+		EntityPointsPrint<?, RollPrint> gunView = (EntityPointsPrint<?, RollPrint>) this.getStaff().get(1).getInnerPrint();// getStaff().get(1).getInnerPrint();
 		List<Ipoint> gunPoints = gunView.getPoints();
 		Ipoint one = gunPoints.get(0);
 		Ipoint two = gunPoints.get(1);
@@ -109,7 +112,7 @@ public class Cannon extends MultiRoller<ModelSubjectSync<?, ?>, RollPrint, Fpoin
 //		firePoint.translate(v.getX(), v.getY());
 		tmpFire.source.x += v.getX();
 		tmpFire.source.y += v.getY();
-		Bullet bullet = Bullet.produce();
+		Bullet bullet = Bullet.produce(this);
 		
 		bullet.setRotation(gunView.entityPrint.getRotation());
 		bullet.applyRotation();
@@ -120,18 +123,21 @@ public class Cannon extends MultiRoller<ModelSubjectSync<?, ?>, RollPrint, Fpoin
 	public String sourceType() {
 		return CANNON_SOURCE;
 	}
-
+/*
 	public Map<String, OverlapStrategy> initOverlapStrategy() {
+		BrickOverlapAlgorithm algorithm = new BrickOverlapAlgorithm();
+		OverlapStrategy trueStrategy = new OverlapStrategy.TrueOverlapStrategy(algorithm);
 		Map<String, OverlapStrategy> cannonStrategy = new HashMap<String, OverlapStrategy>();
-		cannonStrategy.put(Cannon.CANNON_SOURCE, new SmallEventStrategy(this));
-		cannonStrategy.put(Shield.SHIELD_SOURCE, OverlapStrategy.TRUE);
+		cannonStrategy.put(Cannon.CANNON_SOURCE, new SmallEventStrategy(algorithm));
+		cannonStrategy.put(Shield.SHIELD_SOURCE, trueStrategy);
 		return cannonStrategy;
 	}
-	
+*/	
 	public Origin<Fpoint> provideInitialOrigin(){
 		return new Origin2D();
 	}
 	
+	@OverlapCheck(algorithm = BrickOverlapAlgorithm.class, sourceType = Cannon.CANNON_SOURCE, strategyClass = SmallEventStrategy.class)
 	@EventHandle(eventType = Cannon.CANNON_SOURCE)
 	public void hitCannon(OverlapEvent e){
 		this.rollBack(e.getEventTime());
@@ -141,6 +147,7 @@ public class Cannon extends MultiRoller<ModelSubjectSync<?, ?>, RollPrint, Fpoin
 	@EventHandle(eventType = Ball.BALL_SOURCE_TYPE)
 	public void doNothing(OverlapEvent e){}
 	
+	@OverlapCheck(algorithm = BrickOverlapAlgorithm.class, sourceType = Shield.SHIELD_SOURCE, strategyClass = OverlapStrategy.TrueOverlapStrategy.class)
 	@EventHandle(eventType = Shield.SHIELD_SOURCE)
 	public void faceShield(OverlapEvent e){
 		this.rollBack(e.getEventTime());

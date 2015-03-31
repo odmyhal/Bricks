@@ -6,18 +6,15 @@ import org.bricks.engine.staff.Liver;
 
 public class SmallEventStrategy extends OverlapStrategy{
 
-	private Liver target;
-	
-	public SmallEventStrategy(Liver packet){
-		this.target = packet;
+	public SmallEventStrategy(OverlapAlgorithm algorithm){
+		super(algorithm);
 	}
 	
-	public boolean hasToCheckOverlap(Subject source){
+	public boolean hasToCheckOverlap(Liver target, Subject source){
 		Entity se = source.getEntity();
 		if(target.equals(se)){
 			return false;
 		}
-//		float r = target.getWeight() - se.getWeight();
 		int r = target.hashCode() - se.hashCode();
 		if(r > 0){
 			return false;

@@ -3,11 +3,11 @@ package org.bricks.engine.neve;
 import org.bricks.core.entity.impl.PointSetPrint;
 import org.bricks.engine.pool.BrickSubject;
 
-public class SubjectPrint<P extends BrickSubject, EP extends EntityPrint> extends PointSetPrint<P> {
+public class EntityPointsPrint<P extends BrickSubject, EP extends EntityPrint> extends PointSetPrint<P> {
 	
 	public EP entityPrint;
 
-	public SubjectPrint(PrintStore<P, ?> ps) {
+	public EntityPointsPrint(PrintStore<P, ?> ps) {
 		super(ps);
 	}
 

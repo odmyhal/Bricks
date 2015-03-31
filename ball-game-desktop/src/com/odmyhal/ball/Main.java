@@ -8,8 +8,6 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "ball-game";
 		cfg.useGL30 = false;
-//		cfg.width = 1250;
-//		cfg.height = 750;
 		cfg.width = 500;
 		cfg.height = 750;
 		

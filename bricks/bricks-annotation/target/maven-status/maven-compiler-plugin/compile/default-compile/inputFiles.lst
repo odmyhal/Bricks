@@ -1,6 +1,9 @@
 /home/oleh/git/Bricks/bricks/bricks-annotation/src/main/java/org/bricks/annotation/processor/CreateSourceProcessor.java
 /home/oleh/git/Bricks/bricks/bricks-annotation/src/main/java/org/bricks/annotation/processor/App.java
+/home/oleh/git/Bricks/bricks/bricks-annotation/src/main/java/org/bricks/annotation/BaseHandle.java
 /home/oleh/git/Bricks/bricks/bricks-annotation/src/main/java/org/bricks/annotation/processor/EventHandleProcessor.java
+/home/oleh/git/Bricks/bricks/bricks-annotation/src/main/java/org/bricks/annotation/OverlapCheck.java
 /home/oleh/git/Bricks/bricks/bricks-annotation/src/main/java/org/bricks/annotation/EventHandle.java
+/home/oleh/git/Bricks/bricks/bricks-annotation/src/main/java/org/bricks/annotation/processor/OverlapStrategyProcessor.java
 /home/oleh/git/Bricks/bricks/bricks-annotation/src/main/java/org/bricks/annotation/ConstructModel.java
 /home/oleh/git/Bricks/bricks/bricks-annotation/src/main/java/org/bricks/annotation/processor/ModelConstructProcessor.java

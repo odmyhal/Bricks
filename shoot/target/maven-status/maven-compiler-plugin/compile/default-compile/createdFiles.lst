@@ -8,6 +8,9 @@ org/bricks/engine/event/handler/CannonOverlapEventHandler_2.class
 org/bricks/enterprise/gen/GenModelConstructTool.class
 com/odmyhal/panel/CannonFireButton.class
 org/bricks/engine/event/handler/BallBorderEventHandler.class
+org/bricks/engine/event/handler/BulletOverlapEventHandler_2.class
+org/bricks/engine/overlap/BulletOverlapStrategy.class
+org/bricks/engine/overlap/OSRegistrator.class
 com/odmyha/model/construct/CannonConstructor.class
 org/bricks/engine/event/handler/CannonOverlapEventHandler.class
 org/bricks/engine/event/handler/BallOverlapEventHandler_2.class

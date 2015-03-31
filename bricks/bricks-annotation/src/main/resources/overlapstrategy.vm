@@ -1,0 +1,16 @@
+package ${packageName};
+
+import org.bricks.engine.event.overlap.OverlapStrategy;
+import org.bricks.engine.event.overlap.OverlapAlgorithm;
+import org.bricks.engine.staff.Subject;
+
+public class ${strategyClassName} extends OverlapStrategy<${targetClassName}>{
+
+	public ${strategyClassName}(OverlapAlgorithm algorithm){
+		super(algorithm);
+	}
+	
+	public boolean hasToCheckOverlap(${targetClassName} target, Subject source){
+		return target.$!{methodName.replace('"',"")}(source);
+	}
+}

@@ -5,7 +5,7 @@ import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.Point;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.core.help.VectorHelper;
-import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.engine.pool.District;
 import org.bricks.extent.entity.mesh.ModelSubjectSync;
 
@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.g3d.RenderableProvider;
 import com.odmyha.shoot.Ball;
 
 //public class BallSubjectNew extends ModelSubjectOperable<Ball, ModelSubjectPrint> implements RenderableProvider{
-public class BallSubjectNew extends ModelSubjectSync<Ball, SubjectPrint> implements RenderableProvider{
+public class BallSubjectNew extends ModelSubjectSync<Ball, EntityPointsPrint> implements RenderableProvider{
 
 	public BallSubjectNew(Brick brick) {
 		super(brick, produceModelInstance(brick));

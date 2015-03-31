@@ -11,6 +11,7 @@ import java.util.prefs.Preferences;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.pool.World;
 import org.bricks.engine.event.handler.EventHandleRegistrator;
+import org.bricks.engine.event.overlap.OverlapStrategyRegistrator;
 
 public class Engine<R> 
 {
@@ -35,6 +36,34 @@ public class Engine<R>
 			ehr.registerEventHandlers();
 		} catch (ClassNotFoundException e) {
 			System.out.println("WARN (" + this.getClass().getCanonicalName() + ") : Could not find registrator class " + props.get("event.handel.registrator", "org.bricks.engine.event.handler.EmptyEventHandlerRegistrator"));
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		OverlapStrategyRegistrator osr = null;
+		try {
+			Class<OverlapStrategyRegistrator> eClass = (Class<OverlapStrategyRegistrator>) Class.forName(props.get("overlap.strategy.registrator", "org.bricks.engine.overlap.OSRegistrator"));
+			Constructor<OverlapStrategyRegistrator> rConstructor = eClass.getConstructor(); 
+			osr = rConstructor.newInstance();
+			osr.registerStrategies();
+		} catch (ClassNotFoundException e) {
+			System.out.println("WARN (" + this.getClass().getCanonicalName() + ") : Could not find registrator class " + props.get("overlap.strategy.registrator", "org.bricks.engine.overlap.OSRegistrator"));
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

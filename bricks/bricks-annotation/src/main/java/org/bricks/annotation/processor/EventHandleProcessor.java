@@ -47,15 +47,15 @@ public class EventHandleProcessor extends CreateSourceProcessor{
 				List<? extends VariableElement> params = ee.getParameters();
 				VariableElement ve = params.get(0);
 				
-				String eventClassName = ve.asType().toString();
+				String eventClassName = this.stripTemplates(ve.asType().toString());
 				
 				Element te = element.getEnclosingElement();
 				if(te.getKind() == ElementKind.CLASS){
-					String targetClassName = te.asType().toString();
+					String targetClassName = this.stripTemplates(te.asType().toString());
 					EventHandle eh = element.getAnnotation(EventHandle.class);
-					
-					String targetSimpleName = targetClassName.substring(targetClassName.lastIndexOf(".") + 1);
-					String eventSimpleName = eventClassName.substring(eventClassName.lastIndexOf(".") + 1);
+
+					String targetSimpleName = this.fetchSimpleClassName(targetClassName);
+					String eventSimpleName = this.fetchSimpleClassName(eventClassName);
 
 					String handlerName = targetSimpleName + eventSimpleName + "Handler";
 					if(handlerDublicates.containsKey(handlerName)){

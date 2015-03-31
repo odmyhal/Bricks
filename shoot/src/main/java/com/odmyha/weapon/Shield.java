@@ -9,7 +9,7 @@ import org.bricks.core.entity.impl.PointSetBrick;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.engine.item.Stone;
 import org.bricks.engine.neve.EntityPrint;
-import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.extent.entity.mesh.ModelSubjectSync;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -42,7 +42,7 @@ public class Shield extends Stone<ModelSubjectSync, EntityPrint> implements Rend
 		ModelSubject<Shield> ms = new ModelSubject<Shield>(brick, mi);
 //		ms.getModelInstance().materials.get(0).set(ColorAttribute.createDiffuse(Color.GRAY));*/
 		ModelInstance shield = ModelStorage.instance().getModelInstance("shield");
-		ModelSubjectSync<Shield, SubjectPrint> ms = new ModelSubjectSync<Shield, SubjectPrint>(brick, shield);
+		ModelSubjectSync<Shield, EntityPointsPrint> ms = new ModelSubjectSync<Shield, EntityPointsPrint>(brick, shield);
 		return new Shield(ms);
 	}
 	

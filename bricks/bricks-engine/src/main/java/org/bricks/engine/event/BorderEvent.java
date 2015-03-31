@@ -1,16 +1,16 @@
 package org.bricks.engine.event;
 
 import org.bricks.core.entity.Point;
-import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.engine.pool.Boundary;
 
 public class BorderEvent extends BaseEvent<Boundary>{
 	
 	private Boundary  boundary;
 	private Point touchPoint;
-	private SubjectPrint target;
+	private EntityPointsPrint target;
 	
-	public BorderEvent(SubjectPrint target, Boundary boundary, Point point){
+	public BorderEvent(EntityPointsPrint target, Boundary boundary, Point point){
 		this.boundary = boundary;
 		this.touchPoint = point;
 		this.target = target;
@@ -32,7 +32,7 @@ public class BorderEvent extends BaseEvent<Boundary>{
 		return BaseEvent.touchEventCode;
 	}
 	
-	public SubjectPrint getTargetPrint(){
+	public EntityPointsPrint getTargetPrint(){
 		return target;
 	}
 	

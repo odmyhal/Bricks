@@ -1,0 +1,18 @@
+package ${packageName};
+
+import org.bricks.engine.event.overlap.OverlapStrategyRegistrator;
+import org.bricks.engine.event.overlap.OSRegister;
+
+public class ${className} implements OverlapStrategyRegistrator{
+
+	public void registerStrategies() {
+	#foreach( $handlerData in $handlers )
+		#set($tcn = $handlerData.get('targetClassName'))
+		#set($stp = $handlerData.get('sourceType'))
+		#set($acm = $handlerData.get('algorithmClassName'))
+		#set($scm = $handlerData.get('strategyClassName'))
+		OSRegister.registerStrategy(${tcn}.class, "$!{stp.replace('"',"")}", 
+			   new ${scm}(new $acm()));
+	#end
+	}
+}

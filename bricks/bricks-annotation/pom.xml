@@ -47,5 +47,10 @@
 		<version>1.7</version>
 		<scope>compile</scope>
     </dependency>
+    <dependency>
+    	<groupId>com.odmyhal</groupId>
+		<artifactId>bricks-engine</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>

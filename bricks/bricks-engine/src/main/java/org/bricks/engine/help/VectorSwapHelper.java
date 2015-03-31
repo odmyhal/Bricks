@@ -5,12 +5,12 @@ import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Point;
 import org.bricks.core.help.PointHelper;
 import org.bricks.core.help.VectorHelper;
-import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.engine.neve.WalkPrint;
 
 public class VectorSwapHelper {
 
-	public static Fpoint fetchSwapVector(SubjectPrint<?, WalkPrint<?, Fpoint>> target, SubjectPrint<?, WalkPrint<?, Fpoint>> source){
+	public static Fpoint fetchSwapVector(EntityPointsPrint<?, WalkPrint<?, Fpoint>> target, EntityPointsPrint<?, WalkPrint<?, Fpoint>> source){
 		
 		Fpoint targetVector = target.entityPrint.getVector().source;
 		
@@ -53,7 +53,7 @@ public class VectorSwapHelper {
 	}
 	
 	//public just for test
-	private static Fpoint fetchMinusSwap(SubjectPrint<?, WalkPrint<?, Fpoint>> target, SubjectPrint<?, WalkPrint<?, Fpoint>> source){
+	private static Fpoint fetchMinusSwap(EntityPointsPrint<?, WalkPrint<?, Fpoint>> target, EntityPointsPrint<?, WalkPrint<?, Fpoint>> source){
 		Point tCenter = target.getCenter();
 		Point sCenter = source.getCenter();
 		Fpoint hitVector = new Fpoint(sCenter.getFX() - tCenter.getFX(), sCenter.getFY() - tCenter.getFY());
@@ -99,7 +99,7 @@ public class VectorSwapHelper {
 		return swap;
 	}
 	
-	public static Fpoint fetchReturnVector(SubjectPrint<?, WalkPrint<?, Fpoint>> target, Point touch){
+	public static Fpoint fetchReturnVector(EntityPointsPrint<?, WalkPrint<?, Fpoint>> target, Point touch){
 		Point tCenter = target.getCenter();
 		Fpoint hitVector = new Fpoint(touch.getFX() - tCenter.getFX(), touch.getFY() - tCenter.getFY());
 		Fpoint myVector = target.entityPrint.getVector().source;

@@ -3,14 +3,23 @@ package org.bricks.engine.item;
 import java.util.Collection;
 import java.util.Map;
 
+import org.bricks.core.entity.Point;
 import org.bricks.exception.Validate;
 import org.bricks.engine.Engine;
 import org.bricks.engine.Motor;
+import org.bricks.engine.event.BaseEvent;
 import org.bricks.engine.event.Event;
+import org.bricks.engine.event.EventTarget;
+import org.bricks.engine.event.OverlapEvent;
 import org.bricks.engine.event.check.EventChecker;
+import org.bricks.engine.event.check.OverlapChecker;
+import org.bricks.engine.event.overlap.OSRegister;
 import org.bricks.engine.event.overlap.OverlapStrategy;
+import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.engine.neve.EntityPrint;
 import org.bricks.engine.neve.Imprint;
+import org.bricks.engine.pool.BaseSubject;
+import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.staff.Subject;
 import org.bricks.engine.pool.World;
@@ -29,6 +38,10 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 	protected MultiLiver() {
 		overlapStrategy = initOverlapStrategy();
 		live = new Live(this);
+	}
+	
+	public final Map<String, OverlapStrategy> initOverlapStrategy(){
+		return OSRegister.getClassStrategies(this.getClass());
 	}
 
 	public void registerEventChecker(EventChecker checker){
@@ -93,12 +106,78 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 		}
 	}
 	
+	public OverlapEvent checkOverlap(Subject mySubject, Subject client){
+		OverlapStrategy os = overlapStrategy.get(client.getEntity().sourceType());
+		if(os == null){
+			return null;
+		}
+		if(os.hasToCheckOverlap(this, client)){
+			Validate.isTrue(mySubject.getEntity() == this, "Alloved to check only inner subjects");
+			//Has to be synchronized with client popEvetn
+			synchronized(client.getEntity()){
+				Imprint targetPrint = mySubject.getInnerPrint();
+				Imprint checkPrint = client.getSafePrint();
+				OverlapEvent oe = os.checkForOverlapEvent(targetPrint, checkPrint);
+				if(oe != null){
+					targetPrint.occupy();
+					this.putHistory(oe);
+					if(client.getEntity().isEventTarget()){
+						EventTarget svt = (EventTarget) client.getEntity();
+						if(svt.checkerRegistered(OverlapChecker.instance())){
+							OverlapEvent svEvent = new OverlapEvent(checkPrint, targetPrint, oe.getTouchPoint(), oe.getCrashNumber());
+							svt.addEvent(svEvent);
+							svt.putHistory(svEvent);
+						}
+					}
+					return oe;
+				}
+				checkPrint.free();
+			}
+		}
+		return null;
+	}
+	//Method used by OverlapChecker
+	public Subject checkLastOverlap(){
+		Event hEvent = getHistory(BaseEvent.touchEventCode);
+		if(hEvent == null || !(hEvent instanceof OverlapEvent)){
+			return null;
+		}
+		OverlapEvent oEvent = (OverlapEvent) hEvent;
+		Imprint sv = oEvent.getSourcePrint();
+		Subject check = (Subject) sv.getTarget();
+		OverlapStrategy os = overlapStrategy.get(check.getEntity().sourceType());
+		if(os == null || !os.hasToCheckOverlap(this, check)){
+			return null;
+		}
+		if(check.getEntity().isEventTarget()){
+			EventTarget checkT = (EventTarget) check.getEntity();
+			Event lastCheckEvent = checkT.getHistory(BaseEvent.touchEventCode);
+			if(lastCheckEvent == null || !(lastCheckEvent instanceof OverlapEvent)){
+				this.removeHistory(BaseEvent.touchEventCode);
+				return null;
+			}
+			if( ((OverlapEvent) lastCheckEvent).getCrashNumber() != oEvent.getCrashNumber() ){
+				this.removeHistory(BaseEvent.touchEventCode);
+				return null;
+			}
+		}
+		Subject ts = (Subject) oEvent.getTargetPrint().getTarget();
+		Validate.isTrue(this.equals(ts.getEntity()));
+		Imprint checkView = check.getSafePrint();
+		if(!os.isOverlap(ts.getInnerPrint(), checkView)){
+			this.removeHistory(BaseEvent.touchEventCode);
+			return null;
+		}
+		checkView.free();
+		return check;
+	}
+	
 	public boolean needCheckOverlap(Subject s) {
 		OverlapStrategy os = overlapStrategy.get(s.getEntity().sourceType());
 		if(os == null){
 			return false;
 		}
-		return os.hasToCheckOverlap(s);
+		return os.hasToCheckOverlap(this, s);
 	}
 	
 //	public volatile int applyPrint = 0;

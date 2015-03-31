@@ -8,7 +8,7 @@ import org.bricks.core.entity.Point;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.core.help.VectorHelper;
 import org.bricks.engine.item.ListenDistrictSubject;
-import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.engine.neve.EntityPointsPrint;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Renderable;
@@ -22,7 +22,7 @@ import com.odmyha.shoot.Ball;
 /**
  * @deprecated use BallSubjectNew instead
  */
-public class BallSubject extends ListenDistrictSubject<Ball, SubjectPrint> implements RenderableProvider{
+public class BallSubject extends ListenDistrictSubject<Ball, EntityPointsPrint> implements RenderableProvider{
 	
 	private ModelInstance modelInstance;
 	private Matrix4 transform = new Matrix4();

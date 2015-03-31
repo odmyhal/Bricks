@@ -13,6 +13,7 @@
 				<entry key="motor.count" value="8"/>
 				<entry key="event.handel.registrator" value="org.bricks.engine.event.handler.EventHandlerRegistrator"/>
 				<entry key="model.construct.tool" value="org.bricks.enterprise.gen.GenModelConstructTool"/>
+				<entry key="overlap.strategy.registrator" value="org.bricks.engine.overlap.OSRegistrator"/>
             </map>
         </node>
     </root>

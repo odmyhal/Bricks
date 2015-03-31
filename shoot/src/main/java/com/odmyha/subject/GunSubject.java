@@ -3,13 +3,13 @@ package com.odmyha.subject;
 import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.Point;
 import org.bricks.core.entity.type.Brick;
-import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.engine.pool.BrickSubject;
 
 import com.odmyha.weapon.Cannon;
 
 @Deprecated
-public class GunSubject extends BrickSubject<Cannon, SubjectPrint>{
+public class GunSubject extends BrickSubject<Cannon, EntityPointsPrint>{
 	
 	private Ipoint firePoint;
 

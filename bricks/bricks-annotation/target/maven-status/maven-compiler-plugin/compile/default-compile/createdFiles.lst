@@ -2,5 +2,8 @@ org/bricks/annotation/EventHandle.class
 org/bricks/annotation/processor/App.class
 org/bricks/annotation/processor/EventHandleProcessor.class
 org/bricks/annotation/processor/ModelConstructProcessor.class
+org/bricks/annotation/OverlapCheck.class
 org/bricks/annotation/processor/CreateSourceProcessor.class
+org/bricks/annotation/processor/OverlapStrategyProcessor.class
 org/bricks/annotation/ConstructModel.class
+org/bricks/annotation/BaseHandle.class

@@ -2,10 +2,10 @@ package org.bricks.extent.entity.mesh;
 
 import org.bricks.engine.neve.EntityPrint;
 import org.bricks.engine.neve.PrintStore;
-import org.bricks.engine.neve.SubjectPrint;
+import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.extent.subject.model.MBPrint;
 
-public class ModelSubjectPrint<P extends ModelSubject, EP extends EntityPrint, M extends MBPrint> extends SubjectPrint<P, EP>{
+public class ModelSubjectPrint<P extends ModelSubject, EP extends EntityPrint, M extends MBPrint> extends EntityPointsPrint<P, EP>{
 
 	private M modelBrickPrint;
 	public ModelSubjectPrint(PrintStore<P, ?> ps) {
