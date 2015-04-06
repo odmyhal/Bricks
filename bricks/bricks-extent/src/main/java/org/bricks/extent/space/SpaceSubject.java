@@ -6,6 +6,7 @@ import org.bricks.engine.pool.BaseSubject;
 import org.bricks.engine.staff.Entity;
 import org.bricks.engine.tool.Origin;
 import org.bricks.exception.Validate;
+import org.bricks.extent.space.overlap.MarkPoint;
 import org.bricks.extent.subject.model.ModelBrick;
 import org.bricks.extent.subject.model.ModelBrickSubject;
 

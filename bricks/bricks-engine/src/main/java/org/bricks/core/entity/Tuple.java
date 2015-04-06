@@ -19,10 +19,10 @@ public class Tuple<A, B> {
 	}
 	
 	public boolean equals(Object object){
-		if(object instanceof Tuple){
-			Tuple t = (Tuple) object;
-			return first.equals(t.first) && second.equals(t.second);
+		if(this.getClass() != object.getClass()){
+			return false;
 		}
-		return false;
+		Tuple t = (Tuple) object;
+		return first.equals(t.first) && second.equals(t.second);
 	}
 }

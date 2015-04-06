@@ -2,7 +2,7 @@ package org.bricks.engine.neve;
 
 import org.bricks.engine.staff.Roller;
 
-public class RollPrint<P extends Roller> extends EntityPrint<P> {
+public class RollPrint<P extends Roller, C> extends EntityPrint<P, C> {
 	
 	private float rotationSpeed;
 	private float rotation;
@@ -24,7 +24,7 @@ public class RollPrint<P extends Roller> extends EntityPrint<P> {
 	}
 	
 	@Override
-	protected void init(){
+	public void init(){
 		super.init();
 		this.rotationSpeed = this.getTarget().getRotationSpeed();
 		this.rotation = this.getTarget().getRotation();

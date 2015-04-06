@@ -51,4 +51,12 @@ public class Ipoint implements Point{
 	public String toString(){
 		return String.format("Point(x: %d ,  y: %d)", x, y);
 	}
+	
+	public boolean equals(Object obj){
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		Ipoint p = (Ipoint) obj;
+		return p.x == this.x && p.y == this.y;
+	}
 }

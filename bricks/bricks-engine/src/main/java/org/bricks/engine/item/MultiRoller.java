@@ -74,14 +74,18 @@ public abstract class MultiRoller<S extends Subject<?, ?, C, R>, P extends RollP
 	public void motorProcess(long currentTime){
 		processEvents(currentTime);
 		if(alive() && rotate(currentTime)){
-			this.adjustCurrentPrint(false);
-			for(Satellite satellite : getSatellites()){
-				satellite.rotate(roll/*.getRotation()*/, this.origin());
-				satellite.update();
-			}
+			adjustInMotorPrint();
 		}
 	}
 
+	protected void adjustInMotorPrint(){
+		this.adjustCurrentPrint(false);
+		for(Satellite satellite : getSatellites()){
+			satellite.rotate(roll, this.origin());
+			satellite.update();
+		}
+	}
+	
 	public void applyRotation(){
 		for(Satellite satellite : getSatellites()){
 			satellite.rotate(roll/*.getRotation()*/, this.origin());

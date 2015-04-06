@@ -28,6 +28,17 @@ public class Engine<R>
 		for(int i = 0; i < motorCount; i++){
 			this.motors[i] = new Motor();
 		}
+		
+		initEventHandlers(this.preferences);
+		initOverlapStrategies(this.preferences);
+		
+	}
+	
+	public World<R> getWorld(){
+		return world;
+	}
+	
+	private void initEventHandlers(Preferences props){
 		EventHandleRegistrator ehr = null;
 		try {
 			Class<EventHandleRegistrator> eClass = (Class<EventHandleRegistrator>) Class.forName(props.get("event.handel.registrator", "org.bricks.engine.event.handler.EmptyEventHandlerRegistrator"));
@@ -55,7 +66,9 @@ public class Engine<R>
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+	}
+	
+	private void initOverlapStrategies(Preferences props){
 		OverlapStrategyRegistrator osr = null;
 		try {
 			Class<OverlapStrategyRegistrator> eClass = (Class<OverlapStrategyRegistrator>) Class.forName(props.get("overlap.strategy.registrator", "org.bricks.engine.overlap.OSRegistrator"));
@@ -83,10 +96,6 @@ public class Engine<R>
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public World<R> getWorld(){
-		return world;
 	}
 	
 	public Motor getLazyMotor(){

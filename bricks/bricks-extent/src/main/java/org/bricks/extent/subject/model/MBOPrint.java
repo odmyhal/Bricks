@@ -8,7 +8,7 @@ import org.bricks.engine.neve.PrintStore;
 
 import com.badlogic.gdx.graphics.g3d.model.Node;
 
-public class MBOPrint<P extends ModelBrickOperable> extends MBPrint<P>{
+public class MBOPrint<P extends ModelBrickOperable<?>> extends MBPrint<P>{
 
 	protected final Map<Node, NodeDataPrint> nodeData = new HashMap<Node, NodeDataPrint>();
 	
@@ -16,8 +16,8 @@ public class MBOPrint<P extends ModelBrickOperable> extends MBPrint<P>{
 		super(ps);
 	}
 
-	@Override
-	protected void init(){
+//	@Override
+	public void init(){
 		super.init();
 		ModelBrickOperable target = getTarget();
 		Map<Node, NodeData<NodeDataPrint>> nm = target.dataNodes;

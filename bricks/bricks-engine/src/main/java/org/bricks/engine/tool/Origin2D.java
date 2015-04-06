@@ -41,4 +41,10 @@ public class Origin2D extends Origin<Fpoint>{
 		this.source.y *= k;
 	}
 
+	@Override
+	public void sub(Origin<Fpoint> sub) {
+		this.source.x -= sub.source.x;
+		this.source.y -= sub.source.y;
+	}
+
 }

@@ -31,7 +31,7 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 	
 	private Live live;
 	private Logger logger = new Logger();
-	protected Map<String, OverlapStrategy> overlapStrategy;
+	private Map<String, OverlapStrategy> overlapStrategy;
 	private Motor motor;
 	private boolean alive = false;
 

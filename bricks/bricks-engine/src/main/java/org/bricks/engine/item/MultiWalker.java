@@ -46,10 +46,15 @@ public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkP
 		applyAcceleration(currentTime);
 		boolean move = legs.move(currentTime, vector.source);
 		if(rotate || move){
-			adjustCurrentPrint(false);
-			for(Satellite satellite : getSatellites()){
-				satellite.update();
-			}
+			adjustInMotorPrint();
+		}
+	}
+	
+	@Override
+	protected void adjustInMotorPrint(){
+		adjustCurrentPrint(false);
+		for(Satellite satellite : getSatellites()){
+			satellite.update();
 		}
 	}
 	

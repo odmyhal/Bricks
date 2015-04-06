@@ -33,9 +33,10 @@ public final class PrintStore<T extends Printable, P extends Imprint> {
 	 */
 	private void initPrint(){
 		P newPrint = getPrint();
-		newPrint.checkCounterZero();
-		newPrint.init();
-		newPrint.occupyFirst();
+		newPrint.intStoreInitialization();
+//		newPrint.checkCounterZero();
+//		newPrint.init();
+//		newPrint.occupyFirst();
 		currentPrint = newPrint;
 	}
 	

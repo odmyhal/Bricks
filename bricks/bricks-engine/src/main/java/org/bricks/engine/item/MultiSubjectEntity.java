@@ -94,7 +94,7 @@ public abstract class MultiSubjectEntity<S extends Subject, P extends EntityPrin
 		return r;
 	}
 	
-	public final int adjustCurrentPrint(){
+	public int adjustCurrentPrint(){
 		return adjustCurrentPrint(true);
 	}
 	

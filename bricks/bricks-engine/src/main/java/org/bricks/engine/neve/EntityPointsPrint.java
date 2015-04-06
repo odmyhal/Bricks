@@ -3,7 +3,8 @@ package org.bricks.engine.neve;
 import org.bricks.core.entity.impl.PointSetPrint;
 import org.bricks.engine.pool.BrickSubject;
 
-public class EntityPointsPrint<P extends BrickSubject, EP extends EntityPrint> extends PointSetPrint<P> {
+public class EntityPointsPrint<P extends BrickSubject, EP extends EntityPrint> extends PointSetPrint<P> 
+	implements ContainsEntityPrint<P, EP>{
 	
 	public EP entityPrint;
 
@@ -12,7 +13,7 @@ public class EntityPointsPrint<P extends BrickSubject, EP extends EntityPrint> e
 	}
 
 	@Override
-	protected void init(){
+	public void init(){
 		super.init();
 		entityPrint = (EP) getTarget().getEntity().getSafePrint();
 	}
@@ -21,5 +22,9 @@ public class EntityPointsPrint<P extends BrickSubject, EP extends EntityPrint> e
 		entityPrint.free();
 		entityPrint = null;
 		super.endUse();
+	}
+
+	public EP linkEntityPrint() {
+		return entityPrint;
 	}
 }

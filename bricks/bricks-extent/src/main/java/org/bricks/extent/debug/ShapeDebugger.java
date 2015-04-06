@@ -9,10 +9,11 @@ import org.bricks.engine.pool.Boundary;
 import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.staff.Subject;
-import org.bricks.extent.space.MarkPoint;
 import org.bricks.extent.space.SpaceSubject;
+import org.bricks.extent.space.overlap.MarkPoint;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Matrix4;
@@ -47,6 +48,14 @@ public class ShapeDebugger implements Disposable{
 		}
 		shR.end();
 		
+	}
+	
+	public <Z> void drawSpaceShapes(ModelBatch modelBatch, Collection<Z> entities){
+		for(Z entity : entities){
+			if(entity instanceof SpaceDebug){
+				modelBatch.render(((SpaceDebug) entity).debugModel());
+			}
+		}
 	}
 	
 	public <K> void drawEntityShapes(Collection<K> entities, Matrix4 cameraMatrix){

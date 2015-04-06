@@ -1,11 +1,15 @@
 package org.bricks.extent.subject.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.bricks.engine.neve.PrintableBase;
 import org.bricks.engine.tool.Logger;
 import org.bricks.engine.tool.Origin;
 import org.bricks.exception.Validate;
 import org.bricks.extent.space.Roll3D;
 import org.bricks.extent.space.SSPrint;
+import org.bricks.extent.space.overlap.Skeleton;
 import org.bricks.extent.tool.ModelHelper;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -19,6 +23,7 @@ import com.badlogic.gdx.utils.Pool;
 
 public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements RenderableProvider{
 	
+	public Collection<Skeleton> skeletons;
 	protected ModelInstance modelInstance;
 	protected Matrix4 transformMatrix = new Matrix4();
 	
@@ -65,6 +70,16 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 //		logger.log(" MB>> Matrix after: \n" + transformMatrix);
 		lastPrintModified = currentPrint;
 	}
+	
+	public Skeleton initSkeleton(Vector3[] points, int[] indexes){
+		Skeleton skeleton = new Skeleton(indexes, points);
+		skeleton.addTransform(transformMatrix);
+		if(skeletons == null){
+			skeletons = new ArrayList<Skeleton>();
+		}
+		skeletons.add(skeleton);
+		return skeleton;
+	}
 
 	public I print() {
 		return (I) new MBPrint(this.printStore);
@@ -95,6 +110,12 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 	
 	@Override
 	public int adjustCurrentPrint(){
+		if(skeletons != null && lastPrintModified == currentPrint){
+			for(Skeleton skeleton : skeletons){
+				skeleton.calculateTransforms();
+				skeleton.adjustCurrentPrint();
+			}
+		}
 		currentPrint = super.adjustCurrentPrint();
 		currentPrintVolatile = currentPrint;
 		return currentPrint;

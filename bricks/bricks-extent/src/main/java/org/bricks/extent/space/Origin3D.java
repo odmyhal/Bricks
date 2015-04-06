@@ -33,4 +33,9 @@ public class Origin3D extends Origin<Vector3>{
 		source.scl(k);
 	}
 
+	@Override
+	public void sub(Origin<Vector3> sub) {
+		source.sub(sub.source);
+	}
+
 }

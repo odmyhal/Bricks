@@ -13,7 +13,7 @@ public class DefaultRotationProvider implements RotationProvider{
 	}
 	
 	public float provideRotation() {
-		RollPrint<?> rollView = (RollPrint<?>) target.getSafePrint();
+		RollPrint<?, ?> rollView = (RollPrint<?, ?>) target.getSafePrint();
 		float rotation = rollView.getRotation();
 		rollView.free();
 		return rotation;

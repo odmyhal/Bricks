@@ -13,7 +13,7 @@ import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.engine.neve.EntityPrint;
 import org.bricks.engine.pool.BrickSubject;
 
-public class BrickOverlapAlgorithm implements OverlapAlgorithm<EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint>, EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint>, Point>{
+public class BrickOverlapAlgorithm extends BaseOverlapAlgorithm<EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint>, EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint>, Point>{
 
 	public static final BrickOverlapAlgorithm instance = new BrickOverlapAlgorithm();
 	private static final int[] sectors = new int[5];
@@ -31,6 +31,8 @@ public class BrickOverlapAlgorithm implements OverlapAlgorithm<EntityPointsPrint
 		return checkOverlapPoint(target, client);
 	}
 */
+	
+	
 	public Point findOverlapPoint(EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint> one, EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint> two){
 		return findOverlapPoint(one, two, true);
 	}
@@ -38,7 +40,8 @@ public class BrickOverlapAlgorithm implements OverlapAlgorithm<EntityPointsPrint
 	public boolean isOvarlap(EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint> one, EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint> two){
 		return findOverlapPoint(one, two, false) != null;
 	}
-
+/*
+	@Override
 	public OverlapEvent<EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint>, EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint>, Point>
 		checkOverlap(EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint> targetView, EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint> checkView){
 		Point overlapPoint = findOverlapPoint(targetView, checkView);
@@ -48,7 +51,7 @@ public class BrickOverlapAlgorithm implements OverlapAlgorithm<EntityPointsPrint
 		return new OverlapEvent<EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint>, EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint>, Point>
 				(targetView, checkView, overlapPoint);
 	}
-	
+*/	
 	public static final boolean isPointSetOverlap(PointSetPrint one, PointSetPrint two){
 		return findOverlapPoint(one, two, false) != null;
 	}

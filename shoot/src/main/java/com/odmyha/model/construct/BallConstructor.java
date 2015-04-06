@@ -2,7 +2,7 @@ package com.odmyha.model.construct;
 
 import org.bircks.entierprise.model.ModelConstructTool;
 import org.bircks.entierprise.model.ModelConstructor;
-import org.bricks.annotation.*;
+import org.bricks.annotation.ConstructModel;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;

@@ -11,12 +11,13 @@ import org.bricks.core.entity.Point;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.core.help.PointSetHelper;
 import org.bricks.core.help.TangPointLocator;
+import org.bricks.engine.neve.BasePrint;
 import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.neve.PrintStore;
 import org.bricks.engine.neve.PrintableBase;
 import org.bricks.engine.neve.PrintableBrickWrap;
 
-public class PointSetPrint<P extends PrintableBrickWrap> extends Imprint<P>{
+public class PointSetPrint<P extends PrintableBrickWrap> extends BasePrint<P>{
 	
 	private final Fpoint center = new Fpoint(0f, 0f);
 	private List<Ipoint> points;
@@ -35,8 +36,8 @@ public class PointSetPrint<P extends PrintableBrickWrap> extends Imprint<P>{
 		}
 	}
 
-	@Override
-	protected void init() {
+//	@Override
+	public void init() {
 		Brick brick = getTarget().getBrick();
 		setCenter(brick.getCenter());
 		List<Ipoint> data = brick.getPoints();

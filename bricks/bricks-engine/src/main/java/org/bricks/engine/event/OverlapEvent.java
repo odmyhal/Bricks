@@ -5,8 +5,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.pool.BaseSubject;
 import org.bricks.engine.staff.Entity;
+import org.bricks.engine.staff.Subject;
 
-public class OverlapEvent<T extends Imprint<? extends BaseSubject>, K extends Imprint<? extends BaseSubject>, P> 
+public class OverlapEvent<T extends Imprint<? extends Subject>, K extends Imprint<? extends Subject>, P> 
 	extends BaseEvent<Entity>{
 	
 	private static final AtomicInteger crashNumberGenerator = new AtomicInteger(0);

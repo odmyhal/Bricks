@@ -1,8 +1,5 @@
 package com.odmyha.shoot;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.bricks.exception.Validate;
 import org.bricks.annotation.EventHandle;
 import org.bricks.annotation.OverlapCheck;
@@ -25,7 +22,6 @@ import org.bricks.engine.neve.WalkPrint;
 import org.bricks.engine.pool.Boundary;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.staff.ListenDistrictEntity;
-import org.bricks.engine.staff.Subject;
 
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;

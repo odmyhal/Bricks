@@ -1,13 +1,14 @@
-package org.bricks.extent.space;
+package org.bricks.extent.space.overlap;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+
+import org.bricks.engine.neve.PrintableBase;
 
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
-public class MarkPoint {
+public class MarkPoint<I extends MarkPointPrint> extends PrintableBase<I>{
 
 	private Vector3[] marks;
 	protected Vector3[] modifiedMarks;
@@ -22,6 +23,7 @@ public class MarkPoint {
 			modifiedMarks[i] = new Vector3(marks[i].x, marks[i].y, marks[i].z);
 		}
 		size = marks.length;
+		initPrintStore();
 	}
 	
 	public Vector3 getMark(int num){
@@ -49,5 +51,9 @@ public class MarkPoint {
 			* l_mat[Matrix4.M10] + y * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M12] + l_mat[Matrix4.M13], x * l_mat[Matrix4.M20] + y
 			* l_mat[Matrix4.M21] + z * l_mat[Matrix4.M22] + l_mat[Matrix4.M23]);
 		}
+	}
+
+	public I print() {
+		return (I) new MarkPointPrint(this.printStore);
 	}
 }
