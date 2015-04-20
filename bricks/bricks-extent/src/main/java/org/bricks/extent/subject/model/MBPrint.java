@@ -19,9 +19,9 @@ public class MBPrint<P extends ModelBrick<?>> extends BasePrint<P>{
 
 	public MBPrint(PrintStore<P, ?> ps) {
 		super(ps);
-		if(this.getTarget().skeletons != null){
+/*		if(this.getTarget().skeletons != null){
 			this.skeletons = new ArrayList<SkeletonPrint>();
-		}
+		}*/
 	}
 
 //	@Override
@@ -30,11 +30,15 @@ public class MBPrint<P extends ModelBrick<?>> extends BasePrint<P>{
 		if(this.lastPrintModified < target.lastPrintModified){
 			transformMatrix.set(target.linkTransform());
 			this.lastPrintModified = target.lastPrintModified;
-			if(skeletons != null){
+		}
+		if(target.skeletons != null){
+			if(skeletons == null){
+				skeletons = new ArrayList<SkeletonPrint>();
+			}else{
 				skeletons.clear();
-				for(Skeleton<? extends SkeletonPrint> skeleton : target.skeletons){
-					skeletons.add(skeleton.getSafePrint());
-				}
+			}
+			for(Skeleton<? extends SkeletonPrint> skeleton : target.skeletons){
+				skeletons.add(skeleton.getSafePrint());
 			}
 		}
 	}

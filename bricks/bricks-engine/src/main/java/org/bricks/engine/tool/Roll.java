@@ -25,6 +25,9 @@ public class Roll {
 	}
 	
 	public void setRotation(float rotation){
+		//just for test
+		this.lastRotation = rotation - this.rotation;
+		//test still works...
 		this.rotation = rotation;
 	}
 

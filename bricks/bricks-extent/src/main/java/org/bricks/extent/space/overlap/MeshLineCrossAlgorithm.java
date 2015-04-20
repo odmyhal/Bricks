@@ -16,7 +16,6 @@ public abstract class MeshLineCrossAlgorithm<T extends Imprint<? extends Subject
 	
 	protected Vector3 findCrossPoint(MBPrint<?> mbPrint, OriginMovePrint<?, Vector3> omPrint){
 		for(SkeletonPrint<?> sp : mbPrint.skeletons){
-//			System.out.println(System.currentTimeMillis() + " checking origin " + omPrint.getOrigin().source + ", move is: " + omPrint.lastMove.source);
 			float k = skeletonCrossLineK(sp, omPrint);
 			if(k == Float.NEGATIVE_INFINITY){
 				continue;
@@ -66,8 +65,6 @@ public abstract class MeshLineCrossAlgorithm<T extends Imprint<? extends Subject
 		if(dimentionsNoCross(skPrint.dimentions, minX, minY, minZ, maxX, maxY, maxZ)){
 			return Float.NEGATIVE_INFINITY;
 		}
-//		System.out.println(System.currentTimeMillis() + " ** Passed Dimentions origin " + omPrint.getOrigin().source + ", move is: " + omPrint.lastMove.source);
-//		System.out.println("	Dimentions min: " + skPrint.dimentions.min + ", max: " + skPrint.dimentions.max);
 		for(Triangle triangle : skPrint.triangles){
 			float k = lineCrossTriangle(triangle, lineOrigin, omPrint.lastMove.source);
 			if(k == Float.NEGATIVE_INFINITY){
@@ -87,8 +84,7 @@ public abstract class MeshLineCrossAlgorithm<T extends Imprint<? extends Subject
 		return false;
 	}
 	
-	/*Just for test*/
-	public float lineCrossTriangle(Triangle triangle, Vector3 lineOrigin, Vector3 lineMove){
+	private float lineCrossTriangle(Triangle triangle, Vector3 lineOrigin, Vector3 lineMove){
 		float BAX = triangle.B.x - triangle.A.x;
 		float BAY = triangle.B.y - triangle.A.y; 
 		float BAZ = triangle.B.z - triangle.A.z;
@@ -99,7 +95,6 @@ public abstract class MeshLineCrossAlgorithm<T extends Imprint<? extends Subject
 											lineMove.y, BAY, CAY, triangle.A.y - lineOrigin.y,
 											lineMove.z, BAZ, CAZ, triangle.A.z - lineOrigin.z);
 		if( k < 0 || k > 1 ){
-//			System.out.println("Wrong K " + k);
 			return Float.NEGATIVE_INFINITY;
 		}
 		float b;
@@ -114,7 +109,6 @@ public abstract class MeshLineCrossAlgorithm<T extends Imprint<? extends Subject
 					BAY, CAY, triangle.A.y - lineOrigin.y + lineMove.y * k);
 		}
 		if( b < 0 || b > 1 ){
-//			System.out.println("Wrong b " + b);
 			return Float.NEGATIVE_INFINITY;
 		}
 		float c;
@@ -128,11 +122,9 @@ public abstract class MeshLineCrossAlgorithm<T extends Imprint<? extends Subject
 			return Float.NEGATIVE_INFINITY;
 		}
 		if( c < 0 || c > 1 || c + b > 1 ){
-//			System.out.println("Wrong c " + c);
 			return Float.NEGATIVE_INFINITY;
 		}
 		return k;
-//		return new Vector3(lineOrigin.x - k * lineMove.x, lineOrigin.y - k * lineMove.y, lineOrigin.z - k * lineMove.z);
 	}
 	
 	

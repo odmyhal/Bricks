@@ -11,7 +11,7 @@ import org.bricks.exception.Validate;
 public class RollToMarkProcessorChecker<T extends Roller> extends ChunkEventChecker<T>{
 
 	public static final CheckerType CHECKER_TYPE = CheckerType.registerCheckerType();
-	private static final float rotationCycle = (float) (Math.PI * 2);
+	public static final float rotationCycle = (float) (Math.PI * 2);
 	
 	private ChangeRotationSpeedProcessor<T> rotationSpeedProcessor;
 	private ConditionalRotationProcessor conditionalRotationProcessor;
@@ -84,7 +84,7 @@ public class RollToMarkProcessorChecker<T extends Roller> extends ChunkEventChec
 
 		private float tRotation, fSpeed;
 		
-		private void initialize(float tRotation, float fSpeed){
+		public void initialize(float tRotation, float fSpeed){
 			this.tRotation = tRotation;
 			this.fSpeed = fSpeed;
 		}
@@ -103,24 +103,6 @@ public class RollToMarkProcessorChecker<T extends Roller> extends ChunkEventChec
 				target.unregisterEventChecker(this);
 			}
 			return RotationHelper.isRotationFinished(curSpeed, target.getRotation(), tRotation);
-/*			float diffRad = tRotation - target.getRotation();
-			if(curSpeed >= 0){
-				if(diffRad >= Math.PI){
-					diffRad -= rotationCycle;
-				}
-				if(diffRad <= 0){
-					stopAction = true;
-				}
-			}
-			if(curSpeed < 0){
-				if(diffRad <= -Math.PI){
-					diffRad += rotationCycle;
-				}
-				if(diffRad >= 0){
-					stopAction = true;
-				}
-			}
-			return stopAction;*/
 		}
 
 		@Override

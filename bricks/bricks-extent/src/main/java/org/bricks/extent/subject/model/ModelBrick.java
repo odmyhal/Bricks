@@ -73,6 +73,10 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 	
 	public Skeleton initSkeleton(Vector3[] points, int[] indexes){
 		Skeleton skeleton = new Skeleton(indexes, points);
+		return applySkeleton(skeleton);
+	}
+	
+	public Skeleton applySkeleton(Skeleton skeleton){
 		skeleton.addTransform(transformMatrix);
 		if(skeletons == null){
 			skeletons = new ArrayList<Skeleton>();
@@ -119,5 +123,9 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 		currentPrint = super.adjustCurrentPrint();
 		currentPrintVolatile = currentPrint;
 		return currentPrint;
+	}
+	
+	public ModelInstance linkModelInstance(){
+		return this.modelInstance;
 	}
 }

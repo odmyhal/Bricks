@@ -44,6 +44,8 @@ public class ModelSubject<E extends Entity, I extends ModelSubjectPrint, M exten
 	
 	public void rotate(Roll roll, Origin<Fpoint> central){
 		super.rotate(roll.getRotation(), central.source);
+//		System.out.println("Rotating " + this.getEntity() + " spin: " + spin + ", rad: " + roll.lastRotation() + 
+//			" center: " + new Vector3(central.source.x, central.source.y, 0f));	
 		modelBrick.rotate(spin, roll.lastRotation(), central.source.x, central.source.y, 0f);
 	}
 /*	

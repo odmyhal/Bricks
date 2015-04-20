@@ -38,12 +38,20 @@ public class ChunkEventChecker<T extends Liver> extends EventChecker<T> {
 				currentChecker = checkers.get(nextIndex++);
 				currentChecker.activate(target, eventTime);
 			}else{
-				disable();
-				target.unregisterEventChecker(this);
+				finish(target, eventTime);
 				return null;
 			}
 		}
 		return currentChecker.popEvent(target, eventTime);
+	}
+	
+	protected void finish(T target, long eventTime){
+		disable();
+		target.unregisterEventChecker(this);
+	}
+	
+	protected void reject(){
+		nextIndex = 0;
 	}
 	
 	@Override

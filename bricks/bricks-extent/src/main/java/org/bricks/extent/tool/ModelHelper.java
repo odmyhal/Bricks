@@ -24,6 +24,26 @@ public class ModelHelper {
 		}
 	}
 	
+	public static Node findNode(String nodePath, Iterable<Node> nodes){
+		int splitIndex = nodePath.indexOf('/');
+		String curName;
+		if(splitIndex < 0){
+			curName = nodePath;
+		}else{
+			curName = nodePath.substring(0, splitIndex);
+		}
+		for(Node node : nodes){
+			if(curName.equals(node.id)){
+				if(curName.equals(nodePath)){
+					return node;
+				}else{
+					return findNode(nodePath.substring(splitIndex + 1, nodePath.length()), node.children);
+				}
+			}
+		}
+		return null;
+	}
+	
 	public static final void mmultLeft(Matrix4 m, Matrix4 target){
 		mmult(m, target, target.tmp);
 		target.set(target.tmp);

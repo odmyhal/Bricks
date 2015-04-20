@@ -32,7 +32,7 @@ public class ModelBrickOperable<I extends MBOPrint<?>> extends ModelBrick<I>{
 		Node[] nodes = new Node[nodePaths.length];
 		int i = 0;
 		for(String nodePath : nodePaths){
-			Node node = findNode(nodePath, modelInstance.nodes);
+			Node node = ModelHelper.findNode(nodePath, modelInstance.nodes);
 			Validate.isFalse(node == null, "Could not find node by path: " + nodePath);
 			nodes[i++] = node;
 		}
@@ -46,7 +46,7 @@ public class ModelBrickOperable<I extends MBOPrint<?>> extends ModelBrick<I>{
 		}
 		return nodeOperator;
 	}
-	
+/*	
 	private Node findNode(String nodePath, Iterable<Node> nodes){
 		int splitIndex = nodePath.indexOf('/');
 		String curName;
@@ -66,7 +66,7 @@ public class ModelBrickOperable<I extends MBOPrint<?>> extends ModelBrick<I>{
 		}
 		return null;
 	}
-	
+	*/
 	private NodeOperator addNodeOperator(String nodeName){
 		Node node = getNodeByName(nodeName);
 		if(node == null){

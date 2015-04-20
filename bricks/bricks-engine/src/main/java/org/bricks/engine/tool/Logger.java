@@ -6,7 +6,7 @@ public class Logger {
 
 	private StringBuffer tmpLog;
 	private LinkedList<String> log = new LinkedList<String>();
-	private static final int logSize = 15;
+	private static final int logSize = 30;
 	
 	public synchronized void startLog(){
 		tmpLog = new StringBuffer(System.currentTimeMillis() + "-----" + this + "-----thread:------" + Thread.currentThread().getName());

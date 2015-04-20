@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.bricks.engine.neve.PrintStore;
+import org.bricks.engine.tool.Logger;
+import org.bricks.exception.Validate;
 
 import com.badlogic.gdx.math.Vector3;
 
@@ -11,6 +13,7 @@ public class SkeletonPrint<P extends Skeleton> extends MarkPointPrint<P>{
 	
 	public final Collection<Triangle> triangles = new ArrayList<Triangle>();
 	public final Dimentions dimentions = new Dimentions();
+//	private Logger logger = new Logger();
 
 	public SkeletonPrint(PrintStore<P, ?> ps, int[] indexes) {
 		super(ps);
@@ -21,6 +24,7 @@ public class SkeletonPrint<P extends Skeleton> extends MarkPointPrint<P>{
 	
 	@Override
 	public void init() {
+//		logger.log("initialized print ");
 		dimentions.reject();
 		Vector3[] marks = this.getTarget().modifiedMarks;
 		for(int i = 0; i < marks.length; i++){

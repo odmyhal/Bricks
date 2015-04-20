@@ -44,6 +44,7 @@ public abstract class BasePrint<P extends Printable> implements Imprint<P>{
 	private final void occupyFirst(){
 		int cnt = 0;
 		while(!counter.compareAndSet(0, 1)){
+//			System.out.println("Problems with first occypying....");
 			Validate.isTrue(++cnt < 100, "Could not first occupy " + this.getClass().getCanonicalName());
 			Thread.currentThread().yield();
 		}

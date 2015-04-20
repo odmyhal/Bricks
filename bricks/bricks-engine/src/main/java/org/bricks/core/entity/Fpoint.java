@@ -11,6 +11,10 @@ public class Fpoint implements Point{
 	
 	public float x, y;
 	
+	public Fpoint(){
+		this(0f, 0f);
+	}
+	
 	public Fpoint(float x, float y){
 		this.x = x;
 		this.y = y;
