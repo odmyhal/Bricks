@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 public class SkeletonPrint<P extends Skeleton> extends MarkPointPrint<P>{
 	
 	public final Collection<Triangle> triangles = new ArrayList<Triangle>();
-	public final Dimentions dimentions = new Dimentions();
+	public final Dimentions3D dimentions = new Dimentions3D();
 //	private Logger logger = new Logger();
 
 	public SkeletonPrint(PrintStore<P, ?> ps, int[] indexes) {

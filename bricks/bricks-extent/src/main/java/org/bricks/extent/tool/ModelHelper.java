@@ -77,7 +77,7 @@ public class ModelHelper {
 	}
 	
 
-	public static void setToRotation(float rad, Stone<?, ?> target){
+	public static void setToRotation(float rad, Stone<?, ?, ?> target){
 		Roll roll = tmpRoll.get();
 		//Important previously to set zero for modeled stones
 		roll.setRotation(0);

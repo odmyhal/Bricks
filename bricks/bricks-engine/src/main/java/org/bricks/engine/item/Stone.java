@@ -2,11 +2,14 @@ package org.bricks.engine.item;
 
 import org.bricks.core.entity.Dimentions;
 import org.bricks.core.entity.Fpoint;
+import org.bricks.core.entity.impl.PointSetPrint;
 import org.bricks.core.help.PointSetHelper;
 import org.bricks.engine.Engine;
 import org.bricks.engine.event.overlap.BrickOverlapAlgorithm;
 import org.bricks.engine.neve.EntityPrint;
 import org.bricks.engine.neve.EntityPointsPrint;
+import org.bricks.engine.neve.PlanePointsPrint;
+import org.bricks.engine.pool.BaseSubject;
 import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.pool.World;
@@ -14,7 +17,7 @@ import org.bricks.engine.tool.Origin;
 import org.bricks.engine.tool.Origin2D;
 
 @SuppressWarnings("rawtypes")
-public abstract class Stone<S extends BrickSubject, P extends EntityPrint> extends MultiSubjectEntity<S, P, Fpoint>{
+public abstract class Stone<S extends BaseSubject<?, ? extends PlanePointsPrint, ?, ?>, P extends EntityPrint, C> extends MultiSubjectEntity<S, P, C>{
 	
 	public Stone(S s){
 		this.addSubject(s);
@@ -22,17 +25,16 @@ public abstract class Stone<S extends BrickSubject, P extends EntityPrint> exten
 
 	public Stone() {}
 	
-	public Origin<Fpoint> provideInitialOrigin(){
-		return new Origin2D();
-	}
-
 	@Override
 	public void applyEngine(Engine engine) {
 		super.applyEngine(engine);
 		World world = engine.getWorld();
-		for(BrickSubject<?, EntityPointsPrint> subject : getStaff()){
-			subject.adjustCurrentPrint();
-			Dimentions dimm = PointSetHelper.fetchDimentions(subject.getBrick().getPoints());
+		for(BaseSubject<?, ? extends PlanePointsPrint, ?, ?> subject : getStaff()){
+			subject.joinWorld(world);
+//			subject.adjustCurrentPrint();
+//			Dimentions dimm = PointSetHelper.fetchDimentions(subject.getBrick().getPoints());
+			PlanePointsPrint psp = subject.getSafePrint();
+			Dimentions dimm = psp.getDimentions();
 			int startRow = world.detectSectorRow(dimm.getMinYPoint()) - 1;
 			int startCol = world.detectSectorCol(dimm.getMinXPoint()) - 1;
 			int endRow = world.detectSectorRow(dimm.getMaxYPoint()) + 1;
@@ -50,6 +52,7 @@ public abstract class Stone<S extends BrickSubject, P extends EntityPrint> exten
 					}
 				}
 			}
+			psp.free();
 		}
 	}
 	

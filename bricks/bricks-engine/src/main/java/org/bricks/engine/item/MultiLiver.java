@@ -109,9 +109,11 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 	public OverlapEvent checkOverlap(Subject mySubject, Subject client){
 		OverlapStrategy os = overlapStrategy.get(client.getEntity().sourceType());
 		if(os == null){
+//			this.log("  3. Liver has not found strategy");
 			return null;
 		}
 		if(os.hasToCheckOverlap(this, client)){
+//			this.log("  4. Strategy works");
 			Validate.isTrue(mySubject.getEntity() == this, "Alloved to check only inner subjects");
 			//Has to be synchronized with client popEvetn
 			synchronized(client.getEntity()){
@@ -134,6 +136,9 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 				checkPrint.free();
 			}
 		}
+/*		else{
+			this.log("  5. Strategy fallen");
+		}*/
 		return null;
 	}
 	//Method used by OverlapChecker
@@ -182,17 +187,18 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 	
 //	public volatile int applyPrint = 0;
 	@Override
-	public void applyEngine(Engine engine){
+	public final void applyEngine(Engine engine){
 		super.applyEngine(engine);
 		World world = engine.getWorld();
 //		this.adjustCurrentView(false);
 		this.adjustCurrentPrint(false);
 		for(Subject subject: getStaff()){
-			District d = world.pointSector(subject.getCenter());
+			subject.joinWorld(world);
+/*			District d = world.pointSector(subject.getCenter());
 			Validate.isFalse(d == null, "Could not find district for point: " + subject.getCenter());
 			subject.joinDistrict(d);
-			subject.adjustCurrentPrint();
-//			subject.update();
+			subject.adjustCurrentPrint();*/
+			//subject.update()
 		}
 		alive = true;
 		Motor motor = engine.getLazyMotor();

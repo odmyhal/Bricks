@@ -238,7 +238,8 @@ public class PointSetHelper {
 		Dimentions result = new Dimentions();
 		
 		for(Point point : points){
-			if(result.getMinX() > point.getFX()){
+			result.applyPoint(point);
+/*			if(result.getMinX() > point.getFX()){
 				result.setMinXPoint(point);
 			}
 			if(result.getMaxX() < point.getFX()){
@@ -249,7 +250,7 @@ public class PointSetHelper {
 			}
 			if(result.getMaxY() < point.getFY()){
 				result.setMaxYPoint(point);
-			}
+			}*/
 		}
 		return result;
 	}

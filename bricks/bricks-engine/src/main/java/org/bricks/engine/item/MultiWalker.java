@@ -108,11 +108,16 @@ public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkP
 		return this.acceleration;
 	}
 	
-
 	@Override
 	public void rollBack(long currentTime){
-		boolean moveBack = legs.moveBack(currentTime);
-		boolean rotateBack = rotateBack(currentTime);
+		this.rollBack(currentTime, 1f);
+	}
+	
+
+//	@Override
+	public void rollBack(long currentTime, float k){
+		boolean moveBack = legs.moveBack(currentTime, k);
+		boolean rotateBack = rotateBack(currentTime, k);
 		if(rotateBack){
 			applyRotation();
 		}

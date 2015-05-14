@@ -6,6 +6,7 @@ import org.bricks.engine.neve.Printable;
 import org.bricks.engine.pool.AreaBase;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.pool.Pool;
+import org.bricks.engine.pool.World;
 import org.bricks.engine.tool.Roll;
 
 public interface Subject<E extends Entity, I extends Imprint, C, R extends Roll> extends Printable<I>, Satellite<C, R> {
@@ -50,4 +51,5 @@ public interface Subject<E extends Entity, I extends Imprint, C, R extends Roll>
 
 	public void setDistrictMask(int sectorMask);
 
+	public void joinWorld(World world);
 }

@@ -4,7 +4,9 @@ import org.bricks.engine.neve.BasePrint;
 import org.bricks.engine.neve.ContainsEntityPrint;
 import org.bricks.engine.neve.EntityPrint;
 import org.bricks.engine.neve.Imprint;
+import org.bricks.engine.neve.PrintFactory;
 import org.bricks.engine.neve.PrintStore;
+import org.bricks.engine.neve.Printable;
 import org.bricks.extent.subject.model.ContainsMBPrint;
 import org.bricks.extent.subject.model.MBPrint;
 
@@ -13,6 +15,8 @@ import com.badlogic.gdx.math.Matrix4;
 public class SSPrint<P extends SpaceSubject, EP extends EntityPrint, M extends MBPrint> 
 	extends BasePrint<P>
 	implements ContainsMBPrint<P, M>, ContainsEntityPrint<P, EP>{
+	
+	public static final PrintFactory<SSPrint> printFactory = new SSPrintFactory();
 	
 	private M modelBrickPrint;
 	public EP entityPrint;
@@ -44,4 +48,11 @@ public class SSPrint<P extends SpaceSubject, EP extends EntityPrint, M extends M
 		return entityPrint;
 	}
 
+	private static class SSPrintFactory implements PrintFactory<SSPrint>{
+
+		public SSPrint producePrint(PrintStore<? extends Printable, SSPrint> printStore) {
+			return new SSPrint(printStore);
+		}
+		
+	}
 }

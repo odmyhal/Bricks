@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector3;
 public class Skeleton<I extends SkeletonPrint> extends MarkPoint<I>{
 	
 	public final Collection<Triangle> triangles = new ArrayList<Triangle>();
-	private int[] indexes;
+	protected int[] indexes;
 
 	public Skeleton(int[] indexes, Vector3... points){
 		super(points);

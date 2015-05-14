@@ -69,16 +69,16 @@ public class Roll {
 		return res;
 	}
 	
-	public boolean rotateBack(long checkTime){
+	public boolean rotateBack(long checkTime, float k){
 		if(lastRotation == 0){
 			return false;
 		}
 		Validate.isTrue(checkTime >= rotateTime);
-		rotation -= lastRotation;
+		rotation -= lastRotation * k;
 		/**
 		 * controversial, need to be checked
 		 */
-		lastRotation = -lastRotation;
+		lastRotation = -lastRotation * k;
 		rotateTime = checkTime;
 		return true;
 	}

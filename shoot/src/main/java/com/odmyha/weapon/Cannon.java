@@ -12,6 +12,7 @@ import org.bricks.annotation.EventHandle;
 import org.bricks.annotation.OverlapCheck;
 import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Ipoint;
+import org.bricks.core.entity.Point;
 import org.bricks.core.entity.impl.PointSetBrick;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.core.help.PointHelper;
@@ -100,7 +101,10 @@ public class Cannon extends MultiRoller<ModelSubjectSync<?, ?>, RollPrint, Fpoin
 	
 	private void fire(){
 		EntityPointsPrint<?, RollPrint> gunView = (EntityPointsPrint<?, RollPrint>) this.getStaff().get(1).getInnerPrint();// getStaff().get(1).getInnerPrint();
-		List<Ipoint> gunPoints = gunView.getPoints();
+/*		List<? extends Point> gunPoints = gunView.getPoints();
+		Point one = gunPoints.get(0);
+		Point two = gunPoints.get(1);*/
+		List<Ipoint> gunPoints = (List<Ipoint>) gunView.getPoints();
 		Ipoint one = gunPoints.get(0);
 		Ipoint two = gunPoints.get(1);
 /*		Ipoint firePoint = new Ipoint((int) Math.round((one.getX() + two.getX()) / 2), 
@@ -113,7 +117,8 @@ public class Cannon extends MultiRoller<ModelSubjectSync<?, ?>, RollPrint, Fpoin
 		tmpFire.source.x += v.getX();
 		tmpFire.source.y += v.getY();
 		Bullet bullet = Bullet.produce(this);
-		
+
+//		System.out.println("Bullet set rotation to " + gunView.entityPrint.getRotation());
 		bullet.setRotation(gunView.entityPrint.getRotation());
 		bullet.applyRotation();
 		bullet.translate(tmpFire);

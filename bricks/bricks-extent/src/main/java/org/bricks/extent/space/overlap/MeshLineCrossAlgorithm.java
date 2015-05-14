@@ -75,7 +75,7 @@ public abstract class MeshLineCrossAlgorithm<T extends Imprint<? extends Subject
 		return Float.NEGATIVE_INFINITY;
 	}
 	
-	private boolean dimentionsNoCross(Dimentions dimm, float minX, float minY, float minZ, float maxX, float maxY, float maxZ){
+	private boolean dimentionsNoCross(Dimentions3D dimm, float minX, float minY, float minZ, float maxX, float maxY, float maxZ){
 		if(dimm.max.x < minX || dimm.min.x > maxX
 				|| dimm.max.y < minY || dimm.min.y > maxY
 				|| dimm.max.z < minZ || dimm.min.z > maxZ){

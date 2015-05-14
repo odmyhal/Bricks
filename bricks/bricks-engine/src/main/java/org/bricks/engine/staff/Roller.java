@@ -12,6 +12,7 @@ public interface Roller<I extends RollPrint> extends Liver<I>{
 	public void flushTimer(long nTime);
 	public boolean rotate(long checkTime);
 	public void rollBack(long currentTime);
+	public void rollBack(long currentTime, float k);
 	
 	public void applyRotation();
 }

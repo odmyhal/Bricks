@@ -72,16 +72,23 @@ public class Walk3D extends Walk<Vector3>{
 		return res;
 	}
 	
-	public boolean moveBack(long checkTime){
+	@Override
+	public boolean moveBack(long checkTime, float k){
 		if(lastMove.isZero()){
 			return false;
 		}
 		Validate.isTrue(checkTime >= moveXTime && checkTime >= moveYTime && checkTime >= moveZTime);
-		lastMove.mult(-1f);
+		lastMove.mult(-1f * k);
 		owner.translate(lastMove);
 		lastMove.mult(0f);
 		moveXTime = moveYTime = moveZTime = checkTime;
 		return true;
 	}
-
+/*
+	@Override
+	public boolean moveBack(long checkTime, float k) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+*/
 }

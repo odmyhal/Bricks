@@ -92,18 +92,22 @@ public abstract class MultiRoller<S extends Subject<?, ?, C, R>, P extends RollP
 		}
 	}
 	
-	protected boolean rotateBack(long currentTime){
-		return roll.rotateBack(currentTime);
+	protected boolean rotateBack(long currentTime, float k){
+		return roll.rotateBack(currentTime, k);
 	}
 	
-	public void rollBack(long currentTime){
-		if(roll.rotateBack(currentTime)){
+	public void rollBack(long currentTime, float k){
+		if(roll.rotateBack(currentTime, k)){
 			this.adjustCurrentPrint(false);
 			for(Satellite satellite : getSatellites()){
 				satellite.rotate(roll/*.getRotation()*/, this.origin());
 				satellite.update();
 			}
 		}
+	}
+	
+	public void rollBack(long currentTime){
+		this.rollBack(currentTime, 1f);
 	}
 	
 	@Override

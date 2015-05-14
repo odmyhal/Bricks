@@ -11,10 +11,7 @@ public class Dimentions{
 	private static final Point initMaxY = new Fpoint(0, Float.MIN_VALUE);
 	
 	public Dimentions(){
-		minX = initMinX;
-		maxX = initMaxX;
-		minY = initMinY;
-		maxY = initMaxY;
+		this.reject();
 	}
 	
 	public float getMinX() {
@@ -63,6 +60,28 @@ public class Dimentions{
 	
 	public void setMaxYPoint(Point p){
 		maxY = p;
+	}
+	
+	public void applyPoint(Point point){
+		if(getMinX() > point.getFX()){
+			setMinXPoint(point);
+		}
+		if(getMaxX() < point.getFX()){
+			setMaxXPoint(point);
+		}
+		if(getMinY() > point.getFY()){
+			setMinYPoint(point);
+		}
+		if(getMaxY() < point.getFY()){
+			setMaxYPoint(point);
+		}
+	}
+	
+	public void reject(){
+		minX = initMinX;
+		maxX = initMaxX;
+		minY = initMinY;
+		maxY = initMaxY;
 	}
 	
 	public String toString(){

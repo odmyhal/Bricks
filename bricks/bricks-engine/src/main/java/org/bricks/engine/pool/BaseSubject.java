@@ -131,6 +131,13 @@ public abstract class BaseSubject<E extends Entity, I extends Imprint, C, R exte
 	public void setDistrictMask(int sectorMask) {
 		this.sectorMask = sectorMask;
 	}
+	
+	public void joinWorld(World world){
+		District d = world.pointSector(this.getCenter());
+		Validate.isFalse(d == null, "Could not find district for point: " + this.getCenter());
+		this.joinDistrict(d);
+		this.adjustCurrentPrint();
+	}
 
 	public void update() {
 		SectorMonitor.monitor(this);

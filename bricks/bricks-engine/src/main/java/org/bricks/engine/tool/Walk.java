@@ -20,5 +20,5 @@ public abstract class Walk<C> {
 	
 	public abstract void flushTimer(long time);
 	
-	public abstract boolean moveBack(long checkTime);
+	public abstract boolean moveBack(long checkTime, float k);
 }

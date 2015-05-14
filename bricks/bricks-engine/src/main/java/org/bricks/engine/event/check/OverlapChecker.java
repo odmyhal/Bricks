@@ -30,6 +30,7 @@ public class OverlapChecker<T extends Liver> extends EventChecker<T>{
 	public void activate(T target, long curTime){}
 	
 	protected Event popEvent(Liver targetP, long eventTime){
+//		targetP.log("  1. Overlap checker pop event");
 		EventCheckState curState = localCheckState.get();
 		if(curState.checkNew(targetP)){
 			Subject last = targetP.checkLastOverlap();
@@ -40,12 +41,16 @@ public class OverlapChecker<T extends Liver> extends EventChecker<T>{
 			Subject target = (Subject) targetP.getStaff().get(entityNum);
 			Area area = target.getDistrict().getBuffer();
 			int areaNum = curState.getAndIncrementAreaState();
+//			targetP.log(" 1.1 Checks " + areaNum + " of " + area.capacity() + ", my center is: " + target.getCenter());
 			while(areaNum < area.capacity()){
 				Subject<?, ?, ?, ?> sv = area.getSubject(areaNum);
 				areaNum = curState.getAndIncrementAreaState();
 				if(sv == null || sv == target || sv == curState.getLast()){
+//					targetP.log(" 1.2 Wrong slot because of " + 
+//							(sv == null ? "null" : sv == target ? "me" : sv == curState.getLast() ? "last" : "none"));
 					continue;
 				}
+//				targetP.log("  2. Before Liver checkOverlap");
 				OverlapEvent resultEvent = targetP.checkOverlap(target, sv);
 				if(resultEvent == null){
 					continue;

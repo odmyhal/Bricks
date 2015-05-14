@@ -2,6 +2,7 @@ package org.bricks.extent.subject.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.bricks.engine.neve.PrintableBase;
 import org.bricks.engine.tool.Logger;
@@ -10,6 +11,7 @@ import org.bricks.exception.Validate;
 import org.bricks.extent.space.Roll3D;
 import org.bricks.extent.space.SSPrint;
 import org.bricks.extent.space.overlap.Skeleton;
+import org.bricks.extent.space.overlap.SkeletonWithPlane;
 import org.bricks.extent.tool.ModelHelper;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -23,7 +25,7 @@ import com.badlogic.gdx.utils.Pool;
 
 public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements RenderableProvider{
 	
-	public Collection<Skeleton> skeletons;
+	public List<Skeleton> skeletons;
 	protected ModelInstance modelInstance;
 	protected Matrix4 transformMatrix = new Matrix4();
 	
@@ -33,12 +35,12 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 	
 	private final Quaternion tmpQ = new Quaternion();
 	private final Matrix4 tmpM = new Matrix4();
+	protected int planeSkeleton = -1;
 	
 	public ModelBrick(ModelInstance ms){
 		this.modelInstance = ms;
 		this.transformMatrix.set(ms.transform);
 		this.initPrintStore();
-//		this.adjustCurrentPrint();
 	}
 	
 	public void translate(Vector3 v){
@@ -84,9 +86,25 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 		skeletons.add(skeleton);
 		return skeleton;
 	}
+	
+	public SkeletonWithPlane applySkeletonWithPlane(SkeletonWithPlane swp){
+		swp.addTransform(transformMatrix);
+		if(skeletons == null){
+			skeletons = new ArrayList<Skeleton>();
+		}
+		skeletons.add((Skeleton)swp);
+		planeSkeleton = skeletons.indexOf(swp);
+		lastPrintModified = currentPrint;
+		Validate.isTrue(planeSkeleton > -1, "PlaneSkeleton should already exists");
+		return swp;
+	}
 
 	public I print() {
-		return (I) new MBPrint(this.printStore);
+		MBPrint mbp = new MBPrint(this.printStore);
+/*		if(planeSkeleton > -1){
+			mbp.setPlaneSkeletonPrint(planeSkeleton);
+		}*/
+		return (I) mbp;
 	}
 
 	public Matrix4 linkTransform(){
@@ -114,8 +132,10 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 	
 	@Override
 	public int adjustCurrentPrint(){
+//		System.out.println("ModelBrick is adjusting current print " + lastPrintModified);
 		if(skeletons != null && lastPrintModified == currentPrint){
 			for(Skeleton skeleton : skeletons){
+//				System.out.println("Skeleton adjusting current print");
 				skeleton.calculateTransforms();
 				skeleton.adjustCurrentPrint();
 			}

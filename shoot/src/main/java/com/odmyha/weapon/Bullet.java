@@ -17,8 +17,7 @@ import org.bricks.engine.event.OverlapEvent;
 import org.bricks.engine.event.check.OverlapChecker;
 import org.bricks.engine.event.overlap.BrickOverlapAlgorithm;
 import org.bricks.engine.event.overlap.OverlapStrategy;
-import org.bricks.engine.event.overlap.SmallEventStrategy;
-import org.bricks.engine.item.MultiWalkRoller;
+import org.bricks.engine.item.MultiWalkRoller2D;
 import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.engine.neve.WalkPrint;
 import org.bricks.engine.staff.Subject;
@@ -32,7 +31,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.odmyha.shoot.Ball;
 
-public class Bullet extends MultiWalkRoller<ModelSubjectSync<?, ?>, WalkPrint> implements RenderableProvider{
+public class Bullet extends MultiWalkRoller2D<ModelSubjectSync<?, ?>, WalkPrint> implements RenderableProvider{
 	
 	public static final String BULLET_SOURCE = "BulletSource@shoot.odmyha.com";
 	private static final float speed = 1000;
@@ -80,7 +79,7 @@ public class Bullet extends MultiWalkRoller<ModelSubjectSync<?, ?>, WalkPrint> i
 		ModelInstance bulletModel = ModelStorage.instance().getModelInstance("bullet");//ModelStorage.instance().getModelInstance("gilse", "cone");//
 		return new ModelSubjectSync<Bullet, EntityPointsPrint>(brick, bulletModel);
 	}
-	
+/*	
 	@Override
 	public void setRotation(float radians){
 		double dr = radians;
@@ -90,7 +89,7 @@ public class Bullet extends MultiWalkRoller<ModelSubjectSync<?, ?>, WalkPrint> i
 		PointHelper.normalize(mVector, speed);
 		super.setRotation(radians);
 	}
-
+*/
 	public String sourceType() {
 		return BULLET_SOURCE;
 	}

@@ -6,14 +6,11 @@ import java.util.Iterator;
 import org.bricks.core.entity.Dimentions;
 import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Point;
-import org.bricks.core.entity.impl.PointSetPrint;
 import org.bricks.core.help.PointHelper;
-import org.bricks.engine.event.OverlapEvent;
-import org.bricks.engine.neve.EntityPointsPrint;
-import org.bricks.engine.neve.EntityPrint;
-import org.bricks.engine.pool.BrickSubject;
+import org.bricks.engine.neve.PlanePointsPrint;
+import org.bricks.engine.pool.BaseSubject;
 
-public class BrickOverlapAlgorithm extends BaseOverlapAlgorithm<EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint>, EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint>, Point>{
+public class BrickOverlapAlgorithm extends BaseOverlapAlgorithm<PlanePointsPrint<? extends BaseSubject>, PlanePointsPrint<? extends BaseSubject>, Point>{
 
 	public static final BrickOverlapAlgorithm instance = new BrickOverlapAlgorithm();
 	private static final int[] sectors = new int[5];
@@ -25,38 +22,38 @@ public class BrickOverlapAlgorithm extends BaseOverlapAlgorithm<EntityPointsPrin
 		sectors[4] = 2;
 	}
 /*	
-	public OverlapEvent<EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint>, EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint>, Point> checkOverlap(
-			EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint> target,
-			EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint> client) {
+	public OverlapEvent<EntityPointsPrint<? extends BaseSubject, ? extends EntityPrint>, EntityPointsPrint<? extends BaseSubject, ? extends EntityPrint>, Point> checkOverlap(
+			EntityPointsPrint<? extends BaseSubject, ? extends EntityPrint> target,
+			EntityPointsPrint<? extends BaseSubject, ? extends EntityPrint> client) {
 		return checkOverlapPoint(target, client);
 	}
 */
 	
 	
-	public Point findOverlapPoint(EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint> one, EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint> two){
+	public Point findOverlapPoint(PlanePointsPrint<? extends BaseSubject> one, PlanePointsPrint<? extends BaseSubject> two){
 		return findOverlapPoint(one, two, true);
 	}
 	
-	public boolean isOvarlap(EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint> one, EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint> two){
+	public boolean isOvarlap(PlanePointsPrint<? extends BaseSubject> one, PlanePointsPrint<? extends BaseSubject> two){
 		return findOverlapPoint(one, two, false) != null;
 	}
 /*
 	@Override
-	public OverlapEvent<EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint>, EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint>, Point>
-		checkOverlap(EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint> targetView, EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint> checkView){
+	public OverlapEvent<EntityPointsPrint<? extends BaseSubject, ? extends EntityPrint>, EntityPointsPrint<? extends BaseSubject, ? extends EntityPrint>, Point>
+		checkOverlap(EntityPointsPrint<? extends BaseSubject, ? extends EntityPrint> targetView, EntityPointsPrint<? extends BaseSubject, ? extends EntityPrint> checkView){
 		Point overlapPoint = findOverlapPoint(targetView, checkView);
 		if(overlapPoint == null){
 			return null;
 		}
-		return new OverlapEvent<EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint>, EntityPointsPrint<? extends BrickSubject, ? extends EntityPrint>, Point>
+		return new OverlapEvent<EntityPointsPrint<? extends BaseSubject, ? extends EntityPrint>, EntityPointsPrint<? extends BaseSubject, ? extends EntityPrint>, Point>
 				(targetView, checkView, overlapPoint);
 	}
 */	
-	public static final boolean isPointSetOverlap(PointSetPrint one, PointSetPrint two){
+	public static final boolean isPointSetOverlap(PlanePointsPrint one, PlanePointsPrint two){
 		return findOverlapPoint(one, two, false) != null;
 	}
 
-	private static final Point findOverlapPoint(PointSetPrint one, PointSetPrint two, boolean presize){
+	private static final Point findOverlapPoint(PlanePointsPrint one, PlanePointsPrint two, boolean presize){
 		
 		Dimentions dimm1 = one.getDimentions();
 		Dimentions dimm2 = two.getDimentions();

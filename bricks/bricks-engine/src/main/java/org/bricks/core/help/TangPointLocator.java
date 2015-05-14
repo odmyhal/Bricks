@@ -50,8 +50,8 @@ private static TangSectorPointSearcher[] searcher = new TangSectorPointSearcher[
 		}
 	}
 	
-	public static Collection<Point> findPointsOfSector(Collection<? extends Point> points, int sectorNum){
-		return searcher[sectorNum].searchForPoints(points);
+	public static Collection<Point> findPointsOfSector(Collection<? extends Point> points, int sectorNum, Collection<Point> dest){
+		return searcher[sectorNum].searchForPoints(points, dest);
 	}
 
 	private static abstract class TangSectorPointSearcher{
@@ -64,8 +64,9 @@ private static TangSectorPointSearcher[] searcher = new TangSectorPointSearcher[
 			this.sectorNum = sNum;
 		}
 		
-		protected Collection<Point> searchForPoints(Collection<? extends Point> points){
-			Collection<Point> res = new ArrayList<Point>();
+		protected Collection<Point> searchForPoints(Collection<? extends Point> points, Collection<Point> dest){
+//			Collection<Point> res = new ArrayList<Point>();
+			dest.clear();
 			boolean cond, prevCond = false; 
 			boolean started = false;
 			Point one = null, two = null, first = null;
@@ -84,7 +85,7 @@ private static TangSectorPointSearcher[] searcher = new TangSectorPointSearcher[
 				cond = apply(one, two);
 				if(started){
 					if(cond){
-						res.add(two);
+						dest.add(two);
 						if(two.equals(first)){
 							break;
 						}
@@ -96,8 +97,8 @@ private static TangSectorPointSearcher[] searcher = new TangSectorPointSearcher[
 						prevCond = false;
 					}
 					if(cond && !prevCond){
-						res.add(one);
-						res.add(two);
+						dest.add(one);
+						dest.add(two);
 						started = true;
 						first = one;
 					}
@@ -106,7 +107,7 @@ private static TangSectorPointSearcher[] searcher = new TangSectorPointSearcher[
 				one = two;
 				Validate.isTrue(++VALIDATE < 500);
 			}
-			return res;
+			return dest;
 		}
 	}
 }

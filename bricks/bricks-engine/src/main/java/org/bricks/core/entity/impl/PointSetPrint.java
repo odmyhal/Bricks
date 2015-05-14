@@ -13,26 +13,28 @@ import org.bricks.core.help.PointSetHelper;
 import org.bricks.core.help.TangPointLocator;
 import org.bricks.engine.neve.BasePrint;
 import org.bricks.engine.neve.Imprint;
+import org.bricks.engine.neve.PlanePointsPrint;
 import org.bricks.engine.neve.PrintStore;
 import org.bricks.engine.neve.PrintableBase;
 import org.bricks.engine.neve.PrintableBrickWrap;
 
-public class PointSetPrint<P extends PrintableBrickWrap> extends BasePrint<P>{
+public class PointSetPrint<P extends PrintableBrickWrap> extends BasePrint<P>
+	implements PlanePointsPrint<P>{
 	
 	private final Fpoint center = new Fpoint(0f, 0f);
 	private List<Ipoint> points;
 	private Dimentions dimentions;
-	private SectorPoints[] sectorPoints = new SectorPoints[5];
+	private PlanePointsPrint.SectorPoints[] sectorPoints = new PlanePointsPrint.SectorPoints[5];
 
 	public PointSetPrint(PrintStore<P, ?> ps) {
 		super(ps);
-		for(int i = 1; i < 5; i++){
-			sectorPoints[i] = new SectorPoints(i);
-		}
 		int size = getTarget().getBrick().size();
 		this.points = new ArrayList<Ipoint>(size);
 		for(int j=0; j<size; j++){
 			this.points.add(new Ipoint(0, 0));
+		}
+		for(int i = 1; i < 5; i++){
+			sectorPoints[i] = new PlanePointsPrint.SectorPoints(i, points);
 		}
 	}
 
@@ -62,7 +64,7 @@ public class PointSetPrint<P extends PrintableBrickWrap> extends BasePrint<P>{
 		this.center.setY(center.getFY());
 	}
 
-	public List<Ipoint> getPoints() {
+	public List<? extends Point> getPoints() {
 		return points;
 	}
 	
@@ -74,26 +76,5 @@ public class PointSetPrint<P extends PrintableBrickWrap> extends BasePrint<P>{
 		return sectorPoints[sNum].getSPoints();
 	}
 	
-	private class SectorPoints<P>{
-		
-		private volatile Collection<Point> sectorPoints;
-		private int sectorNum;
-		
-		private SectorPoints(int num){
-			sectorNum = num;
-		}
-		
-		private Collection<Point> getSPoints(){
-			Collection<Point> result = sectorPoints;
-			if(result == null){
-				result = TangPointLocator.findPointsOfSector(points, sectorNum);
-				sectorPoints = result;
-			}
-			return result;
-		}
-		
-		private void rejectSPoints(){
-			sectorPoints = null;
-		}
-	}
+	
 }

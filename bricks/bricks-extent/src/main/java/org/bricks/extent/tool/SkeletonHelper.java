@@ -34,7 +34,6 @@ public class SkeletonHelper {
 		List<Vector3> vertexes = new ArrayList<Vector3>();
 		
 		Node node = ModelHelper.findNode(nodePath, modelInstance.nodes);
-		System.out.println("Skeleton helper checking " + node.parts.size + " of node " + nodePath);
 		for(NodePart nodePart : node.parts){
 //			System.out.println("Skeleton helper checks node " + nodePart.)
 			MeshPart meshPart = nodePart.meshPart;
@@ -59,7 +58,9 @@ public class SkeletonHelper {
 //			mesh.getIndices(meshIndices, meshPart.indexOffset);
 			
 			int step = calcStepLen(mesh.getVertexAttributes());
+			//Help tools:
 			Map<Short, Integer> cacheIndex = new HashMap<Short, Integer>();
+			Map<Vector3, Integer> vertexNumbers = new HashMap<Vector3, Integer>();
 			for(short ind : meshIndices){
 				if(cacheIndex.containsKey(ind)){
 					indexes.add(cacheIndex.get(ind));
@@ -69,11 +70,20 @@ public class SkeletonHelper {
 					float y = fb.get(find + 1);
 					float z = fb.get(find + 2);
 					Vector3 vertex = new Vector3(x, y, z);
-//					vertex.mul(node.globalTransform);
-					vertexes.add(vertex);
-					int myInd = vertexes.size() - 1;
+//					vertex.mul(node.globalTransform);vertexes.add(vertex);
+/*					int myInd = vertexes.size() - 1;
 					indexes.add(myInd);
-					cacheIndex.put(ind, myInd);
+					cacheIndex.put(ind, myInd);*/
+					if(vertexes.contains(vertex)){
+						Validate.isTrue(vertexNumbers.containsKey(vertex));
+						indexes.add(vertexNumbers.get(vertex));
+					}else{
+						vertexes.add(vertex);
+						int myInd = vertexes.size() - 1;
+						indexes.add(myInd);
+						vertexNumbers.put(vertex, myInd);
+						cacheIndex.put(ind, myInd);
+					}
 				}
 			}
 		}
@@ -82,6 +92,7 @@ public class SkeletonHelper {
 		for(int i = 0; i < intData.length; i++){
 			intData[i] = indexes.get(i);
 		}
+		System.out.format("Constructed Skeleton of %d vetexes, %d indexes.\n", vertexes.size(), intData.length);
 		return new Tuple(intData, vertexes.toArray(new Vector3[vertexes.size()]));
 	}
 	

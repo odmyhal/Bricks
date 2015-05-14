@@ -15,7 +15,7 @@ import org.bricks.engine.event.overlap.BrickOverlapAlgorithm;
 import org.bricks.engine.event.overlap.OverlapStrategy;
 import org.bricks.engine.event.overlap.SmallEventStrategy;
 import org.bricks.engine.help.VectorSwapHelper;
-import org.bricks.engine.item.MultiWalkRoller;
+import org.bricks.engine.item.MultiWalkRoller2D;
 import org.bricks.engine.neve.RollPrint;
 import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.engine.neve.WalkPrint;
@@ -32,7 +32,7 @@ import com.odmyha.weapon.Bullet;
 import com.odmyha.weapon.Cannon;
 import com.odmyha.weapon.Shield;
 
-public class Ball extends MultiWalkRoller<BallSubjectNew, WalkPrint> implements ListenDistrictEntity<WalkPrint>, RenderableProvider{
+public class Ball extends MultiWalkRoller2D<BallSubjectNew, WalkPrint> implements ListenDistrictEntity<WalkPrint>, RenderableProvider{
 	
 	public static final String BALL_SOURCE_TYPE = "BallSource@shoot.odmyha.com";
 /*	

@@ -4,12 +4,15 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import org.bircks.entierprise.model.ModelStorage;
+import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.impl.PointSetBrick;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.engine.item.Stone;
 import org.bricks.engine.neve.EntityPrint;
 import org.bricks.engine.neve.EntityPointsPrint;
+import org.bricks.engine.tool.Origin;
+import org.bricks.engine.tool.Origin2D;
 import org.bricks.extent.entity.mesh.ModelSubjectSync;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -18,14 +21,18 @@ import com.badlogic.gdx.graphics.g3d.RenderableProvider;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 
-public class Shield extends Stone<ModelSubjectSync, EntityPrint> implements RenderableProvider{
+public class Shield extends Stone<ModelSubjectSync<Shield, EntityPointsPrint>, EntityPrint, Fpoint> implements RenderableProvider{
 	
 	public static final String SHIELD_SOURCE = "ShieldSource@shoot.odmyha.com";
 
 	private Shield(ModelSubjectSync subject) {
 		super(subject);
 	}
-	
+
+	public Origin<Fpoint> provideInitialOrigin(){
+		return new Origin2D();
+	}
+
 	public static Shield instance(){
 		Collection<Ipoint> points = new LinkedList<Ipoint>();
 		points.add(new Ipoint(0, 0));

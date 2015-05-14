@@ -2,7 +2,7 @@ package org.bricks.extent.space.overlap;
 
 import com.badlogic.gdx.math.Vector3;
 
-public class Dimentions {
+public class Dimentions3D {
 
 	public final Vector3 max = new Vector3(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
 	public final Vector3 min = new Vector3(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);

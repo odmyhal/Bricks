@@ -3,8 +3,11 @@ package org.bricks.extent.debug;
 import java.util.Collection;
 
 import org.bricks.core.entity.Ipoint;
+import org.bricks.core.entity.Point;
 import org.bricks.engine.Engine;
 import org.bricks.engine.item.MultiSubjectEntity;
+import org.bricks.engine.neve.Imprint;
+import org.bricks.engine.neve.PlanePointsPrint;
 import org.bricks.engine.pool.Boundary;
 import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.pool.District;
@@ -65,15 +68,21 @@ public class ShapeDebugger implements Disposable{
 		for(K entity: entities){
 			if(entity instanceof MultiSubjectEntity){
 				MultiSubjectEntity<Subject, ?, ?> msubjecte = (MultiSubjectEntity<Subject, ?, ?>) entity;
+//				System.out.println("Debug draw " + msubjecte.getClass().getCanonicalName());
 				for(Subject sv : msubjecte.getStaff()){
-					if(sv instanceof BrickSubject){
+					Imprint print = sv.getSafePrint();
+					if(print instanceof PlanePointsPrint){
+						drawPoints(((PlanePointsPrint) print).getPoints(), cameraMatrix);
+					}
+					print.free();
+/*					if(sv instanceof BrickSubject){
 						drawPoints(((BrickSubject)sv).getBrick().getPoints(), cameraMatrix);
 					}else if(sv instanceof SpaceSubject){
 						MarkPoint markPoint = ((SpaceSubject) sv).markPoint;
 						Vector3 one = markPoint.getMark(1);
 						Vector3 two = markPoint.getMark(2);
 						shR.line(one.x, one.y, two.x, two.y);
-					}
+					}*/
 				}
 			}
 		}
@@ -87,18 +96,23 @@ public class ShapeDebugger implements Disposable{
 		if(entity instanceof MultiSubjectEntity){
 			MultiSubjectEntity<Subject, ?, ?> msubjecte = (MultiSubjectEntity<Subject, ?, ?>) entity;
 			for(Subject sv : msubjecte.getStaff()){
-				if(sv instanceof BrickSubject){
-					drawPoints(((BrickSubject)sv).getBrick().getPoints(), cameraMatrix);
+				Imprint print = sv.getSafePrint();
+				if(print instanceof PlanePointsPrint){
+					drawPoints(((PlanePointsPrint) print).getPoints(), cameraMatrix);
 				}
+/*				if(sv instanceof BrickSubject){
+					drawPoints(((BrickSubject)sv).getBrick().getPoints(), cameraMatrix);
+				}*/
+				print.free();
 			}
 		}
 		shR.end();
 	}
 	
-	private void drawPoints(Collection<Ipoint> points, Matrix4 cameraMatrix){
+	private void drawPoints(Collection<Point> points, Matrix4 cameraMatrix){
 		
-		Ipoint one = null, first = null;
-		for(Ipoint p: points){
+		Point one = null, first = null;
+		for(Point p: points){
 			if(one == null){
 				one = first = p;
 				continue;

@@ -23,15 +23,13 @@ public final class PrintStore<T extends Printable, P extends Imprint> {
 //		initPrint();
 	}
 	
-	private void initSlots(){
+	private final void initSlots(){
 		for(int i=0; i<size; i++){
 			cache[i] = new PrintSlot();
 		}
 	}
-	/*
-	 * TODO: need to remake using BasePrintable
-	 */
-	private void initPrint(){
+	
+	private final void initPrint(){
 		P newPrint = getPrint();
 		newPrint.intStoreInitialization();
 //		newPrint.checkCounterZero();

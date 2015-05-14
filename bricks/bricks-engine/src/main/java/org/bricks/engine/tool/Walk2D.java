@@ -57,12 +57,12 @@ public class Walk2D extends Walk<Fpoint>{
 		return res;
 	}
 	
-	public boolean moveBack(long checkTime){
+	public boolean moveBack(long checkTime, float k){
 		if(lastMove.isZero()){
 			return false;
 		}
 		Validate.isTrue(checkTime >= moveXTime && checkTime >= moveYTime);
-		lastMove.mult(-1f);
+		lastMove.mult(-1f * k);
 		owner.translate(lastMove);
 		lastMove.mult(0f);
 		moveXTime = moveYTime = checkTime;

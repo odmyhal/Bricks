@@ -107,6 +107,11 @@ public class ModelBrickOperable<I extends MBOPrint<?>> extends ModelBrick<I>{
 	
 	@Override
 	public I print(){
-		return (I) new MBOPrint(this.printStore);
+		MBOPrint mbp = new MBOPrint(this.printStore);
+/*		if(planeSkeleton > -1){
+			mbp.setPlaneSkeletonPrint(planeSkeleton);
+		}*/
+		return (I) mbp;
+//		return (I) new MBOPrint(this.printStore);
 	}
 }
