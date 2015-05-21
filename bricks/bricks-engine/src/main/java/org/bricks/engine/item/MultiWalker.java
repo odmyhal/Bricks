@@ -32,9 +32,9 @@ public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkP
 	}
 	
 	protected abstract Walk<C> provideInitialLegs();
-	
+/*	
 	@Override
-	public void motorProcess(long currentTime){
+	public final void motorProcess(long currentTime){
 		processEvents(currentTime);
 		if(!alive()){
 			return;
@@ -49,7 +49,15 @@ public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkP
 			adjustInMotorPrint();
 		}
 	}
-	
+*/	
+	protected void innerProcess(long currentTime){
+		super.innerProcess(currentTime);
+		if(legs.move(currentTime, vector.source)){
+			setUpdate();
+		}
+		applyAcceleration(currentTime);
+	}
+/*	
 	@Override
 	protected void adjustInMotorPrint(){
 		adjustCurrentPrint(false);
@@ -57,7 +65,7 @@ public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkP
 			satellite.update();
 		}
 	}
-	
+*/	
 	private void applyAcceleration(long curTime){
 		if(acceleration.isZero()){
 			return;
@@ -67,20 +75,6 @@ public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkP
 		tmpAcceleration.mult(diff);
 		vector.add(tmpAcceleration);
 		accelerationTime = curTime;
-/*		if(acceleration != 0){
-			float diff = (curTime - accelerationTime) / 1000f;
-			Validate.isTrue(diff >= 0, "Need to check accelaration time...");
-			if(diff < 0.1){
-				return;
-			}
-			double rotation = getRotation();
-			float absAcc = acceleration * diff;
-			vector.setX(vector.getFX() + absAcc * (float) Math.cos(rotation));
-			vector.setY(vector.getFY() + absAcc * (float) Math.sin(rotation));
-			Validate.isTrue(vector.getFX() < 3000, "Speed X is to hie");
-			Validate.isTrue(vector.getFY() < 3000, "Speed Y is to hie");
-			accelerationTime = curTime;
-		}*/
 	}
 	
 	@Override
@@ -115,20 +109,17 @@ public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkP
 	
 
 //	@Override
-	public void rollBack(long currentTime, float k){
+	public final void rollBack(long currentTime, float k){
 		boolean moveBack = legs.moveBack(currentTime, k);
 		boolean rotateBack = rotateBack(currentTime, k);
 		if(rotateBack){
 			applyRotation();
 		}
 		if(rotateBack || moveBack){
-			adjustCurrentPrint(false);
+			setUpdate();
+/*			adjustCurrentPrint(false);
 			for(Satellite satellite : getSatellites()){
 				satellite.update();
-			}
-/*			for(S subject : getStaff()){
-				SectorMonitor.monitor(subject);
-				subject.adjustCurrentView();
 			}*/
 		}
 	}
@@ -142,10 +133,5 @@ public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkP
 	public P print(){
 		return (P) new WalkPrint(this.printStore);
 	}
-/*	
-	@Override
-	public WalkView provideCurrentView(){
-		return new WalkView(this);
-	}
-	*/
+
 }

@@ -7,26 +7,29 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 
-public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
-	
+public class NodeData_Alternative<I extends NodeDataPrint> extends PrintableBase<I>{
+
+
 	private int currentPrint = -1, renderLastPrint = -5;
 	protected int lastPrintModified = -2;
 	
-	private final Quaternion rotation = new Quaternion();
-	private final Vector3 translation = new Vector3();
-	private final Vector3 scale = new Vector3();
+//	private final Quaternion rotation = new Quaternion();
+//	private final Vector3 translation = new Vector3();
+//	private final Vector3 scale = new Vector3();
 	private final Matrix4 transformMatrix = new Matrix4();
 	
-	private Matrix4 helpMatrix = new Matrix4();
+	private final Matrix4 helpMatrix = new Matrix4();
+	private final Matrix4 resultMatrix = new Matrix4();
 	
-	public NodeData(Node node){
+	public NodeData_Alternative(Node node){
 		this(node.rotation, node.translation, node.scale);
 	}
 	
-	public NodeData(Quaternion rotation, Vector3 translation, Vector3 scale){
-		this.rotation.set(rotation);
-		this.translation.set(translation);
-		this.scale.set(scale);
+	public NodeData_Alternative(Quaternion rotation, Vector3 translation, Vector3 scale){
+		this.transformMatrix.set(translation, rotation, scale);
+//		this.rotation.set(rotation);
+//		this.translation.set(translation);
+//		this.scale.set(scale);
 		initPrintStore();
 		adjustCurrentPrint();
 	}
@@ -40,10 +43,9 @@ public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
 	}
 	*/
 	public void rotateByPoint(Quaternion q, Vector3 point){
-		this.rotation.mulLeft(q);
+		translate(-point.x, -point.y, -point.z);
 		q.toMatrix(helpMatrix.val);
-		this.translation.sub(point);
-		this.translation.mul(helpMatrix);
+		transformMatrix.mulLeft(helpMatrix);
 		translate(point);
 	}
 	
@@ -54,7 +56,8 @@ public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
 	}
 	
 	protected void translate(float x, float y, float z){
-		translation.add(x, y, z);
+		helpMatrix.idt().trn(x, y, z);
+		transformMatrix.mulLeft(helpMatrix);
 	}
 	
 	public void scale(Vector3 scl, Vector3 point){
@@ -62,10 +65,7 @@ public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
 	}
 	
 	public void scale(float scaleX, float scaleY, float scaleZ, Vector3 point){
-		translation.x = point.x + (translation.x - point.x) * scaleX;
-		translation.y = point.y + (translation.y - point.y) * scaleY;
-		translation.z = point.z + (translation.z - point.z) * scaleZ;
-		scale.scl(scaleX, scaleY, scaleZ);
+		transformMatrix.scale(scaleX, scaleY, scaleZ);
 		lastPrintModified = currentPrint;
 	}
 
@@ -87,11 +87,11 @@ public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
 	 * Method used in NodeDataPrint.init() called from this.adjustCurrentPrint()
 	 */
 	protected void calculateTransform(){
-		transformMatrix.set(translation, rotation, scale);
+		resultMatrix.set(transformMatrix);
 	}
 	
 	public void flushScale(Vector3 dest){
-		dest.set(scale);
+		this.transformMatrix.getScale(dest);
 	}
 	
 	/**
@@ -99,11 +99,10 @@ public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
 	 * @return link to transform matrix
 	 */
 	public Matrix4 linkTransform(){
-		return transformMatrix;
+		return resultMatrix;
 	}
 
 	public I print() {
 		return (I) new NodeDataPrint(printStore);
 	}
-
 }

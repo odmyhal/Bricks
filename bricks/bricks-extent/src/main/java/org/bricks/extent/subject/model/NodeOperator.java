@@ -21,18 +21,20 @@ public class NodeOperator implements RotationProvider{
 	private Vector3 spin = new Vector3();
 	
 	private Quaternion helpQ = new Quaternion();
-	private Map<String, NodeData> nodes = new HashMap<String, NodeData>();
+//	private Map<String, NodeData> nodes = new HashMap<String, NodeData>();
+	private NodeData nodeData;
 	private float rotatedRadians;
 	private volatile float volatileRotatedRadians;
 
-	public NodeOperator(Node... nodes){
-		for(Node node : nodes){
+	public NodeOperator(Node node){
+		nodeData = new NodeData(node);
+/*		for(Node node : nodes){
 			this.nodes.put(node.id, new NodeData(node));
-		}
+		}*/
 	}
 	
-	public NodeOperator(Vector3 spin, Vector3 point, Node... nodes){
-		this(nodes);
+	public NodeOperator(Vector3 spin, Vector3 point, Node node){
+		this(node);
 		setSpin(spin);
 		setPoint(point);
 	}
@@ -66,18 +68,20 @@ public class NodeOperator implements RotationProvider{
 	
 	public void rotate(float rad){
 		helpQ.setFromAxisRad(spin, rad);
-		for(NodeData nd : nodes.values()){
+		nodeData.rotateByPoint(helpQ, point);
+/*		for(NodeData nd : nodes.values()){
 			nd.rotateByPoint(helpQ, point);
-		}
+		}*/
 		this.rotatedRadians += rad;
 		coerceRotation();
 	}
 	
 	public void translate(float x, float y, float z){
 		this.point.add(x, y, z);
-		for(NodeData nd : nodes.values()){
+		nodeData.translate(x, y, z);
+/*		for(NodeData nd : nodes.values()){
 			nd.translate(x, y, z);
-		}
+		}*/
 	}
 	
 	public void scale(Vector3 scl){
@@ -85,19 +89,21 @@ public class NodeOperator implements RotationProvider{
 	}
 	
 	public void scale(float scaleX, float scaleY, float scaleZ){
-		for(NodeData nd : nodes.values()){
+		nodeData.scale(scaleX, scaleY, scaleZ, point);
+/*		for(NodeData nd : nodes.values()){
 			nd.scale(scaleX, scaleY, scaleZ, point);
-		}
+		}*/
 	}
 	
 	public void updatePrint(){
-		for(NodeData nd : nodes.values()){
+		nodeData.adjustCurrentPrint();
+/*		for(NodeData nd : nodes.values()){
 			nd.adjustCurrentPrint();
-		}
+		}*/
 	}
 	
-	public NodeData getNodeData(String ndName){
-		return nodes.get(ndName);
+	public NodeData getNodeData(){
+		return nodeData;
 	}
 
 	private void coerceRotation(){
@@ -108,5 +114,13 @@ public class NodeOperator implements RotationProvider{
 			rotatedRadians -= rotationCycle;
 		}
 		volatileRotatedRadians = rotatedRadians;
+	}
+	
+	public Vector3 linkPoint(){
+		return point;
+	}
+	
+	public Vector3 linkSpin(){
+		return spin;
 	}
 }

@@ -106,4 +106,20 @@ public class AlgebraHelper {
 			}
 		}
 	}
+	
+	public static float pow(float x, int p){
+		float res = x;
+		while(--p > 0){
+			res *= x;
+		}
+		return res;
+	}
+	
+	public static double pow(double x, int p){
+		double res = x;
+		while(--p > 0){
+			res *= x;
+		}
+		return res;
+	}
 }

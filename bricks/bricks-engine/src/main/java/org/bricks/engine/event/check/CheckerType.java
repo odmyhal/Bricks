@@ -9,7 +9,7 @@ public class CheckerType {
 
 	private int identity;
 	
-	private CheckerType(int identity){
+	protected CheckerType(int identity){
 		this.identity = identity;
 	}
 	

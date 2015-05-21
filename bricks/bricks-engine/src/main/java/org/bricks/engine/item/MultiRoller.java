@@ -70,14 +70,22 @@ public abstract class MultiRoller<S extends Subject<?, ?, C, R>, P extends RollP
 		return roll.rotate(checkTime);
 	}
 
-	@Override
+	protected void innerProcess(long currentTime){
+		if(rotate(currentTime)){
+			applyRotation();
+			setUpdate();
+		}
+	}
+/*	@Override
 	public void motorProcess(long currentTime){
 		processEvents(currentTime);
 		if(alive() && rotate(currentTime)){
 			adjustInMotorPrint();
 		}
 	}
+*/
 
+/*	
 	protected void adjustInMotorPrint(){
 		this.adjustCurrentPrint(false);
 		for(Satellite satellite : getSatellites()){
@@ -85,7 +93,7 @@ public abstract class MultiRoller<S extends Subject<?, ?, C, R>, P extends RollP
 			satellite.update();
 		}
 	}
-	
+*/	
 	public void applyRotation(){
 		for(Satellite satellite : getSatellites()){
 			satellite.rotate(roll/*.getRotation()*/, this.origin());
@@ -98,11 +106,13 @@ public abstract class MultiRoller<S extends Subject<?, ?, C, R>, P extends RollP
 	
 	public void rollBack(long currentTime, float k){
 		if(roll.rotateBack(currentTime, k)){
-			this.adjustCurrentPrint(false);
+			applyRotation();
+			setUpdate();
+/*			this.adjustCurrentPrint(false);
 			for(Satellite satellite : getSatellites()){
-				satellite.rotate(roll/*.getRotation()*/, this.origin());
+				satellite.rotate(roll, this.origin());
 				satellite.update();
-			}
+			}*/
 		}
 	}
 	
@@ -114,10 +124,5 @@ public abstract class MultiRoller<S extends Subject<?, ?, C, R>, P extends RollP
 	public P print(){
 		return (P) new RollPrint(this.printStore);
 	}
-	/*
-	@Override
-	public RollView provideCurrentView(){
-		return new RollView(this);
-	}
-	*/
+
 }

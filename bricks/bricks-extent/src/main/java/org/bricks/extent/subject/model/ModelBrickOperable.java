@@ -27,23 +27,26 @@ public class ModelBrickOperable<I extends MBOPrint<?>> extends ModelBrick<I>{
 		}
 	}
 	
-	public NodeOperator addNodeOperator(String operatorName, String... nodePaths){
-		Validate.isTrue(nodePaths.length > 0, "Can't create node operator without nodes");
-		Node[] nodes = new Node[nodePaths.length];
+	public NodeOperator addNodeOperator(String operatorName, String nodePath){
+//		Validate.isTrue(nodePaths.length > 0, "Can't create node operator without nodes");
+		Node node = ModelHelper.findNode(nodePath, modelInstance.nodes); 
+		Validate.isFalse(node == null, "Could not find node by path: " + nodePath);
+/*		Node[] nodes = new Node[nodePaths.length];
 		int i = 0;
 		for(String nodePath : nodePaths){
 			Node node = ModelHelper.findNode(nodePath, modelInstance.nodes);
 			Validate.isFalse(node == null, "Could not find node by path: " + nodePath);
 			nodes[i++] = node;
-		}
+		}*/
 
-		NodeOperator nodeOperator = new NodeOperator(nodes);
+		NodeOperator nodeOperator = new NodeOperator(node);
 		operatedNodes.put(operatorName, nodeOperator);
-		for(Node node : nodes){
+		dataNodes.put(node, nodeOperator.getNodeData());
+/*		for(Node node : nodes){
 			NodeData nodeData = nodeOperator.getNodeData(node.id);
 			Validate.isFalse(nodeData == null, "No node with id " + node.id);
 			dataNodes.put(node, nodeData);
-		}
+		}*/
 		return nodeOperator;
 	}
 /*	
@@ -74,7 +77,7 @@ public class ModelBrickOperable<I extends MBOPrint<?>> extends ModelBrick<I>{
 		}
 		NodeOperator operator = new NodeOperator(node);
 		operatedNodes.put(nodeName, operator);
-		dataNodes.put(node, operator.getNodeData(nodeName));
+		dataNodes.put(node, operator.getNodeData());
 		return operator;
 	}
 	

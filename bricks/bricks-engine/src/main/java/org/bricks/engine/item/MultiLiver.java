@@ -21,6 +21,7 @@ import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.pool.BaseSubject;
 import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.pool.District;
+import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.staff.Subject;
 import org.bricks.engine.pool.World;
 import org.bricks.engine.staff.Liver;
@@ -34,6 +35,7 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 	private Map<String, OverlapStrategy> overlapStrategy;
 	private Motor motor;
 	private boolean alive = false;
+	private boolean needUpdate = true;
 
 	protected MultiLiver() {
 		overlapStrategy = initOverlapStrategy();
@@ -90,9 +92,35 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 		return live.removeHistory(groupCode);
 	}
 	
-	public void motorProcess(long currentTime){
-//		System.out.println(this.getClass().getCanonicalName() + " motor process");
+	protected final void adjustInMotorPrint(){
+		this.adjustCurrentPrint(false);
+		for(Satellite satellite : getSatellites()){
+			satellite.update();
+		}
+	}
+	
+	protected void innerProcess(long currentTime){
+		//Method rewrite by MultiRoller and MultiWalker
+	};
+	
+	//Need to be called in motor thread
+	public void setUpdate(){
+		needUpdate = true;
+	}
+	
+	protected final boolean needUpdate(){
+		return needUpdate;
+	}
+	
+	public final void motorProcess(long currentTime){
 		processEvents(currentTime);
+		if(alive){
+			innerProcess(currentTime);
+			if(needUpdate){
+				adjustInMotorPrint();
+				needUpdate = false;
+			}
+		}
 	}
 	
 	public void processEvents(long currentTime){

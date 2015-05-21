@@ -11,7 +11,8 @@ public class VectorHelper {
 	}
 	
 	public static double vectorLen(Point v){
-		return Math.sqrt(v.getFX() * v.getFX() + v.getFY() * v.getFY());
+		return Math.hypot(v.getFX(), v.getFY());
+//		return Math.sqrt(v.getFX() * v.getFX() + v.getFY() * v.getFY());
 	}
 	
 	public static double vectorProjectionModule(Point target, Point base){

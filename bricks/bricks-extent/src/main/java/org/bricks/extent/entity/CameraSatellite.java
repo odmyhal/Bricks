@@ -11,6 +11,7 @@ import org.bricks.engine.tool.Roll;
 import org.bricks.enterprise.control.widget.tool.RotationDependAction.RotationProvider;
 import org.bricks.exception.Validate;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 
 public class CameraSatellite implements Satellite<Point, Roll>, RotationProvider{
@@ -87,8 +88,10 @@ public class CameraSatellite implements Satellite<Point, Roll>, RotationProvider
 			int translateX = 0;
 			int translateY = 0;
 			do{
-				Validate.isFalse(q[lastIndex] == 0, "Unpdate indentificator should equal 1 or 2 here");
-				if(rotate[lastIndex] == 0){
+//				Validate.isFalse(q[lastIndex] == 0, "Unpdate indentificator should equal 1 or 2 here");
+				if(q[lastIndex] == 0){
+					Gdx.app.debug("WARNING", "CameraSetellite called update without any transformations...(see MultiLiver, line:38, needUpdate = true)");
+				}else if(rotate[lastIndex] == 0){
 					translateX += trX[lastIndex];
 					translateY += trY[lastIndex];
 				}else{

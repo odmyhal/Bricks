@@ -24,6 +24,17 @@ public abstract class OriginMover<S extends Subject<?, ?, C, R>, P extends Origi
 		System.out.println(System.currentTimeMillis() + " Incremented Print count is " + printCount);
 	}
 */
+	protected void innerProcess(long currentTime){
+		super.innerProcess(currentTime);
+		if(this.needUpdate()){
+			Origin<C> lastOrigin = this.getInnerPrint().getOrigin();
+			if(!lastOrigin.equals(this.origin())){
+				lastMove.set(this.origin());
+				lastMove.sub(lastOrigin);
+			}
+		}
+	}
+/*	
 	@Override
 	protected void adjustInMotorPrint(){
 		Origin<C> lastOrigin = this.getInnerPrint().getOrigin();
@@ -34,7 +45,7 @@ public abstract class OriginMover<S extends Subject<?, ?, C, R>, P extends Origi
 		}
 		super.adjustInMotorPrint();
 	}
-	
+*/	
 /*	public int printCount(){
 		return printCount;
 	}

@@ -39,7 +39,7 @@ public class NodeScaleProcessor<T extends MultiLiver<ModelBrickSubject<?, ?, ?, 
 	public void doJob(T target, long processTime) {
 		long diffTime = processTime - this.lastCheckTime;
 		if(diffTime > 20){
-			this.nodeOperator.getNodeData(this.nodeOperatorName).flushScale(helpV);
+			this.nodeOperator.getNodeData(/*this.nodeOperatorName*/).flushScale(helpV);
 			helpV.x = 1f + (scaleSpeed.x * diffTime) / helpV.x;
 			helpV.y = 1f + (scaleSpeed.y * diffTime) / helpV.y;
 			helpV.z = 1f + (scaleSpeed.z * diffTime) / helpV.z;
@@ -52,7 +52,7 @@ public class NodeScaleProcessor<T extends MultiLiver<ModelBrickSubject<?, ?, ?, 
 	}
 	
 	private void checkFinish(){
-		this.nodeOperator.getNodeData(this.nodeOperatorName).flushScale(helpV);
+		this.nodeOperator.getNodeData(/*this.nodeOperatorName*/).flushScale(helpV);
 		if( checkSingleOrth(helpV.x, targetScale.x, scaleSpeed.x)
 				|| checkSingleOrth(helpV.y, targetScale.y, scaleSpeed.y)
 				|| checkSingleOrth(helpV.z, targetScale.z, scaleSpeed.z)
@@ -95,7 +95,7 @@ public class NodeScaleProcessor<T extends MultiLiver<ModelBrickSubject<?, ?, ?, 
 		targetScale.set(initScale);
 //		System.out.print("Activated NodeScaleProcessor target: " + targetScale + ", scaleTime: " + initTime);
 		scaleTime = initTime;
-		this.nodeOperator.getNodeData(this.nodeOperatorName).flushScale(scaleSpeed);
+		this.nodeOperator.getNodeData(/*this.nodeOperatorName*/).flushScale(scaleSpeed);
 //		System.out.print(", current scale: " + scaleSpeed);
 		scaleSpeed.sub(targetScale);
 		scaleSpeed.scl(-1f / scaleTime);
