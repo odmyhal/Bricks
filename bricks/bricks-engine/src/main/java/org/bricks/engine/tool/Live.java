@@ -12,6 +12,9 @@ import org.bricks.engine.event.check.CheckerType;
 import org.bricks.engine.event.check.EventChecker;
 import org.bricks.engine.staff.Liver;
 
+/*
+ * TODO: rewrite with Quarantine for implementation of tmpCheckers
+ */
 public class Live {
 	
 	private final Vector<Event> events = new Vector<Event>();

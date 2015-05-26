@@ -106,6 +106,8 @@ public class BallGame implements ApplicationListener {
         ModelStorage.instance().init(prefs.get("model.construct.tool", null));
 		Gdx.app.debug("OLEH-CHECK", "Before push !!!!!!!!!!!!!!!!!!!");
 		
+		engine.start();
+		
 		bp.produceBall(200, 200, -50f, -50f).applyEngine(engine);
 		bp.produceSmallBall(350, 300, -150f, -150f).applyEngine(engine);
 		
@@ -130,6 +132,7 @@ public class BallGame implements ApplicationListener {
 		
 		bp.produceSmallBall(125, 675, 1000f, -1000f).applyEngine(engine);
 		
+//		Thread.currentThread().yield();
 
 		int cnt = 0;
 		for(int i=750; i < 250 * 40 - 40; i+=225){
@@ -137,6 +140,9 @@ public class BallGame implements ApplicationListener {
 				bp.produceBall(j, i, 400f * (i%10 == 0 ? 1 : -1), 400f * (j%10 == 0 ? -1 : 1)).applyEngine(engine);
 //				bp.produceBall(j, i, 20f * (i%10 == 0 ? 1 : -1), 15f * (j%10 == 0 ? -1 : 1)).applyEngine(engine);
 				cnt++;
+				if(cnt % 100 == 0){
+					Thread.yield();
+				}
 			}
 		}
 		Gdx.app.debug("OLEH-CHECK", "Created " + cnt + " balls inside loop");
@@ -156,7 +162,7 @@ public class BallGame implements ApplicationListener {
 		
 //		Gdx.input.setInputProcessor(new BallAdapter(cann, cameraMove));
 		
-		engine.start();
+		
 		try {
 			Thread.sleep(30);
 		} catch (InterruptedException e) {

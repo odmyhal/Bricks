@@ -6,11 +6,7 @@ import org.bricks.engine.event.check.EventChecker;
 import org.bricks.engine.staff.Liver;
 
 public abstract class Processor<T extends Liver> extends EventChecker<T>{
-/*
-	public Processor() {
-		super(CheckerType.NO_SUPLANT);
-	}
-*/	
+
 	public Processor(CheckerType type) {
 		super(type);
 	}

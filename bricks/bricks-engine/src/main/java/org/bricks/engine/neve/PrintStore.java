@@ -15,6 +15,7 @@ public final class PrintStore<T extends Printable, P extends Imprint> {
 	 * getIndex has no need to be volatile if isLastPrint accept volatile parameter
 	 */
 	private /*volatile*/ int getIndex = 0;
+	private int serialPrintNumber = 0;
 	private volatile P currentPrint;
 	
 	public PrintStore(T printable){
@@ -47,7 +48,7 @@ public final class PrintStore<T extends Printable, P extends Imprint> {
 		if(oldPrint != null){
 			oldPrint.free();
 		}
-		return getIndex;
+		return serialPrintNumber;
 	}
 	
 	/*
@@ -75,7 +76,7 @@ public final class PrintStore<T extends Printable, P extends Imprint> {
 	 * Because of getIndex is not volatile, parameter printNum should be volatile
 	 */
 	public boolean isLastPrint(int printNum){
-		return printNum == getIndex;
+		return printNum == serialPrintNumber;
 	}
 	
 	protected void putPrint(Imprint print){
@@ -89,9 +90,11 @@ public final class PrintStore<T extends Printable, P extends Imprint> {
 	private P getPrint(){
 		int getNum = getIndex % size;
 		P print = cache[getNum].get();
-		getIndex++;
+		++serialPrintNumber;
 		if(print == null){
 			return (P) target.print();
+		}else{
+			++getIndex;
 		}
 		return print;
 	}
