@@ -1,6 +1,7 @@
-package org.bricks.engine.event.processor;
+package org.bricks.engine.processor;
 
 import org.bricks.engine.event.control.RotationSpeedEvent;
+import org.bricks.engine.processor.ImmediateActProcessor;
 import org.bricks.engine.staff.Roller;
 
 public class ChangeRotationSpeedProcessor<T extends Roller> extends ImmediateActProcessor<T> {

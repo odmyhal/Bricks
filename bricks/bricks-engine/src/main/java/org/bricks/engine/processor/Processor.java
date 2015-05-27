@@ -1,4 +1,4 @@
-package org.bricks.engine.event.processor;
+package org.bricks.engine.processor;
 
 import org.bricks.engine.event.Event;
 import org.bricks.engine.event.check.CheckerType;

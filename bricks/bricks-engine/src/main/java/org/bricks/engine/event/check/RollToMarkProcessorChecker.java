@@ -1,10 +1,10 @@
 package org.bricks.engine.event.check;
 
 import org.bricks.engine.event.control.RotationSpeedEvent;
-import org.bricks.engine.event.processor.ChangeRotationSpeedProcessor;
-import org.bricks.engine.event.processor.ImmediateActProcessor;
-import org.bricks.engine.event.processor.SingleActProcessor;
 import org.bricks.engine.help.RotationHelper;
+import org.bricks.engine.processor.ChangeRotationSpeedProcessor;
+import org.bricks.engine.processor.ImmediateActProcessor;
+import org.bricks.engine.processor.SingleActProcessor;
 import org.bricks.engine.staff.Roller;
 import org.bricks.exception.Validate;
 

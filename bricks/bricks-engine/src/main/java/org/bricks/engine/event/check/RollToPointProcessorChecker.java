@@ -5,10 +5,10 @@ import org.bricks.core.entity.Point;
 import org.bricks.core.help.AlgebraHelper;
 import org.bricks.core.help.PointHelper;
 import org.bricks.engine.event.control.RotationSpeedEvent;
-import org.bricks.engine.event.processor.ChangeRotationSpeedProcessor;
-import org.bricks.engine.event.processor.SingleActProcessor;
 import org.bricks.engine.help.RotationHelper;
 import org.bricks.engine.item.MultiRoller;
+import org.bricks.engine.processor.ChangeRotationSpeedProcessor;
+import org.bricks.engine.processor.SingleActProcessor;
 import org.bricks.engine.staff.Roller;
 import org.bricks.exception.Validate;
 

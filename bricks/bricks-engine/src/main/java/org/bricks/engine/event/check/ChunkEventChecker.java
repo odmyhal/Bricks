@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bricks.engine.event.Event;
-import org.bricks.engine.event.processor.Processor;
+import org.bricks.engine.processor.Processor;
 import org.bricks.engine.staff.Liver;
 
 /**

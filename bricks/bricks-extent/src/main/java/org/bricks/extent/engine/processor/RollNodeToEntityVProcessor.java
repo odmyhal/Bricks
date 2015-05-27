@@ -3,6 +3,7 @@ package org.bricks.extent.engine.processor;
 import org.bricks.core.help.AlgebraHelper;
 import org.bricks.engine.item.MultiLiver;
 import org.bricks.engine.neve.EntityPrint;
+import org.bricks.engine.processor.tool.Approver;
 import org.bricks.engine.staff.Entity;
 import org.bricks.extent.space.overlap.MarkPoint;
 import org.bricks.extent.subject.model.ModelBrickOperable;
@@ -11,31 +12,29 @@ import org.bricks.extent.subject.model.ModelBrickSubject;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
-public abstract class RollNodeToEntityVProcessor<T extends MultiLiver<? extends ModelBrickSubject<?, ?, ?, ?, ModelBrickOperable>, ?, ?>, C>
-extends NodeModifyProcessor<T> {
+/**
+ * This Approver is not thread safe, so can be used only by ApproveProcessor added to the same liver (run in the same motor thread)
+ * @author oleh
+ *
+ * @param <T>
+ * @param <C>
+ */
+public abstract class RollNodeToEntityVProcessor<T extends MultiLiver<? extends ModelBrickSubject<?, ?, ?, ?, ModelBrickOperable>, ?, ?>, B extends Entity<?>>
+	extends NodeModifyProcessor<T> 
+	implements Approver<T>{
 	
-	private Entity<EntityPrint<?, C>> butt;
+	private B butt;
+	private boolean approve = false;
 //	private MarkPoint rollPointMark;
 	
-	private float rotationSpeed, curRotationSpeed, bulletSpeed, bulletAcceleration;
+	private float rotationSpeed, /*curRotationSpeed,*/ bulletSpeed, bulletAcceleration;
 	private Vector3 buttCenter = new Vector3();
 
-	public RollNodeToEntityVProcessor(T target, String nodeOperatorName/*, Matrix4... linkMatrices*/) {
+	public RollNodeToEntityVProcessor(T target, String nodeOperatorName) {
 		super(target, nodeOperatorName);
-/*		Vector3 rollCenter = new Vector3(this.nodeOperator.linkPoint());
-		Matrix4 invMatrix = new Matrix4(linkMatrices[linkMatrices.length - 1]);
-		invMatrix.inv();
-		rollCenter.mul(invMatrix);
-		System.out.println("ADDED rotationCenter: " + rollCenter);
-		rollPointMark = new MarkPoint(rollCenter);
-		for(Matrix4 matrix: linkMatrices){
-			rollPointMark.addTransform(matrix);
-		}
-		rollPointMark.calculateTransforms();*/
-//		System.out.println("FOUND center: " + rollPointMark.getMark(0));
 	}
 	
-	public void setButt(Entity butt){
+	public void setButt(B butt){
 		this.butt = butt;
 	}
 	
@@ -52,20 +51,18 @@ extends NodeModifyProcessor<T> {
 	}
 	
 	public abstract Vector3 provideStartPoint(T target, long processTime);
-	public abstract void fetchButtPoint(C buttOrigin, Vector3 dest);
+	public abstract void fetchButtPoint(B butt, Vector3 dest);
 	public abstract float convertToTargetRotation(double rad);
 
-//	int log = 0;
 	@Override
 	public void doJob(T target, long processTime) {
-		EntityPrint<?, C> buttPrint = butt.getSafePrint();
+		
+		approve = false;
+		fetchButtPoint(butt, buttCenter);
+/*		EntityPrint<?, C> buttPrint = butt.getSafePrint();
 		fetchButtPoint(buttPrint.getOrigin().source, buttCenter);
-		buttPrint.free();
-		
-//		fetchButtPoint(butt, buttCenter);
-		
-//		rollPointMark.calculateTransforms();
-//		Vector3 myCenter = rollPointMark.getMark(0);
+		buttPrint.free();*/
+
 		Vector3 myCenter = provideStartPoint(target, processTime);
 		
 		double sf = 0;//myCenter.z - buttCenter.z;
@@ -84,20 +81,9 @@ extends NodeModifyProcessor<T> {
 			return;
 		}
 		double b = Math.scalb( -s2 * l2 * (sf * acc + s2), 2);
-//		double d = AlgebraHelper.pow(b, 2) - Math.scalb(a * c, 2);
 		
 		double d = AlgebraHelper.pow(b, 2) - 4 * a * c;
-/*		if(++log > 30000){
-//			System.out.format("a = %.2f, b = %.2f, c = %.2f, d = %.2f\n", a, b, c, d);
-			System.out.println("My center " + myCenter + ", target " + buttCenter);
-//			System.out.println("S2 = " + s2 + ", l2 = " + l2 + ", sf = " + sf);
-			log = 0;
-		}*/
 		if(d < 0){
-/*			if(log > 30000){
-				System.out.println("Bad discriminant");
-				log = 0;
-			}*/
 			lastCheckTime = processTime;
 			return;
 		}
@@ -113,40 +99,35 @@ extends NodeModifyProcessor<T> {
 			x = x2;
 		}else{
 			lastCheckTime = processTime;
-/*			if(log > 30000){
-				System.out.println("Bad both results");
-				log = 0;
-			}*/
 			return;
 		}
-/*		if(log > 30000){
-			System.out.println("Found results: " + Math.acos(Math.sqrt(x)));
-		}*/
 		float targetRotation = convertToTargetRotation(Math.acos(Math.sqrt(x)));
-		curRotationSpeed = rotationSpeed;
+//		curRotationSpeed = rotationSpeed;
 		float diff = targetRotation - nodeOperator.rotatedRadians();
 		if(Math.abs(diff) > minDiff){
-//			System.out.println("Rotated VProcessor to " + diff + " radians");
-			lastCheckTime = processTime;
-			nodeOperator.rotate(diff);
-			nodeOperator.updatePrint();
-			subject.adjustCurrentPrint();
+/*			if(diff < 0){
+				curRotationSpeed *= -1;
+			}*/
+			float diffTime = processTime - lastCheckTime;
+			float rRad = diffTime * rotationSpeed / 1000f;
+			if(rRad > minDiff){
+				if(rRad > Math.abs(diff)){
+					rRad = diff;
+				}else if(diff < 0){
+					rRad *= -1;
+				}
+				lastCheckTime = processTime;
+				nodeOperator.rotate(rRad);
+				nodeOperator.updatePrint();
+				subject.adjustCurrentPrint();
+			}
+		}else{
+			approve = true;
 		}
-/*		if(Math.abs(diff) < minDiff){
-			lastCheckTime = processTime;
-			return;
-		}
-		if(diff < 0){
-			curRotationSpeed *= -1;
-		}
-		float diffTime = processTime - lastCheckTime;
-		float rRad = diffTime * curRotationSpeed / 1000f;
-		if(Math.abs(rRad) > minDiff){
-			lastCheckTime = processTime;
-			nodeOperator.rotate(rRad);
-			nodeOperator.updatePrint();
-			subject.adjustCurrentPrint();
-		}*/
+	}
+	
+	public boolean approve(T target, long processTime){
+		return approve;
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 package org.bricks.extent.engine.processor;
 
 import org.bricks.engine.event.check.CheckerType;
-import org.bricks.engine.event.processor.Processor;
 import org.bricks.engine.item.MultiWalker;
+import org.bricks.engine.processor.Processor;
 
 import com.badlogic.gdx.math.Vector3;
 

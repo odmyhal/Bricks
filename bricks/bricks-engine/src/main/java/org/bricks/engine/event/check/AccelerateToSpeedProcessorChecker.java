@@ -2,10 +2,10 @@ package org.bricks.engine.event.check;
 
 import org.bricks.core.entity.Fpoint;
 import org.bricks.engine.event.control.SpeedChangeEvent;
-import org.bricks.engine.event.processor.ChangeAccelerationProcessor;
-import org.bricks.engine.event.processor.ChangeSpeedProcessor;
-import org.bricks.engine.event.processor.ImmediateActProcessor;
-import org.bricks.engine.event.processor.SingleActProcessor;
+import org.bricks.engine.processor.ChangeAccelerationProcessor;
+import org.bricks.engine.processor.ChangeSpeedProcessor;
+import org.bricks.engine.processor.ImmediateActProcessor;
+import org.bricks.engine.processor.SingleActProcessor;
 import org.bricks.engine.staff.Walker;
 import org.bricks.engine.tool.Origin;
 import org.bricks.engine.tool.Origin2D;

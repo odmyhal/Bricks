@@ -1,9 +1,9 @@
 package org.bricks.extent.engine.processor;
 
 import org.bricks.engine.event.check.CheckerType;
-import org.bricks.engine.event.processor.WorkToConditionProcessor;
 import org.bricks.engine.help.RotationHelper;
 import org.bricks.engine.item.MultiLiver;
+import org.bricks.engine.processor.WorkToConditionProcessor;
 import org.bricks.exception.Validate;
 import org.bricks.extent.entity.mesh.ModelSubjectOperable;
 import org.bricks.extent.subject.model.ModelBrickOperable;

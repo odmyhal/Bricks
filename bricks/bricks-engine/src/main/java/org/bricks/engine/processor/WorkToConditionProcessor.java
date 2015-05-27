@@ -1,6 +1,7 @@
-package org.bricks.engine.event.processor;
+package org.bricks.engine.processor;
 
 import org.bricks.engine.event.check.CheckerType;
+import org.bricks.engine.processor.Processor;
 import org.bricks.engine.staff.Liver;
 
 public abstract class WorkToConditionProcessor<T extends Liver> extends Processor<T> {

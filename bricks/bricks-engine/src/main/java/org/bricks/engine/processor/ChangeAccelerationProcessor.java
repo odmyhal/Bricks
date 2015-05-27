@@ -1,5 +1,6 @@
-package org.bricks.engine.event.processor;
+package org.bricks.engine.processor;
 
+import org.bricks.engine.processor.ImmediateActProcessor;
 import org.bricks.engine.staff.Walker;
 import org.bricks.engine.tool.Origin;
 
