@@ -49,7 +49,8 @@ public class ModelStorage implements Disposable{
 		}
 	}
 
-	public ModelInstance getModelInstance(String... ids){
+	//TODO resolve somehow without synchronization
+	public synchronized ModelInstance getModelInstance(String... ids){
 		ModelInstance res = new ModelInstance(model, ids);
 		return res;
 	}

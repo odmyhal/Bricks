@@ -23,12 +23,12 @@ public abstract class RollNodeToEntityVProcessor<T extends MultiLiver<? extends 
 	extends NodeModifyProcessor<T> 
 	implements Approver<T>{
 	
-	private B butt;
-	private boolean approve = false;
+	protected B butt;
+	protected boolean approve = false;
 //	private MarkPoint rollPointMark;
 	
-	private float rotationSpeed, /*curRotationSpeed,*/ bulletSpeed, bulletAcceleration;
-	private Vector3 buttCenter = new Vector3();
+	protected float rotationSpeed, /*curRotationSpeed,*/ bulletSpeed, bulletAcceleration;
+	protected Vector3 buttCenter = new Vector3();
 
 	public RollNodeToEntityVProcessor(T target, String nodeOperatorName) {
 		super(target, nodeOperatorName);
@@ -50,19 +50,15 @@ public abstract class RollNodeToEntityVProcessor<T extends MultiLiver<? extends 
 		bulletAcceleration = ba;
 	}
 	
-	public abstract Vector3 provideStartPoint(T target, long processTime);
-	public abstract void fetchButtPoint(B butt, Vector3 dest);
-	public abstract float convertToTargetRotation(double rad);
+	protected abstract Vector3 provideStartPoint(T target, long processTime);
+	protected abstract void fetchButtPoint(B butt, Vector3 dest);
+	protected abstract float convertToTargetRotation(double rad);
 
 	@Override
 	public void doJob(T target, long processTime) {
 		
 		approve = false;
 		fetchButtPoint(butt, buttCenter);
-/*		EntityPrint<?, C> buttPrint = butt.getSafePrint();
-		fetchButtPoint(buttPrint.getOrigin().source, buttCenter);
-		buttPrint.free();*/
-
 		Vector3 myCenter = provideStartPoint(target, processTime);
 		
 		double sf = 0;//myCenter.z - buttCenter.z;
@@ -102,12 +98,30 @@ public abstract class RollNodeToEntityVProcessor<T extends MultiLiver<? extends 
 			return;
 		}
 		float targetRotation = convertToTargetRotation(Math.acos(Math.sqrt(x)));
-//		curRotationSpeed = rotationSpeed;
+		rotateToTarget(targetRotation, processTime);
+/*		float diff = targetRotation - nodeOperator.rotatedRadians();
+		if(Math.abs(diff) > minDiff){
+			float diffTime = processTime - lastCheckTime;
+			float rRad = diffTime * rotationSpeed / 1000f;
+			if(rRad > minDiff){
+				if(rRad > Math.abs(diff)){
+					rRad = diff;
+				}else if(diff < 0){
+					rRad *= -1;
+				}
+				lastCheckTime = processTime;
+				nodeOperator.rotate(rRad);
+				nodeOperator.updatePrint();
+				subject.adjustCurrentPrint();
+			}
+		}else{
+			approve = true;
+		}*/
+	}
+	
+	protected void rotateToTarget(float targetRotation, long processTime){
 		float diff = targetRotation - nodeOperator.rotatedRadians();
 		if(Math.abs(diff) > minDiff){
-/*			if(diff < 0){
-				curRotationSpeed *= -1;
-			}*/
 			float diffTime = processTime - lastCheckTime;
 			float rRad = diffTime * rotationSpeed / 1000f;
 			if(rRad > minDiff){

@@ -20,7 +20,7 @@ public class VectorTest {
 	public void projectionTest(){
 		Point target = new Fpoint(-10, 0);
 		Point base = new Fpoint(-4, 2);
-		Point projection = VectorHelper.vectorProjection(target, base);
+		Point projection = VectorHelper.vectorProjection(target, base, new Fpoint());
 		System.out.println("Projection is: " + projection);
 	}
 /*	

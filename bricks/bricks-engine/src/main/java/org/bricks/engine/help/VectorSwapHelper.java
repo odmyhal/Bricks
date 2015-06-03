@@ -62,7 +62,7 @@ public class VectorSwapHelper {
 		}
 		Fpoint myVector = target.entityPrint.getVector().source;
 		
-		Fpoint swap = VectorHelper.vectorProjection(myVector, hitVector);
+		Fpoint swap =  VectorHelper.vectorProjection(myVector, hitVector, new Fpoint());
 //		double k = 1;//for test
 		double k = Math.min(1, source.getTarget().getWeight() / target.getTarget().getWeight() );
 		if(swap.getFX() * hitVector.getFX() < 0){
@@ -78,7 +78,7 @@ public class VectorSwapHelper {
 
 //		return swap;
 		
-		Fpoint hisWay = VectorHelper.vectorProjection(source.entityPrint.getVector().source, hitVector);
+		Fpoint hisWay = VectorHelper.vectorProjection(source.entityPrint.getVector().source, hitVector, new Fpoint());
 		double p = Math.min(1, source.getTarget().getWeight() / target.getTarget().getWeight());
 		if(hisWay.getFX() * hitVector.getFX() < 0){
 			hisWay.setX(0);
@@ -103,7 +103,7 @@ public class VectorSwapHelper {
 		Point tCenter = target.getCenter();
 		Fpoint hitVector = new Fpoint(touch.getFX() - tCenter.getFX(), touch.getFY() - tCenter.getFY());
 		Fpoint myVector = target.entityPrint.getVector().source;
-		Fpoint ret = VectorHelper.vectorProjection(myVector, hitVector);
+		Fpoint ret = VectorHelper.vectorProjection(myVector, hitVector, new Fpoint());
 		if(ret.getFX() * hitVector.getFX() < 0){
 			ret.setX(0);
 		}else{

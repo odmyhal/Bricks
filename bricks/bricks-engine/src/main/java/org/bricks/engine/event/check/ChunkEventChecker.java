@@ -19,7 +19,7 @@ import org.bricks.engine.staff.Liver;
 public class ChunkEventChecker<T extends Liver> extends EventChecker<T> {
 	
 	private List<EventChecker<T>> checkers = new ArrayList<EventChecker<T>>();
-	private int nextIndex = 0;
+	protected int nextIndex = 0;
 	private EventChecker<T> currentChecker;
 /*	
 	public ChunkEventChecker(EventChecker<T>...chrs){
@@ -54,11 +54,24 @@ public class ChunkEventChecker<T extends Liver> extends EventChecker<T> {
 		nextIndex = 0;
 	}
 	
+	protected boolean indexBack(){
+		if(nextIndex > 0){
+			--nextIndex;
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean restartCurrentChecker(){
+		if(indexBack()){
+			currentChecker = null;
+			return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public void activate(T target, long curTime){
-/*		for(EventChecker<T> checker : checkers){
-			checker.activate(target, curTime);
-		}*/
 		currentChecker = null;
 		nextIndex = 0;
 		super.activate(target, curTime);
@@ -71,4 +84,9 @@ public class ChunkEventChecker<T extends Liver> extends EventChecker<T> {
 	public boolean addProcessor(Processor<T> processor){
 		return checkers.add(processor);
 	}
+	
+	public int size(){
+		return checkers.size();
+	}
+	
 }

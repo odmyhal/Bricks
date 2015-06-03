@@ -2,6 +2,7 @@ package org.bricks.core.help;
 
 import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Point;
+import org.bricks.exception.Validate;
 
 public class VectorHelper {
 
@@ -16,12 +17,18 @@ public class VectorHelper {
 	}
 	
 	public static double vectorProjectionModule(Point target, Point base){
-		return scalarMult(target, base) / vectorLen(base);
+		double vectorLen = vectorLen(base);
+		Validate.isTrue(vectorLen > 0, "Point base can't be zero vector, " + base + " given...");
+		return scalarMult(target, base) / vectorLen;
 	}
 	
-	public static Fpoint vectorProjection(Point target, Point base){
-		Fpoint res = new Fpoint(base.getFX(), base.getFY());
+	public static Fpoint vectorProjection(Point target, Point base, Fpoint dest){
+		dest.set(base.getFX(), base.getFY());
 		double len = vectorProjectionModule(target, base);
-		return PointHelper.normalize(res, len);
+		return PointHelper.normalize(dest, len);
+	}
+	
+	public static boolean hasSameDirection(Point one, Point two){
+		return one.getFX() * two.getFX() >= 0 && one.getFY() * two.getFY() >= 0;
 	}
 }

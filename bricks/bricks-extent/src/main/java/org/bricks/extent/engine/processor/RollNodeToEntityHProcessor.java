@@ -69,9 +69,9 @@ public abstract class RollNodeToEntityHProcessor<T extends MultiLiver<? extends 
 		rotationSpeed = rs;
 	}
 	
-	public abstract void fetchButtPoint(B butt, Fpoint dest);
-	public abstract void fetchRollOrigin(Fpoint dest);
-	public abstract float provideAbsoluteCurrentRotation();
+	protected abstract void fetchButtPoint(B butt, Fpoint dest);
+	protected abstract void fetchRollOrigin(Fpoint dest);
+	protected abstract float provideAbsoluteCurrentRotation();
 
 //	int log = 0;
 	@Override

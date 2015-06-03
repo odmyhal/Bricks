@@ -1,6 +1,7 @@
 package org.bricks.engine.staff;
 
 import org.bricks.engine.neve.RollPrint;
+import org.bricks.engine.tool.Origin;
 
 public interface Roller<I extends RollPrint> extends Liver<I>{
 
@@ -15,4 +16,5 @@ public interface Roller<I extends RollPrint> extends Liver<I>{
 	public void rollBack(long currentTime, float k);
 	
 	public void applyRotation();
+	
 }

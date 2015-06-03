@@ -87,7 +87,7 @@ public class Ball extends MultiWalkRoller2D<BallSubjectNew, WalkPrint> implement
 //Moveing sake	
 		if(mVector.getFX() != 0 || mVector.getFY() != 0){
 			Fpoint hitVector = new Fpoint(target.getCenter().getFX() - touch.getFX(), target.getCenter().getFY() - touch.getFY());
-			Fpoint addVector = VectorHelper.vectorProjection(mVector, hitVector);
+			Fpoint addVector = VectorHelper.vectorProjection(mVector, hitVector, new Fpoint());
 			if(addVector.getFX() * hitVector.getFX() < 0){
 				addVector.setX(0);
 			}

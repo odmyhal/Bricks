@@ -2,8 +2,9 @@ package org.bricks.engine.event.check;
 
 import org.bricks.core.entity.Fpoint;
 import org.bricks.engine.item.MultiWalker;
+import org.bricks.engine.staff.Walker;
 
-public abstract class CachePointChecker<T extends MultiWalker<?, ?, Fpoint, ?>> extends SingleEventChecker<T> {
+public abstract class CachePointChecker<T extends Walker<?, Fpoint>/*MultiWalker<?, ?, Fpoint, ?>*/> extends SingleEventChecker<T> {
 	
 	private Fpoint targetPoint = new Fpoint();
 	private float sensitiveDistanceQuad;

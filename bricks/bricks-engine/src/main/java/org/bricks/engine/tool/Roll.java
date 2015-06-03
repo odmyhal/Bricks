@@ -24,11 +24,21 @@ public class Roll {
 		return rotation;
 	}
 	
-	public void setRotation(float rotation){
+	public void setRotation(float rot){
 		//just for test
-		this.lastRotation = rotation - this.rotation;
+		this.lastRotation = rot - this.rotation;
 		//test still works...
-		this.rotation = rotation;
+		this.rotation = rot;
+		coerceRotation();
+	}
+	
+	private void coerceRotation(){
+		while(rotation >= rotationCycle){
+			rotation -= rotationCycle;
+		}
+		while(rotation < 0){
+			rotation += rotationCycle;
+		}
 	}
 
 	public void setRotationSpeed(float rotationSpeed) {
@@ -56,12 +66,7 @@ public class Roll {
 			res = true;
 			lastRotation = rMult * rotationBuff;
 			rotation += lastRotation;
-			while(rotation >= rotationCycle){
-				rotation -= rotationCycle;
-			}
-			while(rotation < 0){
-				rotation += rotationCycle;
-			}
+			coerceRotation();
 			rotateTime += (int) (lastRotation * 1000 / rSpeed);
 		}else{
 			lastRotation = 0;
@@ -75,6 +80,7 @@ public class Roll {
 		}
 		Validate.isTrue(checkTime >= rotateTime);
 		rotation -= lastRotation * k;
+		coerceRotation();
 		/**
 		 * controversial, need to be checked
 		 */
