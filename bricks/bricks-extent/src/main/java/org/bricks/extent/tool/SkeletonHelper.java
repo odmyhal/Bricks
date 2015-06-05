@@ -102,7 +102,7 @@ public class SkeletonHelper {
 		if((mask & Usage.Position) == Usage.Position){
 			step += 3;
 		}
-		if((mask & Usage.Color) == Usage.Color){
+		if((mask & Usage.ColorUnpacked) == Usage.ColorUnpacked){
 			step += 4;
 		}
 		if((mask & Usage.ColorPacked) == Usage.ColorPacked){

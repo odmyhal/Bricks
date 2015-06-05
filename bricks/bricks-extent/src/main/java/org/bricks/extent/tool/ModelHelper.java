@@ -3,6 +3,7 @@ package org.bricks.extent.tool;
 import org.bricks.engine.item.Stone;
 import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.tool.Roll;
+import org.bricks.extent.rewrite.Matrix4Safe;
 import org.bricks.extent.space.Roll3D;
 
 import com.badlogic.gdx.graphics.g3d.model.Node;
@@ -19,9 +20,13 @@ public class ModelHelper {
 
 	public static void calculateNodeGlobalTransforms(Node node){
 		node.calculateWorldTransform();
-		for(Node chn : node.children){
+		for(Node chn : node.getChildren()){
 			calculateNodeGlobalTransforms(chn);
 		}
+		//use with node 1.3.1 version
+/*		for(Node chn : node.children){
+			calculateNodeGlobalTransforms(chn);
+		}*/
 	}
 	
 	public static Node findNode(String nodePath, Iterable<Node> nodes){
@@ -37,7 +42,7 @@ public class ModelHelper {
 				if(curName.equals(nodePath)){
 					return node;
 				}else{
-					return findNode(nodePath.substring(splitIndex + 1, nodePath.length()), node.children);
+					return findNode(nodePath.substring(splitIndex + 1, nodePath.length()), node.getChildren());
 				}
 			}
 		}
@@ -45,13 +50,15 @@ public class ModelHelper {
 	}
 	
 	public static final void mmultLeft(Matrix4 m, Matrix4 target){
-		mmult(m, target, target.tmp);
-		target.set(target.tmp);
+		float[] tmp = Matrix4Safe.safeTmpArray();
+		mmult(m, target, tmp);
+		target.set(tmp);
 	}
 	
 	public static final void mmultRight(Matrix4 target, Matrix4 m){
-		mmult(m, target, target.tmp);
-		target.set(target.tmp);
+		float[] tmp = Matrix4Safe.safeTmpArray();
+		mmult(m, target, tmp);
+		target.set(tmp);
 	}
 	
 	private static final void mmult(Matrix4 one, Matrix4 two, float tmp[]){
