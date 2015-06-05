@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.bricks.engine.neve.PrintableBase;
+import org.bricks.extent.rewrite.Matrix4Safe;
 
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
@@ -12,8 +13,8 @@ public class MarkPoint<I extends MarkPointPrint> extends PrintableBase<I>{
 
 	private Vector3[] marks;
 	protected Vector3[] modifiedMarks;
-	private Collection<Matrix4> transforms = new ArrayList<Matrix4>();
-	private Matrix4 helpMatrix = new Matrix4();
+	private Collection<Matrix4Safe> transforms = new ArrayList<Matrix4Safe>();
+//	private Matrix4 helpMatrix = new Matrix4();
 	protected int size;
 	
 	public MarkPoint(Vector3... points){
@@ -35,11 +36,13 @@ public class MarkPoint<I extends MarkPointPrint> extends PrintableBase<I>{
 	 * Because Vect3.mul(Matirix4) means: Matrix * Vector
 	 * @param transform
 	 */
-	public void addTransform(Matrix4 transform){
+	public void addTransform(Matrix4Safe transform){
 		transforms.add(transform);
 	}
 	
 	public void calculateTransforms(){
+		Matrix4 helpMatrix = Matrix4Safe.safeTmpMatrix();
+		
 		helpMatrix.idt();
 		for(Matrix4 transform : transforms){
 			helpMatrix.mul(transform);

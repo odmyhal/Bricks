@@ -3,6 +3,7 @@ package com.odmyha.model.construct;
 import org.bircks.entierprise.model.ModelConstructTool;
 import org.bircks.entierprise.model.ModelConstructor;
 import org.bricks.annotation.ConstructModel;
+import org.bricks.extent.rewrite.Matrix4Safe;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -26,13 +27,13 @@ public class BulletConstructor implements ModelConstructor{
 	public void construct(ModelConstructTool modelBuilder, String... partName) {
 		modelBuilder.node(partName[0]);
 		MeshPartBuilder meshBuilder = modelBuilder.part("gilse", GL20.GL_TRIANGLES, Usage.Position | Usage.Normal, new Material(ColorAttribute.createDiffuse(Color.ORANGE)));
-		Matrix4 tmGls = new Matrix4();
+		Matrix4Safe tmGls = new Matrix4Safe();
 		tmGls.setToRotation(0f, 0f, 10f, -90f);
 		meshBuilder.setVertexTransform(tmGls);
 		meshBuilder.cylinder(25f, 27f, 25f, 100);
 		
 		meshBuilder = modelBuilder.part("cone", GL20.GL_TRIANGLES, Usage.Position | Usage.Normal, new Material(ColorAttribute.createDiffuse(Color.ORANGE)));
-	    Matrix4 tmCone = new Matrix4();
+	    Matrix4Safe tmCone = new Matrix4Safe();
 	    tmCone.setToRotation(0f, 0f, 10f, -90f);
 		tmCone.trn(20f, 0f, 0f);;
 		meshBuilder.setVertexTransform(tmCone);

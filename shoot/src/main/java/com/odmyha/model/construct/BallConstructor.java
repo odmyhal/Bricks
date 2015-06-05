@@ -3,6 +3,7 @@ package com.odmyha.model.construct;
 import org.bircks.entierprise.model.ModelConstructTool;
 import org.bircks.entierprise.model.ModelConstructor;
 import org.bricks.annotation.ConstructModel;
+import org.bricks.extent.rewrite.Matrix4Safe;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -41,7 +42,8 @@ public class BallConstructor implements ModelConstructor{
 //		float df = d / 2;
 //		tm.trn(df, df, df);
 //		meshBuilder.setVertexTransform(tm);
-		meshBuilder.setVertexTransform(new Matrix4());
+//		meshBuilder.setVertexTransform(new Matrix4());
+		meshBuilder.setVertexTransform(new Matrix4Safe());
 		meshBuilder.sphere(d, d, d, 20, 20);
 	}
 	

@@ -3,6 +3,7 @@ package org.bricks.extent.subject.model;
 import org.bricks.engine.neve.BasePrint;
 import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.neve.PrintStore;
+import org.bricks.extent.rewrite.Matrix4Safe;
 
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
@@ -14,7 +15,7 @@ public class NodeDataPrint<P extends NodeData> extends BasePrint<P>{
 //	public final Vector3 translation = new Vector3();
 //	public final Vector3 scale = new Vector3();
 	protected int lastPrintModified = -3;
-	public final Matrix4 transform = new Matrix4();
+	public final Matrix4Safe transform = new Matrix4Safe();
 	
 	public NodeDataPrint(PrintStore<P, ?> ps) {
 		super(ps);

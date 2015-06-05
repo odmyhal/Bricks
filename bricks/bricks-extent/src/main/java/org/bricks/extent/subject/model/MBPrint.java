@@ -8,6 +8,7 @@ import org.bricks.engine.neve.BasePrint;
 import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.neve.PrintStore;
 import org.bricks.exception.Validate;
+import org.bricks.extent.rewrite.Matrix4Safe;
 import org.bricks.extent.space.overlap.Skeleton;
 import org.bricks.extent.space.overlap.SkeletonPlanePrint;
 import org.bricks.extent.space.overlap.SkeletonPrint;
@@ -17,7 +18,7 @@ import com.badlogic.gdx.math.Matrix4;
 public class MBPrint<P extends ModelBrick<?>> extends BasePrint<P>{
 
 	public List<SkeletonPrint> skeletons;
-	protected final Matrix4 transformMatrix = new Matrix4();
+	protected final Matrix4Safe transformMatrix = new Matrix4Safe();
 	protected int lastPrintModified = -6;
 	
 	private int planeSkeletonPrint = -1;
@@ -64,7 +65,7 @@ public class MBPrint<P extends ModelBrick<?>> extends BasePrint<P>{
 		return (SkeletonPlanePrint) skeletons.get(planeSkeletonPrint);
 	}
 	
-	public Matrix4 linkTransform(){
+	public Matrix4Safe linkTransform(){
 		return transformMatrix;
 	}
 	

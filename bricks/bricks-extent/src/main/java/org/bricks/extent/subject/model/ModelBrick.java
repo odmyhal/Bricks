@@ -8,6 +8,7 @@ import org.bricks.engine.neve.PrintableBase;
 import org.bricks.engine.tool.Logger;
 import org.bricks.engine.tool.Origin;
 import org.bricks.exception.Validate;
+import org.bricks.extent.rewrite.Matrix4Safe;
 import org.bricks.extent.space.Roll3D;
 import org.bricks.extent.space.SSPrint;
 import org.bricks.extent.space.overlap.Skeleton;
@@ -27,14 +28,14 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 	
 	public List<Skeleton> skeletons;
 	protected ModelInstance modelInstance;
-	protected Matrix4 transformMatrix = new Matrix4();
+	protected Matrix4Safe transformMatrix = new Matrix4Safe();
 	
 	private volatile int currentPrintVolatile = -1;
 	private int lastPrint = -2, currentPrint = -3, renderPrintModified = -5;
 	protected int lastPrintModified = -4;
 	
-	private final Quaternion tmpQ = new Quaternion();
-	private final Matrix4 tmpM = new Matrix4();
+//	private final Quaternion tmpQ = new Quaternion();
+//	private final Matrix4 tmpM = new Matrix4();
 	protected int planeSkeleton = -1;
 	
 	public ModelBrick(ModelInstance ms){
@@ -56,20 +57,15 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 		this.rotate(spin, rad, central.x, central.y, central.z);
 	}
 	
-//	public Logger logger = new Logger();
 	public void rotate(Vector3 spin, float rad, float centerX, float centerY, float centerZ) {
-//		logger.clearLog();
-//		logger.log(" MB>> Matrix before: \n" + transformMatrix);
-//		logger.log(String.format("  MB>> rotating spin: %s, rad=%.4f, center: %.4f, %.4f, %.4f", spin, rad, centerX, centerY, centerZ));
+		Matrix4 tmpM = Matrix4Safe.safeTmpMatrix();
+		Quaternion tmpQ = Matrix4Safe.safeTmpQuaternion();
+		
 		tmpQ.setFromAxisRad(spin, rad);
-//		logger.log("  MB>> Quaternion: " + tmpQ);
 		tmpQ.toMatrix(tmpM.val);
-//		logger.log("  MB>> Translation matrix: \n" + tmpM);
 		transformMatrix.trn(-centerX, -centerY, -centerZ);
-//		transformMatrix.mulLeft(tmpM);
 		ModelHelper.mmultLeft(tmpM, transformMatrix);
 		transformMatrix.trn(centerX, centerY, centerZ);
-//		logger.log(" MB>> Matrix after: \n" + transformMatrix);
 		lastPrintModified = currentPrint;
 	}
 	
@@ -107,7 +103,7 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 		return (I) mbp;
 	}
 
-	public Matrix4 linkTransform(){
+	public Matrix4Safe linkTransform(){
 		return transformMatrix;
 	}
 	

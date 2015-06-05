@@ -9,6 +9,7 @@ import org.bricks.core.entity.type.Brick;
 import org.bricks.core.help.VectorHelper;
 import org.bricks.engine.item.ListenDistrictSubject;
 import org.bricks.engine.neve.EntityPointsPrint;
+import org.bricks.extent.rewrite.Matrix4Safe;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Renderable;
@@ -25,7 +26,7 @@ import com.odmyha.shoot.Ball;
 public class BallSubject extends ListenDistrictSubject<Ball, EntityPointsPrint> implements RenderableProvider{
 	
 	private ModelInstance modelInstance;
-	private Matrix4 transform = new Matrix4();
+	private Matrix4Safe transform = new Matrix4Safe();
 	private boolean edit = false;
 
 	public BallSubject(Brick brick) {

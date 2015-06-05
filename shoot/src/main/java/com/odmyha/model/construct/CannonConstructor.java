@@ -7,6 +7,7 @@ import org.bircks.entierprise.model.ModelConstructTool;
 import org.bircks.entierprise.model.ModelConstructor;
 import org.bricks.annotation.ConstructModel;
 import org.bricks.enterprise.d3.help.ModelConstructHelper;
+import org.bricks.extent.rewrite.Matrix4Safe;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -57,7 +58,7 @@ public class CannonConstructor implements ModelConstructor{
 	
 		MeshPartBuilder meshBuilder = modelBuilder.part("tower", GL20.GL_TRIANGLES, Usage.Position | Usage.Normal, new Material(ColorAttribute.createDiffuse(Color.GREEN)));
 
-		Matrix4 m4 = new Matrix4();
+		Matrix4Safe m4 = new Matrix4Safe();
 //		m4.translate(-75f, -125f, 0f);
 //		m4.trn(-75f, -125f, 0f);
 		m4.setToRotation(0f, 0f, 10f, -90f);
@@ -83,7 +84,7 @@ public class CannonConstructor implements ModelConstructor{
 		modelBuilder.node(towerName);
 		
 		MeshPartBuilder meshBuilder = modelBuilder.part(towerName, GL20.GL_TRIANGLES, Usage.Position | Usage.Normal, new Material(ColorAttribute.createDiffuse(Color.GREEN)));
-		Matrix4 m4 = new Matrix4();
+		Matrix4Safe m4 = new Matrix4Safe();
 		m4.setToRotation(0f, 0f, 10f, -90f);
 		m4.trn(125f, 0f, 0f);
 		meshBuilder.setVertexTransform(m4);

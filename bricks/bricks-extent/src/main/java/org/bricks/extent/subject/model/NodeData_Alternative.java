@@ -1,6 +1,7 @@
 package org.bricks.extent.subject.model;
 
 import org.bricks.engine.neve.PrintableBase;
+import org.bricks.extent.rewrite.Matrix4Safe;
 
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.math.Matrix4;
@@ -16,10 +17,10 @@ public class NodeData_Alternative<I extends NodeDataPrint> extends PrintableBase
 //	private final Quaternion rotation = new Quaternion();
 //	private final Vector3 translation = new Vector3();
 //	private final Vector3 scale = new Vector3();
-	private final Matrix4 transformMatrix = new Matrix4();
+	private final Matrix4Safe transformMatrix = new Matrix4Safe();
 	
-	private final Matrix4 helpMatrix = new Matrix4();
-	private final Matrix4 resultMatrix = new Matrix4();
+//	private final Matrix4 helpMatrix = new Matrix4();
+	private final Matrix4Safe resultMatrix = new Matrix4Safe();
 	
 	public NodeData_Alternative(Node node){
 		this(node.rotation, node.translation, node.scale);
@@ -43,6 +44,7 @@ public class NodeData_Alternative<I extends NodeDataPrint> extends PrintableBase
 	}
 	*/
 	public void rotateByPoint(Quaternion q, Vector3 point){
+		Matrix4 helpMatrix = Matrix4Safe.safeTmpMatrix();
 		translate(-point.x, -point.y, -point.z);
 		q.toMatrix(helpMatrix.val);
 		transformMatrix.mulLeft(helpMatrix);
@@ -56,6 +58,7 @@ public class NodeData_Alternative<I extends NodeDataPrint> extends PrintableBase
 	}
 	
 	protected void translate(float x, float y, float z){
+		Matrix4 helpMatrix = Matrix4Safe.safeTmpMatrix();
 		helpMatrix.idt().trn(x, y, z);
 		transformMatrix.mulLeft(helpMatrix);
 	}
@@ -98,7 +101,7 @@ public class NodeData_Alternative<I extends NodeDataPrint> extends PrintableBase
 	 * For concurrency safe sake use only in owner Motor thread
 	 * @return link to transform matrix
 	 */
-	public Matrix4 linkTransform(){
+	public Matrix4Safe linkTransform(){
 		return resultMatrix;
 	}
 

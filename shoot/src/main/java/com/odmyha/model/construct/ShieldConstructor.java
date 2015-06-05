@@ -3,6 +3,7 @@ package com.odmyha.model.construct;
 import org.bircks.entierprise.model.ModelConstructTool;
 import org.bircks.entierprise.model.ModelConstructor;
 import org.bricks.annotation.ConstructModel;
+import org.bricks.extent.rewrite.Matrix4Safe;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -28,7 +29,7 @@ public class ShieldConstructor implements ModelConstructor{
 		modelBuilder.node(partName[0]);
 		
 		MeshPartBuilder meshBuilder = modelBuilder.part(partName[0], GL20.GL_TRIANGLES, Usage.Position | Usage.Normal, new Material(ColorAttribute.createDiffuse(Color.GRAY)));
-		Matrix4 tm = new Matrix4();
+		Matrix4Safe tm = new Matrix4Safe();
 //		tm.trn(0f, 0f, -30f);
 		meshBuilder.setVertexTransform(tm);
 		meshBuilder.box(50, 200, 60);

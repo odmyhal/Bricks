@@ -140,7 +140,7 @@ public class BallGame implements ApplicationListener {
 				bp.produceBall(j, i, 400f * (i%10 == 0 ? 1 : -1), 400f * (j%10 == 0 ? -1 : 1)).applyEngine(engine);
 //				bp.produceBall(j, i, 20f * (i%10 == 0 ? 1 : -1), 15f * (j%10 == 0 ? -1 : 1)).applyEngine(engine);
 				cnt++;
-				if(cnt % 100 == 0){
+				if(cnt % 50 == 0){
 					Thread.yield();
 				}
 			}

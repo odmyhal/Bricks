@@ -9,6 +9,7 @@ import org.bricks.enterprise.control.widget.tool.FlowMutableAction;
 import org.bricks.enterprise.control.widget.tool.FlowTouchPad;
 import org.bricks.enterprise.d3.help.AlgebraUtils;
 import org.bricks.exception.Validate;
+import org.bricks.extent.rewrite.Matrix4Safe;
 
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.math.Matrix4;
@@ -29,7 +30,7 @@ public class NodeRollAction<T extends Entity, W extends FlowTouchPad> extends Fl
 	private Vector3 rotationPoint = new Vector3();
 	private Vector2 touchPercentile = new Vector2();
 	private float rotation = 0f, targetRotation = 0f, rotationSpeed = 0f, curRotationSpeed = 0f;;
-	private Matrix4 helpMatrix1 = new Matrix4(), helpMatrix2 = new Matrix4();
+//	private Matrix4 helpMatrix1 = new Matrix4(), helpMatrix2 = new Matrix4();
 	private List<Node> nodes;
 	private float deltaPotencial = 0f;
 	
@@ -98,6 +99,7 @@ public class NodeRollAction<T extends Entity, W extends FlowTouchPad> extends Fl
 	}
 
 	private void tuneMatrix(float rotationDiff){
+		Matrix4 helpMatrix2 = Matrix4Safe.safeTmpMatrix();
 		helpMatrix2.idt().setToRotationRad(rotationSpin, rotationDiff).tra();
 		for(Node node : nodes){
 			//Looks like do not need synchronization...

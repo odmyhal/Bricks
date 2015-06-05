@@ -1,6 +1,7 @@
 package org.bricks.extent.subject.model;
 
 import org.bricks.engine.neve.PrintableBase;
+import org.bricks.extent.rewrite.Matrix4Safe;
 
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.math.Matrix4;
@@ -15,9 +16,9 @@ public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
 	private final Quaternion rotation = new Quaternion();
 	private final Vector3 translation = new Vector3();
 	private final Vector3 scale = new Vector3();
-	private final Matrix4 transformMatrix = new Matrix4();
+	private final Matrix4Safe transformMatrix = new Matrix4Safe();
 	
-	private Matrix4 helpMatrix = new Matrix4();
+//	private Matrix4 helpMatrix = new Matrix4();
 	
 	public NodeData(Node node){
 		this(node.rotation, node.translation, node.scale);
@@ -40,6 +41,7 @@ public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
 	}
 	*/
 	public void rotateByPoint(Quaternion q, Vector3 point){
+		Matrix4 helpMatrix = Matrix4Safe.safeTmpMatrix();
 		this.rotation.mulLeft(q);
 		q.toMatrix(helpMatrix.val);
 		this.translation.sub(point);
@@ -98,7 +100,7 @@ public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
 	 * For concurrency safe sake use only in owner Motor thread
 	 * @return link to transform matrix
 	 */
-	public Matrix4 linkTransform(){
+	public Matrix4Safe linkTransform(){
 		return transformMatrix;
 	}
 

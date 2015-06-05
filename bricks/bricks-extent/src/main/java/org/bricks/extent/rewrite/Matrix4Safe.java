@@ -20,7 +20,7 @@ public class Matrix4Safe extends Matrix4 {
 		private Quaternion quat2 = new Quaternion();
 		
 		private final Vector3 tmpVec = new Vector3();
-		private final Matrix4 tmpMat = new Matrix4();
+		private final Matrix4 tmpMat = new Matrix4Safe();
 		
 		private final Vector3 right = new Vector3();
 		private final Vector3 tmpForward = new Vector3();
