@@ -24,6 +24,13 @@ public class Quarantine<Q> implements Iterable<Q>{
 		Validate.isTrue(buffer[index].data == null, "Buffer is overflow");
 		buffer[index].data = object;
 	}
+	
+	public Q poll(){
+		if(iterator.hasNext()){
+			return iterator.next();
+		}
+		return null;
+	}
 
 	public Iterator<Q> iterator() {
 		return iterator;

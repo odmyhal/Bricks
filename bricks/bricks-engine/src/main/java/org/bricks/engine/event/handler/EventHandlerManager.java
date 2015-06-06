@@ -16,16 +16,26 @@ public class EventHandlerManager {
 
 	public static void processEvent(EventTarget target, Event event){
 		EventHandler eh = findHandler(target, event);
+		if(eh == null){
+			throw new RuntimeException("No handler for class" + target.getClass().getCanonicalName()
+					+ " event: " + event.getClass().getCanonicalName()
+					+ " source: " + event.sourceType());
+		}
 		eh.processEvent(target, event);
 	}
 	
 	private static EventHandler<?, ?> findHandler(EventTarget target, Event event){
-		Map<Class, Map<Class, EventHandler>> eventMap = handlers.get(event.sourceType());
+		return findHandler(target, event.getClass(), event.sourceType());
+	}
+	
+	private static EventHandler<?, ?> findHandler(EventTarget target, Class eventClass, String eventSourceType){
+		Map<Class, Map<Class, EventHandler>> eventMap = handlers.get(eventSourceType);
 		if(eventMap == null){
-			throw new RuntimeException("No handler for sourceType: " + event.sourceType());
+			return null;
+//			throw new RuntimeException("No handler for sourceType: " + event.sourceType());
 		}
 		Map<Class, EventHandler> hMap = null;
-		Class evClass = event.getClass();
+		Class evClass = eventClass;
 		
 		while(evClass != null){
 			hMap = eventMap.get(evClass);
@@ -42,9 +52,14 @@ public class EventHandlerManager {
 			}
 			evClass = evClass.getSuperclass();
 		}
-		throw new RuntimeException("No handler for class" + target.getClass().getCanonicalName()
+		return null;
+/*		throw new RuntimeException("No handler for class" + target.getClass().getCanonicalName()
 				+ " event: " + event.getClass().getCanonicalName()
-				+ " source: " + event.sourceType());
+				+ " source: " + event.sourceType());*/
+	}
+	
+	public static boolean containsHandler(EventTarget target, Class eventClass, String eventSourceType){
+		return findHandler(target, eventClass, eventSourceType) != null;
 	}
 	
 	public static void registerHandler(Class targetClass, Class eventClass, String sourceType, EventHandler handler){

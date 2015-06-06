@@ -1,12 +1,10 @@
 package org.bricks.engine.event.check;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.bricks.engine.event.Event;
 import org.bricks.engine.event.handler.EventHandlerManager;
 import org.bricks.engine.staff.Liver;
+import org.bricks.utils.LinkLoop;
+import org.bricks.utils.Loop;
 
 public abstract class EventChecker<T extends Liver> {
 	
@@ -17,7 +15,7 @@ public abstract class EventChecker<T extends Liver> {
 	 * When current checker added to entity, all checkers with types from this supplant list should be removed from entity
 	 * @author Oleh Myhal
 	 */
-	private final Set<CheckerType> supplants = new HashSet<CheckerType>();
+	private final Loop<CheckerType> supplants = new LinkLoop<CheckerType>();
 /*	
 	public EventChecker(){
 		this(CheckerType.registerCheckerType());
@@ -75,7 +73,7 @@ public abstract class EventChecker<T extends Liver> {
 		supplants.add(chType);
 	}
 	
-	public Collection<CheckerType> supplants(){
+	public Loop<CheckerType> supplants(){
 		return supplants;
 	}
 }

@@ -1,26 +1,23 @@
 package org.bricks.engine.tool;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
 
 import org.bricks.engine.event.Event;
 import org.bricks.engine.event.check.CheckerType;
 import org.bricks.engine.event.check.EventChecker;
 import org.bricks.engine.staff.Liver;
+import org.bricks.utils.LinkLoop;
+import org.bricks.utils.Loop;
 
-/*
- * TODO: rewrite with Quarantine for implementation of tmpCheckers
- */
-public class Live {
+public class Live implements Iterable<EventChecker>{
 	
-	private final Vector<Event> events = new Vector<Event>();
-	private final Set<EventChecker> checkers = new HashSet<EventChecker>();
-	private final Set<EventChecker> tmpAddCheckers = new HashSet<EventChecker>();
-	private final Set<EventChecker> tmpDelCheckers = new HashSet<EventChecker>();
+	private final Quarantine<Event> events = new Quarantine<Event>(15);
+	
+	private final Loop<EventChecker> checkers = new LinkLoop<EventChecker>();
+	private final Quarantine<EventChecker> tmpAddCheckers = new Quarantine<EventChecker>(5);
+	private final Quarantine<EventChecker> tmpDelCheckers = new Quarantine<EventChecker>(5);
 	private final Map<Integer, Event> eventHistory = new HashMap<Integer, Event>();
 	
 	private final Liver liver;
@@ -29,56 +26,42 @@ public class Live {
 		this.liver = liver;
 	}
 
-	public synchronized void registerEventChecker(EventChecker<? extends Liver> checker) {
-		for(CheckerType cht : checker.supplants()){
-			for(EventChecker ch : checkers){
-				if(cht.equals(ch.checkerType())){
-					tmpDelCheckers.add(ch);
+	public void registerEventChecker(EventChecker<? extends Liver> checker) {
+		tmpAddCheckers.push(checker);
+	}
+	
+	public void unregisterEventChecker(EventChecker<? extends Liver> checker){
+		tmpDelCheckers.push(checker);
+	}
+
+	public void addEvent(Event e) {
+		events.push(e);
+	}
+	
+	public void refreshCheckers(long currentTime){
+		for(EventChecker<?> checker : tmpDelCheckers){
+			checkers.remove(checker);
+		}
+		for(EventChecker<Liver> checker : tmpAddCheckers){
+			for(CheckerType cht : checker.supplants()){
+				Iterator<EventChecker> iterator = checkers.iterator();
+				while(iterator.hasNext()){
+					if(cht.equals(iterator.next().checkerType())){
+						iterator.remove();
+					}
 				}
 			}
-		}
-		tmpAddCheckers.add(checker);
-	}
-	
-	public synchronized boolean unregisterEventChecker(EventChecker<? extends Liver> checker){
-		return tmpDelCheckers.add(checker);
-	}
-
-	public boolean addEvent(Event e) {
-		return events.add(e);
-	}
-
-	public synchronized boolean checkerRegistered(EventChecker<? extends Liver> checker) {
-		return checkers.contains(checker);
-	}
-	
-	public synchronized void refreshCheckers(long currentTime){
-		if(!tmpDelCheckers.isEmpty()){
-			checkers.removeAll(tmpDelCheckers);
-			tmpDelCheckers.clear();
-		}
-		if(!tmpAddCheckers.isEmpty()){
-			for(EventChecker checker : tmpAddCheckers){
-				checker.activate(liver, currentTime);
-			}
-			checkers.addAll(tmpAddCheckers);
-			tmpAddCheckers.clear();
+			checker.activate(liver, currentTime);
+			checkers.add(checker);
 		}
 	}
 
-	public synchronized boolean hasChekers() {
+	public boolean hasChekers() {
 		return !checkers.isEmpty();
 	}
 
-	public synchronized Collection<EventChecker> getCheckers() {
-		return checkers;
-	}
-	
 	public Event popEvent() {
-		if(events.isEmpty()){
-			return null;
-		}
-		return events.remove(0);
+		return events.poll();
 	}
 	
 	public Event putHistory(Event event){
@@ -103,5 +86,9 @@ public class Live {
 		synchronized(eventHistory){
 			return eventHistory.remove(groupCode);
 		}
+	}
+
+	public Iterator<EventChecker> iterator() {
+		return checkers.iterator();
 	}
 }

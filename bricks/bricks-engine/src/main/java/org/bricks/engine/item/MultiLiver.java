@@ -1,9 +1,7 @@
 package org.bricks.engine.item;
 
-import java.util.Collection;
 import java.util.Map;
 
-import org.bricks.core.entity.Point;
 import org.bricks.exception.Validate;
 import org.bricks.engine.Engine;
 import org.bricks.engine.Motor;
@@ -12,15 +10,11 @@ import org.bricks.engine.event.Event;
 import org.bricks.engine.event.EventTarget;
 import org.bricks.engine.event.OverlapEvent;
 import org.bricks.engine.event.check.EventChecker;
-import org.bricks.engine.event.check.OverlapChecker;
+import org.bricks.engine.event.handler.EventHandlerManager;
 import org.bricks.engine.event.overlap.OSRegister;
 import org.bricks.engine.event.overlap.OverlapStrategy;
-import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.engine.neve.EntityPrint;
 import org.bricks.engine.neve.Imprint;
-import org.bricks.engine.pool.BaseSubject;
-import org.bricks.engine.pool.BrickSubject;
-import org.bricks.engine.pool.District;
 import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.staff.Subject;
 import org.bricks.engine.pool.World;
@@ -49,23 +43,18 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 	public void registerEventChecker(EventChecker checker){
 		live.registerEventChecker(checker);
 	}
-	public boolean unregisterEventChecker(EventChecker checker){
-		return live.unregisterEventChecker(checker);
+	public void unregisterEventChecker(EventChecker checker){
+		live.unregisterEventChecker(checker);
 	}
-	public boolean addEvent(Event e){
-		return live.addEvent(e);
+	public void addEvent(Event e){
+		live.addEvent(e);
 	}
-	public boolean checkerRegistered(EventChecker checker){
-		return live.checkerRegistered(checker);
-	}
+
 	public void refreshCheckers(long currentTime){
 		live.refreshCheckers(currentTime);
 	}
 	public boolean hasChekers(){
 		return live.hasChekers();
-	}
-	public Collection<EventChecker> getCheckers(){
-		return live.getCheckers();
 	}
 
 	public boolean isEventTarget(){
@@ -126,7 +115,7 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 	public void processEvents(long currentTime){
 		refreshCheckers(currentTime);
 		if(hasChekers()){
-			for(EventChecker checker : getCheckers()){
+			for(EventChecker checker : live){
 				if(checker.isActive()){
 					checker.checkEvents(this, currentTime);
 				}
@@ -137,11 +126,9 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 	public OverlapEvent checkOverlap(Subject mySubject, Subject client){
 		OverlapStrategy os = overlapStrategy.get(client.getEntity().sourceType());
 		if(os == null){
-//			this.log("  3. Liver has not found strategy");
 			return null;
 		}
 		if(os.hasToCheckOverlap(this, client)){
-//			this.log("  4. Strategy works");
 			Validate.isTrue(mySubject.getEntity() == this, "Alloved to check only inner subjects");
 			//Has to be synchronized with client popEvetn
 			synchronized(client.getEntity()){
@@ -153,7 +140,7 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 					this.putHistory(oe);
 					if(client.getEntity().isEventTarget()){
 						EventTarget svt = (EventTarget) client.getEntity();
-						if(svt.checkerRegistered(OverlapChecker.instance())){
+						if(EventHandlerManager.containsHandler(svt, OverlapEvent.class, this.sourceType())){
 							OverlapEvent svEvent = new OverlapEvent(checkPrint, targetPrint, oe.getTouchPoint(), oe.getCrashNumber());
 							svt.addEvent(svEvent);
 							svt.putHistory(svEvent);
@@ -164,9 +151,6 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 				checkPrint.free();
 			}
 		}
-/*		else{
-			this.log("  5. Strategy fallen");
-		}*/
 		return null;
 	}
 	//Method used by OverlapChecker
