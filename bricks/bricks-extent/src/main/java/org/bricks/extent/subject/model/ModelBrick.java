@@ -33,9 +33,7 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 	private volatile int currentPrintVolatile = -1;
 	private int lastPrint = -2, currentPrint = -3, renderPrintModified = -5;
 	protected int lastPrintModified = -4;
-	
-//	private final Quaternion tmpQ = new Quaternion();
-//	private final Matrix4 tmpM = new Matrix4();
+
 	protected int planeSkeleton = -1;
 	
 	public ModelBrick(ModelInstance ms){
@@ -128,10 +126,8 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 	
 	@Override
 	public int adjustCurrentPrint(){
-//		System.out.println("ModelBrick is adjusting current print " + lastPrintModified);
 		if(skeletons != null && lastPrintModified == currentPrint){
 			for(Skeleton skeleton : skeletons){
-//				System.out.println("Skeleton adjusting current print");
 				skeleton.calculateTransforms();
 				skeleton.adjustCurrentPrint();
 			}

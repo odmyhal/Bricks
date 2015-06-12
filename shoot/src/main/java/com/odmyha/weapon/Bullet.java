@@ -106,19 +106,19 @@ public class Bullet extends MultiWalkRoller2D<ModelSubjectSync<?, ?>, WalkPrint>
 	@OverlapCheck(algorithm = BrickOverlapAlgorithm.class, sourceType = Shield.SHIELD_SOURCE, strategyClass = OverlapStrategy.TrueOverlapStrategy.class)
 	@EventHandle(eventType = Shield.SHIELD_SOURCE)
 	public void faceShield(OverlapEvent e){
-		this.outOfWorld();
+		this.disappear();
 	}
 	
 	@OverlapCheck(algorithm = BrickOverlapAlgorithm.class, sourceType = Ball.BALL_SOURCE_TYPE, strategyClass = OverlapStrategy.TrueOverlapStrategy.class)
 	@EventHandle(eventType = Ball.BALL_SOURCE_TYPE)
 	public void faceBall(OverlapEvent e){
-		this.outOfWorld();
+		this.disappear();
 	}
 	
 	@OverlapCheck(algorithm = BrickOverlapAlgorithm.class, sourceType = Cannon.CANNON_SOURCE, strategyMethod = "checkCannonOverlap")
 	@EventHandle(eventType = Cannon.CANNON_SOURCE)
 	public void faceOtherCannon(OverlapEvent e){
-		this.outOfWorld();
+		this.disappear();
 	}
 	
 	public boolean checkCannonOverlap(Subject<Cannon, ?, ?, ?> s){

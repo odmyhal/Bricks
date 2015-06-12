@@ -29,7 +29,7 @@ public abstract class Stone<S extends BaseSubject<?, ? extends PlanePointsPrint,
 	public void applyEngine(Engine engine) {
 		super.applyEngine(engine);
 		World world = engine.getWorld();
-		for(BaseSubject<?, ? extends PlanePointsPrint, ?, ?> subject : getStaff()){
+		for(BaseSubject<?, ? extends PlanePointsPrint, ?, ?> subject : staff){
 			subject.joinWorld(world);
 //			subject.adjustCurrentPrint();
 //			Dimentions dimm = PointSetHelper.fetchDimentions(subject.getBrick().getPoints());

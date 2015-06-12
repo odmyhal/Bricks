@@ -2,7 +2,7 @@ package org.bircks.enterprise.control.panel.camera;
 
 import java.util.prefs.Preferences;
 
-import org.bircks.enterprise.control.panel.PanelManager;
+import org.bircks.enterprise.control.panel.InteractiveController;
 import org.bircks.enterprise.control.panel.Skinner;
 import org.bricks.enterprise.control.widget.tool.FlowSlider;
 import org.bricks.enterprise.control.widget.tool.FlowTouchListener;
@@ -21,7 +21,7 @@ public class CameraAltitudeSlider extends FlowSlider{
 	}
 	
 	public static CameraAltitudeSlider produceSlider(int height, Camera camera){
-		return produceSlider(height, camera, PanelManager.cameraDefaults);
+		return produceSlider(height, camera, InteractiveController.cameraDefaults);
 	}
 	
 	public static CameraAltitudeSlider produceSlider(int height, Camera camera, Preferences prefs){
@@ -42,8 +42,8 @@ public class CameraAltitudeSlider extends FlowSlider{
 		CameraAltitudeAction cameraAltitudeAction = new CameraAltitudeAction(camera, camera.position.z);
 		FlowTouchListener<CameraAltitudeSlider> listener = new FlowTouchListener(cameraAltitudeAction);
 		
-		float minAltitude = prefs.getFloat("camera.altitude.min", PanelManager.cameraDefaults.getFloat("camera.altitude.min", -500f));
-		float maxAltitude = prefs.getFloat("camera.altitude.max", PanelManager.cameraDefaults.getFloat("camera.altitude.max", 5000f));
+		float minAltitude = prefs.getFloat("camera.altitude.min", InteractiveController.cameraDefaults.getFloat("camera.altitude.min", -500f));
+		float maxAltitude = prefs.getFloat("camera.altitude.max", InteractiveController.cameraDefaults.getFloat("camera.altitude.max", 5000f));
 		CameraAltitudeSlider slider = new CameraAltitudeSlider(minAltitude, maxAltitude, tps, listener);
 		slider.setValue(camera.position.z);
 		

@@ -5,6 +5,8 @@ import java.util.Collection;
 
 import org.bricks.engine.neve.PrintableBase;
 import org.bricks.extent.rewrite.Matrix4Safe;
+import org.bricks.utils.LinkLoop;
+import org.bricks.utils.Loop;
 
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
@@ -13,8 +15,7 @@ public class MarkPoint<I extends MarkPointPrint> extends PrintableBase<I>{
 
 	private Vector3[] marks;
 	protected Vector3[] modifiedMarks;
-	private Collection<Matrix4Safe> transforms = new ArrayList<Matrix4Safe>();
-//	private Matrix4 helpMatrix = new Matrix4();
+	private Loop<Matrix4Safe> transforms = new LinkLoop<Matrix4Safe>();
 	protected int size;
 	
 	public MarkPoint(Vector3... points){

@@ -18,8 +18,6 @@ public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
 	private final Vector3 scale = new Vector3();
 	private final Matrix4Safe transformMatrix = new Matrix4Safe();
 	
-//	private Matrix4 helpMatrix = new Matrix4();
-	
 	public NodeData(Node node){
 		this(node.rotation, node.translation, node.scale);
 	}
@@ -31,15 +29,7 @@ public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
 		initPrintStore();
 		adjustCurrentPrint();
 	}
-/*	
-	public void rotateByPoint(Quaternion q, Vector3 point){
-		this.rotation.mulLeft(q);
-		q.toMatrix(helpMatrix.val);
-		this.translation.sub(point);
-		this.translation.mul(helpMatrix);
-		translate(point);
-	}
-	*/
+
 	public void rotateByPoint(Quaternion q, Vector3 point){
 		Matrix4 helpMatrix = Matrix4Safe.safeTmpMatrix();
 		this.rotation.mulLeft(q);
@@ -51,7 +41,6 @@ public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
 	
 	public void translate(Vector3 go){
 		translate(go.x, go.y, go.z);
-//		edit = true;
 		lastPrintModified = currentPrint;
 	}
 	

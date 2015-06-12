@@ -14,9 +14,8 @@ import org.bricks.engine.tool.Origin;
 
 public abstract class MultiSubjectEntity<S extends Subject, P extends EntityPrint, C> extends PrintableBase<P> implements Entity<P>{
 
-	private List<S> staff = new ArrayList<S>();
-	private List<Satellite> satellites = new ArrayList<Satellite>();
-//	private Ipoint orign = new Ipoint(0, 0);
+	protected ArrayList<S> staff = new ArrayList<S>();
+	protected ArrayList<Satellite> satellites = new ArrayList<Satellite>();
 	private Origin<C> origin;
 	private Engine engine;
 	
@@ -40,10 +39,14 @@ public abstract class MultiSubjectEntity<S extends Subject, P extends EntityPrin
 		return this.engine;
 	}
 	
-	public void outOfWorld(){
-		for(Subject subject : getStaff()){
-			subject.leaveDistrict();
+	public void disappear(){
+		for(int i = 0; i < staff.size(); i++){
+			staff.get(i).leaveDistrict();
 		}
+	}
+	
+	public void outOfWorld(){
+		disappear();
 	}
 	
 	public boolean addSubject(S subject){
@@ -66,8 +69,8 @@ public abstract class MultiSubjectEntity<S extends Subject, P extends EntityPrin
 
 	protected void translate(Origin<C> trn, boolean adjustView) {
 		this.origin.add(trn);
-		for(Satellite satellite : getSatellites()){
-			satellite.translate(trn);
+		for(int i = 0; i < satellites.size(); i++){
+			satellites.get(i).translate(trn);
 		}
 		if(adjustView){
 			this.adjustCurrentPrint();
@@ -78,11 +81,11 @@ public abstract class MultiSubjectEntity<S extends Subject, P extends EntityPrin
 		return this.origin;
 	}
 	
-	public List<S> getStaff(){
+	public ArrayList<S> getStaff(){
 		return staff;
 	}
 	
-	public List<Satellite> getSatellites(){
+	public ArrayList<Satellite> getSatellites(){
 		return satellites;
 	}
 
@@ -103,8 +106,8 @@ public abstract class MultiSubjectEntity<S extends Subject, P extends EntityPrin
 	}
 	
 	protected void adjustSubjectsViews(){
-		for(Subject subject : getStaff()){
-			subject.adjustCurrentPrint();
+		for(int i = 0; i < staff.size(); i++){
+			staff.get(i).adjustCurrentPrint();
 		}
 	}
 

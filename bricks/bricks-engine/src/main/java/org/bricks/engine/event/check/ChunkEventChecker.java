@@ -21,11 +21,7 @@ public class ChunkEventChecker<T extends Liver> extends EventChecker<T> {
 	private List<EventChecker<T>> checkers = new ArrayList<EventChecker<T>>();
 	protected int nextIndex = 0;
 	private EventChecker<T> currentChecker;
-/*	
-	public ChunkEventChecker(EventChecker<T>...chrs){
-		checkers.addAll(Arrays.asList(chrs));
-	}
-*/	
+	
 	public ChunkEventChecker(CheckerType checkerType, EventChecker<T>...chrs){
 		super(checkerType);
 		checkers.addAll(Arrays.asList(chrs));

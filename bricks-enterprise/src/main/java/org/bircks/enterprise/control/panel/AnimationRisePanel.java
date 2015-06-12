@@ -20,22 +20,26 @@ public class AnimationRisePanel extends RelativePanel{
 		super(prefs);
 	}
 	
-	public void show(){
+	public boolean show(){
 		if(canAct){
 			setPosition(-getWidth(), 0);
 			this.setActive(true);
 			showAction.setSpeed(getWidth() / moveTime);
 			this.addAction(showAction);
 			canAct = false;
+			return true;
 		}
+		return false;
 	};
 	
-	public void hide(){
+	public boolean hide(){
 		if(canAct){
 			hideAction.setSpeed(getWidth() / moveTime);
 			this.addAction(hideAction);
 			canAct = false;
+			return true;
 		}
+		return false;
 	};
 	
 	private class ShowAction extends Action{
@@ -52,7 +56,7 @@ public class AnimationRisePanel extends RelativePanel{
 			float newPositionX = delta * moveSpeed + AnimationRisePanel.this.getPositionX();
 			if(newPositionX >= 0){
 				stopAction = true;
-				AnimationRisePanel.this.inputControl();
+//				AnimationRisePanel.this.inputControl();
 				newPositionX = 0f;
 				canAct = true;
 			}

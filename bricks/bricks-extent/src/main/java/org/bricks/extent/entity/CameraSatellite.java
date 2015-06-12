@@ -19,7 +19,7 @@ public class CameraSatellite implements Satellite<Point, Roll>, RotationProvider
 	public Camera camera;
 //	private MultiWalker target;
 	
-	private static final int cap = 50;
+	private static final int cap = 256;
 	private final int[] trX = new int[cap], trY = new int[cap], q = new int[cap], orgX = new int[cap], orgY = new int[cap];
 	private final float[] rotate = new float[cap];//, rotation = new float[cap];
 	
@@ -33,10 +33,6 @@ public class CameraSatellite implements Satellite<Point, Roll>, RotationProvider
 	public CameraSatellite(Camera camera, float startRotation/*MultiWalker target*/){
 		this.camera = camera;
 		generalRotation = startRotation;
-/*		this.target = target;
-		WalkPrint wv = (WalkPrint)target.getSafePrint();
-		generalRotation = wv.getRotation();
-		wv.free();*/
 	}
 
 	/**
@@ -47,19 +43,9 @@ public class CameraSatellite implements Satellite<Point, Roll>, RotationProvider
 		rotate[curIndex] = roll.lastRotation();
 		orgX[curIndex] = central.source.getX();
 		orgY[curIndex] = central.source.getY();
-//		rotation[curIndex] = target.getRotation();
 		generalRotation = roll.getRotation();
 	}
-/*	
-	private void rotate(float rad, Origin<Point> central) {
-		q[curIndex] = 1;
-		rotate[curIndex] = target.lastRotation();
-		orgX[curIndex] = central.source.getX();
-		orgY[curIndex] = central.source.getY();
-//		rotation[curIndex] = target.getRotation();
-		generalRotation = target.getRotation();
-	}
-*/
+
 	/**
 	 * Method called in motor thread
 	 */

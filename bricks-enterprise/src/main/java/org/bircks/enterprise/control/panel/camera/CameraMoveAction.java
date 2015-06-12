@@ -2,7 +2,7 @@ package org.bircks.enterprise.control.panel.camera;
 
 import java.util.prefs.Preferences;
 
-import org.bircks.enterprise.control.panel.PanelManager;
+import org.bircks.enterprise.control.panel.InteractiveController;
 import org.bricks.enterprise.control.widget.tool.FlowMutableAction;
 import org.bricks.enterprise.control.widget.tool.FlowTouchPad;
 import org.bricks.enterprise.control.widget.tool.RotationDependAction;
@@ -26,16 +26,16 @@ public class CameraMoveAction extends RotationDependAction<Camera, FlowTouchPad>
 	
 
 	public CameraMoveAction(Camera target) {
-		this(target, PanelManager.cameraDefaults);
+		this(target, InteractiveController.cameraDefaults);
 	}
 	
 	public CameraMoveAction(Camera target, Preferences prefs) {
-		super(target, prefs.getFloat("camera.target.constant.rotation", PanelManager.cameraDefaults.getFloat("camera.target.constant.rotation", 0f)));
+		super(target, prefs.getFloat("camera.target.constant.rotation", InteractiveController.cameraDefaults.getFloat("camera.target.constant.rotation", 0f)));
 		initPreferences(prefs);
 	}
 	
 	public CameraMoveAction(Camera target, RotationDependAction.RotationProvider rotationProvider){
-		this(target, rotationProvider, PanelManager.cameraDefaults);
+		this(target, rotationProvider, InteractiveController.cameraDefaults);
 	}
 	
 	public CameraMoveAction(Camera target, RotationDependAction.RotationProvider rotationProvider, Preferences prefs) {
@@ -44,8 +44,8 @@ public class CameraMoveAction extends RotationDependAction<Camera, FlowTouchPad>
 	}
 	
 	private void initPreferences(Preferences prefs){
-		this.maxRadius = prefs.getFloat("camera.move.maxRadius", PanelManager.cameraDefaults.getFloat("camera.move.maxRadius", 1000f));
-		this.moveSpeed = prefs.getFloat("camera.move.speed", PanelManager.cameraDefaults.getFloat("camera.move.speed", 1000f));
+		this.maxRadius = prefs.getFloat("camera.move.maxRadius", InteractiveController.cameraDefaults.getFloat("camera.move.maxRadius", 1000f));
+		this.moveSpeed = prefs.getFloat("camera.move.speed", InteractiveController.cameraDefaults.getFloat("camera.move.speed", 1000f));
 	}
 	
 	@Override

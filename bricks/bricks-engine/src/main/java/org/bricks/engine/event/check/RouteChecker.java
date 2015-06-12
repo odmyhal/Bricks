@@ -2,6 +2,7 @@ package org.bricks.engine.event.check;
 
 import org.bricks.core.entity.Fpoint;
 import org.bricks.engine.event.Event;
+import org.bricks.engine.item.MultiRoller;
 import org.bricks.engine.item.MultiWalker;
 import org.bricks.engine.neve.WalkPrint;
 import org.bricks.engine.staff.Walker;
@@ -16,13 +17,17 @@ public class RouteChecker<T extends Walker<?, Fpoint>/*MultiWalker<?, ?, Fpoint,
 		this.supplant(CHECKER_TYPE);
 		this.supplant(RollToMarkProcessorChecker.CHECKER_TYPE);
 		Validate.isTrue(route.length > 1, "Route should comprise at least two points...");
-		for(Fpoint one: route){
-			this.addChecker(new RollToPointProcessorChecker(one, rotationSpeed));
-			this.addChecker(new RaisePointChecker(one, sensitiveDistance));
+		initRoutes(route, rotationSpeed, sensitiveDistance);
+	}
+	
+	protected void initRoutes(Fpoint[] routes, float rotationSpeed, float sensitiveDistance){
+		for(int i=0; i<routes.length; i++){
+			this.addChecker(new RollToPointProcessorChecker(routes[i], rotationSpeed));
+			this.addChecker(new RaisePointChecker(routes[i], sensitiveDistance));
 		}
 	}
 
-	private class RaisePointChecker extends CachePointChecker<T>{
+	protected class RaisePointChecker extends CachePointChecker<T>{
 
 		public RaisePointChecker(Fpoint tPoint, float distance) {
 			super(tPoint, distance);
@@ -33,4 +38,5 @@ public class RouteChecker<T extends Walker<?, Fpoint>/*MultiWalker<?, ?, Fpoint,
 			return null;
 		}
 	}
+	
 }

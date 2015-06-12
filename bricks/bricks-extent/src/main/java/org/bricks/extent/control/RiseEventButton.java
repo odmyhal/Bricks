@@ -15,7 +15,11 @@ public class RiseEventButton extends TextButton{
 	private Event event;
 
 	public RiseEventButton(Liver<?> liver, Event evnt, String text) {
-		super(text, provideStyle());
+		this(liver, evnt, text, provideStyle());
+	}
+	
+	public RiseEventButton(Liver<?> liver, Event evnt, String text, TextButtonStyle style) {
+		super(text, style);
 		this.target = liver;
 		this.event = evnt;
 		this.addListener(new ClickListener(){

@@ -31,7 +31,7 @@ public class RollToPointProcessorChecker<T extends MultiRoller<?, ?, Fpoint, ?>>
 		rotationSpeedProcessor = new ChangeRotationSpeedProcessor(startSpeed);
 		this.addProcessor(rotationSpeedProcessor);
 		
-		conditionalRotationProcessor = new ConditionalRotationProcessor(targetDirectionPoint);
+		conditionalRotationProcessor = conditionalRotationProcessor(targetDirectionPoint);
 		this.addProcessor(conditionalRotationProcessor);
 	}
 
@@ -48,20 +48,31 @@ public class RollToPointProcessorChecker<T extends MultiRoller<?, ?, Fpoint, ?>>
 		 * Flush cached values via volatile
 		 */
 		
-		rotationSpeedProcessor.setRotationSpeed(sSpeed);
+		
 		Fpoint curOrigin = target.origin().source;
 		hPoint.set(targetDirection.x - curOrigin.x, targetDirection.y - curOrigin.y);
 		PointHelper.normalize(hPoint);
 		float curRotation = target.getRotation();
 		float targetRotation = (float) AlgebraHelper.trigToRadians(hPoint.x, hPoint.y);
-
+		
+		float rotationDiff = targetRotation - curRotation;
+		if(rotationDiff > Math.PI || ( rotationDiff < 0 && rotationDiff > -Math.PI) ){
+			sSpeed *= -1;
+		}
+		
+		rotationSpeedProcessor.setRotationSpeed(sSpeed);
 		conditionalRotationProcessor.initialize(curRotation, targetRotation);
 		super.activate(target, curTime);
 	}
 	
-	private class ConditionalRotationProcessor extends SingleActProcessor<T>{
+	protected ConditionalRotationProcessor conditionalRotationProcessor(Fpoint targetDirectionPoint){
+		return new ConditionalRotationProcessor(targetDirectionPoint);
+	}
+	
+	protected class ConditionalRotationProcessor extends SingleActProcessor<T>{
 		
-		private Fpoint directionPoint, hPoint = new Fpoint();
+		protected Fpoint directionPoint;
+		private Fpoint hPoint = new Fpoint();
 		private float previousTarget, previousRotation;
 		
 		public ConditionalRotationProcessor(Fpoint dp) {
@@ -74,7 +85,7 @@ public class RollToPointProcessorChecker<T extends MultiRoller<?, ?, Fpoint, ?>>
 		 * if (curSpeed > 0) tRotation should be bigger than target.getRotation(), otherwise checker stops
 		 * if (curSpeed < 0) tRotation should be smaller than target.getRotation(), otherwise checker stops
 		 */
-		@Override
+//		@Override
 		protected boolean ready(T target, long processTime) {
 			boolean stopAction = false;
 			float curSpeed = target.getRotationSpeed();
@@ -135,4 +146,5 @@ public class RollToPointProcessorChecker<T extends MultiRoller<?, ?, Fpoint, ?>>
 			target.setToRotation(targetRotation);
 		}
 	}
+
 }

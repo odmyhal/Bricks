@@ -28,9 +28,6 @@ public class NodeOperator implements RotationProvider{
 
 	public NodeOperator(Node node){
 		nodeData = new NodeData(node);
-/*		for(Node node : nodes){
-			this.nodes.put(node.id, new NodeData(node));
-		}*/
 	}
 	
 	public NodeOperator(Vector3 spin, Vector3 point, Node node){
@@ -69,9 +66,6 @@ public class NodeOperator implements RotationProvider{
 	public void rotate(float rad){
 		helpQ.setFromAxisRad(spin, rad);
 		nodeData.rotateByPoint(helpQ, point);
-/*		for(NodeData nd : nodes.values()){
-			nd.rotateByPoint(helpQ, point);
-		}*/
 		this.rotatedRadians += rad;
 		coerceRotation();
 	}
@@ -79,9 +73,6 @@ public class NodeOperator implements RotationProvider{
 	public void translate(float x, float y, float z){
 		this.point.add(x, y, z);
 		nodeData.translate(x, y, z);
-/*		for(NodeData nd : nodes.values()){
-			nd.translate(x, y, z);
-		}*/
 	}
 	
 	public void scale(Vector3 scl){
@@ -90,16 +81,10 @@ public class NodeOperator implements RotationProvider{
 	
 	public void scale(float scaleX, float scaleY, float scaleZ){
 		nodeData.scale(scaleX, scaleY, scaleZ, point);
-/*		for(NodeData nd : nodes.values()){
-			nd.scale(scaleX, scaleY, scaleZ, point);
-		}*/
 	}
 	
 	public void updatePrint(){
 		nodeData.adjustCurrentPrint();
-/*		for(NodeData nd : nodes.values()){
-			nd.adjustCurrentPrint();
-		}*/
 	}
 	
 	public NodeData getNodeData(){

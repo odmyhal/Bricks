@@ -31,7 +31,8 @@ public abstract class NodeModifyProcessor<T extends MultiLiver<? extends ModelBr
 	}
 	
 	protected void initTargetOperator(T target, String nodeOperatorName){
-		for(ModelBrickSubject<?, ?, ?, ?, ModelBrickOperable> ms : target.getStaff() ){
+		for(int i = 0; i < target.getStaff().size(); i++){
+			ModelBrickSubject<?, ?, ?, ?, ModelBrickOperable> ms = target.getStaff().get(i);
 			nodeOperator = ms.linkModelBrick().getNodeOperator(nodeOperatorName);
 			if(nodeOperator != null){
 				subject = ms;

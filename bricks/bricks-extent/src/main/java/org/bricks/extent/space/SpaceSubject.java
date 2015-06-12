@@ -22,7 +22,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 
 public class SpaceSubject<E extends Entity, I extends SSPrint, C, R extends Roll, M extends ModelBrick> 
-//	extends BaseSubject<E, I, Vector3, Roll3D> 
 	extends BaseSubject<E, I, C, R>
 	implements RenderableProvider, ModelBrickSubject<E, I, C, R, M>{
 
@@ -62,22 +61,12 @@ public class SpaceSubject<E extends Entity, I extends SSPrint, C, R extends Roll
 		vehicle.rotate(roll, central);
 	}
 	
-/*
-	public void translate(Origin<Vector3> vector) {
-		modelBrick.translate(vector.source);
-	}
-
-	public void rotate(Roll3D roll, Origin<Vector3> central) {
-		modelBrick.rotate(roll.getSpin(), roll.lastRotation(), central.source);
-	}
-*/	
 	public void setPrintFactory(PrintFactory<I> pf){
 		this.printFactory = pf;
 	}
 
 	public I print() {
 		return printFactory.producePrint(printStore);
-//		return (I) new SSPrint(printStore);
 	}
 
 	@Override

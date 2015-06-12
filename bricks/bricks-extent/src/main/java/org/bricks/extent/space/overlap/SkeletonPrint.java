@@ -11,20 +11,20 @@ import com.badlogic.gdx.math.Vector3;
 
 public class SkeletonPrint<P extends Skeleton> extends MarkPointPrint<P>{
 	
-	public final Collection<Triangle> triangles = new ArrayList<Triangle>();
+	public final Triangle[] triangles;
 	public final Dimentions3D dimentions = new Dimentions3D();
-//	private Logger logger = new Logger();
 
 	public SkeletonPrint(PrintStore<P, ?> ps, int[] indexes) {
 		super(ps);
+		Validate.isTrue(indexes.length % 3 == 0, "Vrong number of indexes");
+		triangles = new Triangle[indexes.length / 3];
 		for(int i = 0; i < indexes.length; i += 3){
-			triangles.add(new Triangle(points[indexes[i]], points[indexes[i+1]], points[indexes[i+2]]));
+			triangles[i / 3] = new Triangle(points[indexes[i]], points[indexes[i+1]], points[indexes[i+2]]);
 		}
 	}
 	
 	@Override
 	public void init() {
-//		logger.log("initialized print ");
 		dimentions.reject();
 		Vector3[] marks = this.getTarget().modifiedMarks;
 		for(int i = 0; i < marks.length; i++){

@@ -37,18 +37,7 @@ public class BrickOverlapAlgorithm extends BaseOverlapAlgorithm<PlanePointsPrint
 	public boolean isOvarlap(PlanePointsPrint<? extends BaseSubject> one, PlanePointsPrint<? extends BaseSubject> two){
 		return findOverlapPoint(one, two, false) != null;
 	}
-/*
-	@Override
-	public OverlapEvent<EntityPointsPrint<? extends BaseSubject, ? extends EntityPrint>, EntityPointsPrint<? extends BaseSubject, ? extends EntityPrint>, Point>
-		checkOverlap(EntityPointsPrint<? extends BaseSubject, ? extends EntityPrint> targetView, EntityPointsPrint<? extends BaseSubject, ? extends EntityPrint> checkView){
-		Point overlapPoint = findOverlapPoint(targetView, checkView);
-		if(overlapPoint == null){
-			return null;
-		}
-		return new OverlapEvent<EntityPointsPrint<? extends BaseSubject, ? extends EntityPrint>, EntityPointsPrint<? extends BaseSubject, ? extends EntityPrint>, Point>
-				(targetView, checkView, overlapPoint);
-	}
-*/	
+	
 	public static final boolean isPointSetOverlap(PlanePointsPrint one, PlanePointsPrint two){
 		return findOverlapPoint(one, two, false) != null;
 	}

@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
 
+import org.bircks.enterprise.control.panel.InteractiveController;
 import org.bircks.enterprise.control.panel.InvisiblePanel;
-import org.bircks.enterprise.control.panel.PanelManager;
 import org.bircks.enterprise.control.panel.camera.CameraPanel;
 import org.bircks.entierprise.model.ModelStorage;
 import org.bricks.engine.Engine;
@@ -31,7 +31,7 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 public class BallGame implements ApplicationListener {
 	private Camera camera;
 //	private Camera camera2d;
-	private PanelManager panelManager;
+	private InteractiveController interactiveController;
 	
 	private ModelBatch modelBatch;
 	private Environment environment;
@@ -72,11 +72,11 @@ public class BallGame implements ApplicationListener {
 		camera.lookAt(875, 0, 0);*/
 		camera.update();
 
-		panelManager = new PanelManager();
+		interactiveController = new InteractiveController();
 		CameraPanel tp = new CameraPanel(camera);
 //		tp.activate();
-		panelManager.addPanel(tp);
-		panelManager.addPanel(new InvisiblePanel());
+		interactiveController.addPanel(tp);
+		interactiveController.addPanel(new InvisiblePanel());
 		
 		modelBatch = new ModelBatch();
 		environment = new Environment();
@@ -135,8 +135,10 @@ public class BallGame implements ApplicationListener {
 //		Thread.currentThread().yield();
 
 		int cnt = 0;
-		for(int i=750; i < 250 * 40 - 40; i+=225){
-			for(int j=50; j< 250 * 40 - 40; j+= 225){
+/*		for(int i=750; i < 250 * 40 - 40; i+=225){
+			for(int j=50; j< 250 * 40 - 40; j+= 225){*/
+		for(int i=750; i < 250 * 30 - 30; i+=500){
+			for(int j=50; j< 250 * 30 - 30; j+= 500){
 				bp.produceBall(j, i, 400f * (i%10 == 0 ? 1 : -1), 400f * (j%10 == 0 ? -1 : 1)).applyEngine(engine);
 //				bp.produceBall(j, i, 20f * (i%10 == 0 ? 1 : -1), 15f * (j%10 == 0 ? -1 : 1)).applyEngine(engine);
 				cnt++;
@@ -152,9 +154,9 @@ public class BallGame implements ApplicationListener {
 		cann.applyEngine(engine);
 		
 		CannonPanel cannonPanel = new CannonPanel(cann);
+//		cannonPanel.inputControl();
+		interactiveController.addPanel(cannonPanel);
 		cannonPanel.setActive(true);
-		cannonPanel.inputControl();
-		panelManager.addPanel(cannonPanel);
 		
 		bp.produceShield(1075, 100).applyEngine(engine);
 		bp.produceShield(775, 100).applyEngine(engine);
@@ -209,48 +211,17 @@ public class BallGame implements ApplicationListener {
 		if(debugEnabled){
 			debug.drawEntityShapes(entities, camera.combined);
 		}
-//		entitiesPool.free();
 		
-		panelManager.render(Gdx.graphics.getDeltaTime());
-//		renderControl();
+		interactiveController.render(Gdx.graphics.getDeltaTime());
 	}
-/*	
-	private void renderControl(){
-		shR.begin(ShapeType.Line);
-		shR.setColor(Color.RED);
-		shR.line(50,  50, 1200, 50);
-		shR.line(1200, 50, 1200, 700);
-		shR.line(1200, 700, 50, 700);
-		shR.line(50, 700, 50, 50);
-		shR.end();
-	}
-*/
-	/*
-	private void drawDistrict(District d){
-		if(d == null){
-			Gdx.app.debug("OLEH-CHECK", "District is null");
-		}
-		shR.begin(ShapeType.Line);
-		shR.setColor(Color.RED);
-		Point corner = d.getCorner();
-		shR.line(corner.getFX(), corner.getFY(), corner.getFX() + sLen, corner.getFY());
-		shR.line(corner.getFX(), corner.getFY(), corner.getFX(), corner.getFY() + sLen);
-		shR.line(corner.getFX() + sLen, corner.getFY() + sLen, corner.getFX() + sLen, corner.getFY());
-		shR.line(corner.getFX() + sLen, corner.getFY() + sLen, corner.getFX(), corner.getFY() + sLen);
-		shR.end();
-	}
-*/	
-	
-	
+
 
 	@Override
 	public void resize(int width, int height) {
-//		System.out.println("Resizeing " + width + " : " + height);
 		camera.viewportWidth = width;
 		camera.viewportHeight = height;
 		camera.update();
-		panelManager.resizeViewport(width, height);
-//		System.out.println("3d camera matrix: \n" + camera.combined);
+		interactiveController.resizeViewport(width, height);
 	}
 
 	@Override

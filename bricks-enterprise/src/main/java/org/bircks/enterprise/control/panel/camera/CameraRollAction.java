@@ -2,7 +2,7 @@ package org.bircks.enterprise.control.panel.camera;
 
 import java.util.prefs.Preferences;
 
-import org.bircks.enterprise.control.panel.PanelManager;
+import org.bircks.enterprise.control.panel.InteractiveController;
 import org.bricks.enterprise.control.widget.tool.FlowMutableAction;
 import org.bricks.enterprise.control.widget.tool.FlowTouchPad;
 import org.bricks.enterprise.d3.help.AlgebraUtils;
@@ -22,13 +22,13 @@ public class CameraRollAction extends FlowMutableAction<Camera, FlowTouchPad>{
 	private Vector2 touchPercentile = new Vector2();
 	
 	public CameraRollAction(Camera camera){
-		this(camera, PanelManager.cameraDefaults);
+		this(camera, InteractiveController.cameraDefaults);
 	}
 	
 	public CameraRollAction(Camera camera, Preferences prefs){
 		super(camera);
-		curRad = prefs.getFloat("camera.target.constant.rotation", PanelManager.cameraDefaults.getFloat("camera.target.constant.rotation", 0f));
-		rotationSpeed = prefs.getFloat("camera.roll.speed.radians", PanelManager.cameraDefaults.getFloat("camera.roll.speed.radians", (float) Math.PI / 2));
+		curRad = prefs.getFloat("camera.target.constant.rotation", InteractiveController.cameraDefaults.getFloat("camera.target.constant.rotation", 0f));
+		rotationSpeed = prefs.getFloat("camera.roll.speed.radians", InteractiveController.cameraDefaults.getFloat("camera.roll.speed.radians", (float) Math.PI / 2));
 	}
 	
 	@Override

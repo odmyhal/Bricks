@@ -70,8 +70,8 @@ public class ShapeDebugger implements Disposable{
 			if(entity instanceof MultiSubjectEntity){
 				MultiSubjectEntity<Subject, ?, ?> msubjecte = (MultiSubjectEntity<Subject, ?, ?>) entity;
 //				System.out.println("Debug draw " + msubjecte.getClass().getCanonicalName());
-				for(Subject sv : msubjecte.getStaff()){
-					Imprint print = sv.getSafePrint();
+				for(int i = 0; i < msubjecte.getStaff().size(); i++){
+					Imprint print = msubjecte.getStaff().get(i).getSafePrint();
 					if(print instanceof PlanePointsPrint){
 						drawPoints(((PlanePointsPrint) print).getPoints(), cameraMatrix);
 					}
@@ -96,8 +96,8 @@ public class ShapeDebugger implements Disposable{
 		shR.setColor(Color.RED);
 		if(entity instanceof MultiSubjectEntity){
 			MultiSubjectEntity<Subject, ?, ?> msubjecte = (MultiSubjectEntity<Subject, ?, ?>) entity;
-			for(Subject sv : msubjecte.getStaff()){
-				Imprint print = sv.getSafePrint();
+			for(int i = 0; i < msubjecte.getStaff().size(); i++){
+				Imprint print = msubjecte.getStaff().get(i).getSafePrint();
 				if(print instanceof PlanePointsPrint){
 					drawPoints(((PlanePointsPrint) print).getPoints(), cameraMatrix);
 				}

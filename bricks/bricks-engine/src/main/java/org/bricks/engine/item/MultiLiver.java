@@ -83,8 +83,8 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 	
 	protected final void adjustInMotorPrint(){
 		this.adjustCurrentPrint(false);
-		for(Satellite satellite : getSatellites()){
-			satellite.update();
+		for(int i = 0; i < satellites.size(); i++){
+			satellites.get(i).update();
 		}
 	}
 	
@@ -204,8 +204,8 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 		World world = engine.getWorld();
 //		this.adjustCurrentView(false);
 		this.adjustCurrentPrint(false);
-		for(Subject subject: getStaff()){
-			subject.joinWorld(world);
+		for(int i = 0; i < staff.size(); i++){
+			staff.get(i).joinWorld(world);
 /*			District d = world.pointSector(subject.getCenter());
 			Validate.isFalse(d == null, "Could not find district for point: " + subject.getCenter());
 			subject.joinDistrict(d);
@@ -223,9 +223,9 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 	}
 	
 	@Override
-	public void outOfWorld(){
+	public void disappear(){
 		alive = false;
-		super.outOfWorld();
+		super.disappear();
 		boolean removed = this.motor.removeLiver(this);
 		Validate.isTrue(removed);
 	}

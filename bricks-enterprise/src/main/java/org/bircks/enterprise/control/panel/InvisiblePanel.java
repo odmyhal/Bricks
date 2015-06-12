@@ -32,7 +32,7 @@ public class InvisiblePanel extends StagePanel{
 		
 	}
 
-	public void applyManager(PanelManager pm) {
+	public void applyManager(InteractiveController pm) {
 		// TODO Auto-generated method stub
 		
 	}

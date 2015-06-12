@@ -11,9 +11,6 @@ import com.badlogic.gdx.math.Vector3;
 
 public class NodeDataPrint<P extends NodeData> extends BasePrint<P>{
 
-//	public final Quaternion rotation = new Quaternion();
-//	public final Vector3 translation = new Vector3();
-//	public final Vector3 scale = new Vector3();
 	protected int lastPrintModified = -3;
 	public final Matrix4Safe transform = new Matrix4Safe();
 	
@@ -27,9 +24,6 @@ public class NodeDataPrint<P extends NodeData> extends BasePrint<P>{
 		if(lastPrintModified < target.lastPrintModified){
 			target.calculateTransform();
 			this.transform.set(target.linkTransform());
-//			this.rotation.set(target.rotation);
-//			this.translation.set(target.translation);
-//			this.scale.set(target.scale);
 			lastPrintModified = target.lastPrintModified;
 		}
 	}

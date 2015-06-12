@@ -65,8 +65,8 @@ public abstract class MeshLineCrossAlgorithm<T extends Imprint<? extends Subject
 		if(dimentionsNoCross(skPrint.dimentions, minX, minY, minZ, maxX, maxY, maxZ)){
 			return Float.NEGATIVE_INFINITY;
 		}
-		for(Triangle triangle : skPrint.triangles){
-			float k = lineCrossTriangle(triangle, lineOrigin, omPrint.lastMove.source);
+		for(int i = 0; i < skPrint.triangles.length; i++){
+			float k = lineCrossTriangle(skPrint.triangles[i], lineOrigin, omPrint.lastMove.source);
 			if(k == Float.NEGATIVE_INFINITY){
 				continue;
 			}

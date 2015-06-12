@@ -95,8 +95,8 @@ public abstract class MultiRoller<S extends Subject<?, ?, C, R>, P extends RollP
 	}
 */	
 	public void applyRotation(){
-		for(Satellite satellite : getSatellites()){
-			satellite.rotate(roll/*.getRotation()*/, this.origin());
+		for(int i = 0; i < satellites.size(); i++){
+			satellites.get(i).rotate(roll, this.origin());
 		}
 	}
 	

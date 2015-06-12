@@ -89,8 +89,8 @@ public class ModelHelper {
 		//Important previously to set zero for modeled stones
 		roll.setRotation(0);
 		roll.setRotation(rad);
-		for(Satellite satellite : target.getSatellites()){
-			satellite.rotate(roll, target.origin());
+		for(int i = 0; i < target.getSatellites().size(); i++){
+			target.getSatellites().get(i).rotate(roll, target.origin());
 		}
 		target.adjustCurrentPrint();
 	}

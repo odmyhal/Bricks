@@ -8,8 +8,10 @@
                 <entry key="sector.length" value="250"/>
 				<entry key="buffer.luft" value="110"/>
 				<entry key="sector.initial.capacity" value="20"/>
-				<entry key="world.rows.count" value="80"/>
-				<entry key="world.cols.count" value="80"/>
+<!-- 				<entry key="world.rows.count" value="80"/>
+				<entry key="world.cols.count" value="80"/>	 -->
+				<entry key="world.rows.count" value="30"/>
+				<entry key="world.cols.count" value="30"/>
 				<entry key="motor.count" value="8"/>
 				<entry key="event.handel.registrator" value="org.bricks.engine.event.handler.EventHandlerRegistrator"/>
 				<entry key="model.construct.tool" value="org.bricks.enterprise.gen.GenModelConstructTool"/>
