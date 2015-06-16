@@ -5,8 +5,8 @@ import org.bricks.engine.item.MultiLiver;
 import org.bricks.enterprise.control.widget.tool.FlowTouchPad;
 import org.bricks.enterprise.control.widget.tool.RotationDependAction.RotationProvider;
 import org.bricks.enterprise.d3.help.AlgebraUtils;
-import org.bricks.extent.engine.processor.NodeRollProcessor;
 import org.bricks.extent.entity.mesh.ModelSubjectOperable;
+import org.bricks.extent.processor.NodeRollProcessor;
 import org.bricks.extent.subject.model.ModelBrickOperable;
 import org.bricks.extent.subject.model.ModelBrickSubject;
 

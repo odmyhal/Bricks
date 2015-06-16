@@ -2,6 +2,7 @@ package org.bricks.core.help;
 
 import org.bricks.core.entity.Point;
 import org.bricks.core.entity.Fpoint;
+import org.bricks.engine.help.GausHelper;
 
 public class AlgebraHelper {
 	
@@ -10,6 +11,35 @@ public class AlgebraHelper {
 				two.getFX()*(three.getFY() - one.getFY()) + 
 				three.getFX() * (one.getFY() - two.getFY())) / 2);
 		
+	}
+	
+	/**
+	 * 
+	 * Not used yet because of case when both lines are equal
+	 * @return
+	 */
+	public static Point pointCrossGaus(float A1X, float A1Y, float A2X, float A2Y
+			, float B1X, float B1Y, float B2X, float B2Y){
+		float a = GausHelper.resolveFirstOf4(A2X - A1X, 0f, -1f, 0f, A1X, 
+				A2Y - A1Y, 0f, 0f, -1f, A1Y, 
+				0f, B2X - B1X, -1f, 0f, B1X, 
+				0f, B2Y - B1Y, 0f, -1f, B1Y);
+		if(a == Float.NEGATIVE_INFINITY){
+			return null;
+		}else{
+			return new Fpoint(A1X + (A2X - A1X) * a, A1Y + (A2Y - A1Y) * a);
+		}
+		
+/*		float RAX = A1X + (A2X - A1X) * a;
+		float RAY = A1Y + (A2Y - A1Y) * a;
+		
+		float RBX = B1X + (B2X - B1X) * b;
+		float RBY = B1Y + (B2Y - B1Y) * b;
+		
+		//A1X + (A2X - A1X) * a = B1X + (B2X - B1X) * b
+		a = (B1X - A1X + (B2X - B1X) * b) / A1X;
+		Fpoint res = new Fpoint();
+		return res;*/
 	}
 	
 	public static Point pointCross(float A1X, float A1Y, float A2X, float A2Y

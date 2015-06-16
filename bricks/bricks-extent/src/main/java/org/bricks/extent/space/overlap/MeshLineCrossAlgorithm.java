@@ -65,14 +65,42 @@ public abstract class MeshLineCrossAlgorithm<T extends Imprint<? extends Subject
 		if(dimentionsNoCross(skPrint.dimentions, minX, minY, minZ, maxX, maxY, maxZ)){
 			return Float.NEGATIVE_INFINITY;
 		}
-		for(int i = 0; i < skPrint.triangles.length; i++){
+		return lineCrosSkeleton(skPrint, lineOrigin, omPrint.lastMove.source);
+/*		for(int i = 0; i < skPrint.triangles.length; i++){
 			float k = lineCrossTriangle(skPrint.triangles[i], lineOrigin, omPrint.lastMove.source);
 			if(k == Float.NEGATIVE_INFINITY){
 				continue;
 			}
 			return k;
 		}
+		return Float.NEGATIVE_INFINITY;*/
+	}
+	
+	private float lineCrosSkeleton(SkeletonPrint<?> skPrint, Vector3 lineOrigin, Vector3 lastMove){
+		for(int i = 0; i < skPrint.triangles.length; i++){
+			float k = lineCrossTriangle(skPrint.triangles[i], lineOrigin, lastMove);
+			if(k == Float.NEGATIVE_INFINITY){
+				continue;
+			}
+			return k;
+		}
 		return Float.NEGATIVE_INFINITY;
+	}
+	
+	public void lineCrosSkeletonAll(MBPrint<?> mbPrint, Vector3 lineOrigin, Vector3 lastMove, float[] dest){
+		int index = 0;
+		for(SkeletonPrint<?> skPrint : mbPrint.skeletons){
+			for(int i = 0; i < skPrint.triangles.length; i++){
+				float k = lineCrossTriangle(skPrint.triangles[i], lineOrigin, lastMove);
+				if(k == Float.NEGATIVE_INFINITY){
+					continue;
+				}
+				dest[index++] = k;
+				if(dest.length == index){
+					return;
+				}
+			}
+		}
 	}
 	
 	private boolean dimentionsNoCross(Dimentions3D dimm, float minX, float minY, float minZ, float maxX, float maxY, float maxZ){

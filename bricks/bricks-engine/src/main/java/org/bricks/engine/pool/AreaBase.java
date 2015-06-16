@@ -8,6 +8,7 @@ import org.bricks.core.entity.Point;
 import org.bricks.core.entity.impl.BrickWrap;
 import org.bricks.core.entity.impl.PointSetBrick;
 import org.bricks.core.entity.impl.PointSetPrint;
+import org.bricks.core.help.PointHelper;
 import org.bricks.engine.staff.Entity;
 import org.bricks.engine.staff.Subject;
 
@@ -92,4 +93,31 @@ public abstract class AreaBase<E extends Entity> extends BrickWrap<PointSetPrint
 		return getInnerPrint();
 	}
 	
+	public boolean containsPoint(Point p){
+		return p.getFX() >= corner.getFX() && p.getFY() >= corner.getFY()
+				&& p.getFX() < corner.getFX() + dimm.getFX() 
+				&& p.getFY() < corner.getFY() + dimm.getFY();
+	}
+	
+	public boolean intersectLine(Point begin, Point end){
+		if(containsPoint(begin) || containsPoint(end)){
+			return true;
+		}
+		Point one = null, two = null;
+		Iterator<Ipoint> iterator = this.brick.getPoints().iterator();
+		while(iterator.hasNext()){
+			if(one == null){
+				one = iterator.next();
+//				first = one;
+			}
+			two = iterator.next();
+			if(PointHelper.pointCross(one, two, begin, end) != null){
+				return true;
+			}
+			one = two;
+		}
+		return false;
+//no need to check last line
+//		return PointHelper.pointCross(one, first, begin, end) != null;
+	}
 }

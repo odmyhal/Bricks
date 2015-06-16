@@ -4,12 +4,12 @@ import java.util.Iterator;
 import org.bricks.engine.staff.Subject;
 import org.bricks.core.entity.Ipoint;
 
-public class Area extends AreaBase implements Iterable<Subject>{
+public class Area extends AreaBase/* implements Iterable<Subject>*/{
 
 	public Area(Ipoint corner, int capacity, int len) {
 		super(corner, capacity, len);
 	}
-
+/*
 	public Iterator<Subject> iterator() {
 		return new Iterator<Subject>(){
 			
@@ -29,5 +29,5 @@ public class Area extends AreaBase implements Iterable<Subject>{
 			
 		};
 	}
-
+*/
 }
