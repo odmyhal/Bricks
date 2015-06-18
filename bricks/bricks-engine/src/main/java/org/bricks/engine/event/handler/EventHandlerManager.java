@@ -32,7 +32,6 @@ public class EventHandlerManager {
 		Map<Class, Map<Class, EventHandler>> eventMap = handlers.get(eventSourceType);
 		if(eventMap == null){
 			return null;
-//			throw new RuntimeException("No handler for sourceType: " + event.sourceType());
 		}
 		Map<Class, EventHandler> hMap = null;
 		Class evClass = eventClass;
@@ -53,9 +52,6 @@ public class EventHandlerManager {
 			evClass = evClass.getSuperclass();
 		}
 		return null;
-/*		throw new RuntimeException("No handler for class" + target.getClass().getCanonicalName()
-				+ " event: " + event.getClass().getCanonicalName()
-				+ " source: " + event.sourceType());*/
 	}
 	
 	public static boolean containsHandler(EventTarget target, Class eventClass, String eventSourceType){

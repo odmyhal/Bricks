@@ -84,70 +84,7 @@ public abstract class RollNodeToWalkerVProcessor<T extends MultiLiver<? extends 
 		rotateToTarget(targetRotation, processTime);
 		approve = true;
 	}
-/*	
-	private double tryAngle(Vector3 myCenter, Vector3 buttCenter, Vector3 buttVector, double angleRad){
-		double hSpeed = bulletSpeed * Math.cos(angleRad);
-		double a = AlgebraHelper.pow(buttVector.x, 2) + AlgebraHelper.pow(buttVector.y, 2) + AlgebraHelper.pow(hSpeed, 2);
-		double b = 2 * ((buttCenter.x - myCenter.x) * buttVector.x + (buttCenter.y - myCenter.y) * buttVector.y);
-		double c = AlgebraHelper.pow(buttCenter.x - myCenter.y, 2) + AlgebraHelper.pow(buttCenter.y - myCenter.y, 2);
-		double d = AlgebraHelper.pow(b, 2) - 4 * a * c;
-		if(d < 0){
-			if(a > 0){
-				if(angleRad > 0){
-					return Double.MAX_VALUE;
-				}else{
-					return Double.MIN_VALUE;
-				}
-			}else{
-				if(angleRad > 0){
-					return Double.MIN_VALUE;
-				}else{
-					return Double.MAX_VALUE;
-				}
-			}
-		}
-		return 0;
-	}
-	
-	private double tryAngle(Vector3 myCenter, Vector3 buttCenter, Vector3 buttVector, double angleRad){
 
-		double vSpeed = bulletSpeed * Math.sin(angleRad);
-		double startVPosition = myCenter.z;
-		double startVSpeed = vSpeed;
-		double t = 0;
-		if(vSpeed > 0){
-			t += vSpeed / Math.abs(bulletAcceleration);
-			startVPosition += t * vSpeed / 2;
-			startVSpeed = 0;
-		}
-		if(startVPosition < buttCenter.z){
-			return Double.MIN_VALUE;
-		}
-		double b = 2 * startVSpeed;
-		double d = AlgebraHelper.pow(b, 2) + 8 * bulletAcceleration * (buttCenter.z - startVPosition);
-		Validate.isFalse(d < 0);
-		double ds = Math.sqrt(d);
-		double x1 = (-b + ds) / Math.scalb(bulletAcceleration, 1);
-		double x2 = (-b - ds) / Math.scalb(bulletAcceleration, 1);
-		Validate.isFalse(x1 * x2 > 0, "Result must have differ sign");
-		t += Math.max(x1, x2);
-		//define already time
-		
-		double xLen = buttCenter.x - myCenter.x + buttVector.x * t;
-		double yLen = buttCenter.y - myCenter.y + buttVector.y * t;
-		double tLen = Math.sqrt(AlgebraHelper.pow(xLen, 2) + AlgebraHelper.pow(yLen, 2));
-		
-		double hSpeed = bulletSpeed * Math.cos(angleRad);
-		
-		double res = hSpeed * t - tLen;
-		if(Math.abs(res) < minLenDiff){
-			accessiblePoint.x = (float) (buttCenter.x + buttVector.x * t);
-			accessiblePoint.y = (float) (buttCenter.y + buttVector.y * t);
-		}
-		
-		return res;
-	}
-*/	
 	private double tryAngle(Vector3 myCenter, Vector3 buttCenter, Vector3 buttVector, double angleRad){
 //		double a = bulletAcceleration / 2;
 		double b = bulletSpeed * Math.sin(angleRad) - buttVector.z;

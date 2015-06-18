@@ -4,8 +4,10 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Vector3Butt extends Vector3 implements Butt{
 	
-	public Vector3Butt(){
-		
+	public Vector3Butt(){}
+	
+	public Vector3Butt(Vector3 src){
+		super(src);
 	}
 	
 	public Vector3Butt (float x, float y, float z) {

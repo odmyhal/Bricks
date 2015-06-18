@@ -47,20 +47,7 @@ public abstract class RollNodeToEntityHProcessor<T extends MultiLiver<? extends 
 	 */
 	public RollNodeToEntityHProcessor(T target, String nodeOperatorName/*, double radArrow, Matrix4... linkMatrices*/) {
 		super(target, nodeOperatorName);
-/*		Vector3 rollCenter = new Vector3(this.nodeOperator.linkPoint());
-		//Mult rollCenter to local matrix of current node 
-		Matrix4 invMatrix = new Matrix4(linkMatrices[linkMatrices.length - 1]);
-		invMatrix.inv();
-		rollCenter.mul(invMatrix);
-		
-		Vector3 arrow = new Vector3(rollCenter.x + (float) (1000f * Math.cos(radArrow)), 
-				(float) (rollCenter.y + 1000f * Math.sin(radArrow)), rollCenter.z);
-		arrow.mul(invMatrix);
-		rollPointMark = new MarkPoint(rollCenter, arrow);
-		for(Matrix4 matrix: linkMatrices){
-			rollPointMark.addTransform(matrix);
-		}
-		// TODO Auto-generated constructor stub*/
+		this.supplant(this.checkerType());
 	}
 	
 	public void setButt(Butt butt){

@@ -13,7 +13,7 @@ import org.bricks.utils.Loop;
 
 public class Live implements Iterable<EventChecker>{
 	
-	private final Quarantine<Event> events = new Quarantine<Event>(15);
+	private final Quarantine<Event> events = new Quarantine<Event>(50);
 	
 	private final Loop<EventChecker> checkers = new LinkLoop<EventChecker>();
 	private final Quarantine<EventChecker> tmpAddCheckers = new Quarantine<EventChecker>(5);

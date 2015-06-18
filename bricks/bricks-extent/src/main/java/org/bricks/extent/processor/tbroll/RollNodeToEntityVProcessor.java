@@ -33,6 +33,7 @@ public abstract class RollNodeToEntityVProcessor<T extends MultiLiver<? extends 
 
 	public RollNodeToEntityVProcessor(T target, String nodeOperatorName) {
 		super(target, nodeOperatorName);
+		this.supplant(this.checkerType());
 	}
 	
 	//Should be called in motor thread
@@ -56,51 +57,49 @@ public abstract class RollNodeToEntityVProcessor<T extends MultiLiver<? extends 
 //	protected abstract void fetchButtPoint(B butt, Vector3 dest);
 	protected abstract float convertToTargetRotation(double rad);
 
+	
 	@Override
 	public void doJob(T target, long processTime) {
 		
 		approve = false;
-//		fetchButtPoint(butt, buttCenter);
 		butt.fetchOrigin(buttCenter);
 		Vector3 myCenter = provideStartPoint(target, processTime);
 		
-		double sf = 0;//myCenter.z - buttCenter.z;
-		double s2 = AlgebraHelper.pow(bulletSpeed, 2);
-		double l2 = AlgebraHelper.pow(Math.hypot(myCenter.x - buttCenter.x, myCenter.y - buttCenter.y), 2);
-		float acc = Math.abs(bulletAcceleration);
+		double dz = myCenter.z - buttCenter.z;
+		double dz2 = AlgebraHelper.pow(dz, 2);
+		double l2 = AlgebraHelper.pow(buttCenter.x - myCenter.x, 2) + AlgebraHelper.pow(buttCenter.y - myCenter.y, 2);
+		double l4 = AlgebraHelper.pow(l2, 2);
+		double s2 = AlgebraHelper.pow(this.bulletSpeed, 2);
+		double s4 = AlgebraHelper.pow(s2, 2);
+		double acc2 = AlgebraHelper.pow(this.bulletAcceleration, 2);
 		
-		double a = Math.scalb( AlgebraHelper.pow(s2, 2) * (AlgebraHelper.pow(sf, 2) + l2) , 2);
-		if( a == 0 ){
-			lastCheckTime = processTime;
-			return;
-		}
-		double c = AlgebraHelper.pow(l2, 2) * AlgebraHelper.pow(acc, 2);
-		if( c == 0 ){
-			lastCheckTime = processTime;
-			return;
-		}
-		double b = Math.scalb( -s2 * l2 * (sf * acc + s2), 2);
+		double a = dz2 + l2;
+		double b = ( dz * this.bulletAcceleration - s2 ) * l2 / s2;
+		double c = acc2 * l4 / (4 * s4);
 		
 		double d = AlgebraHelper.pow(b, 2) - 4 * a * c;
 		if(d < 0){
+//			System.out.println("Wrong Discriminant " + d);
 			lastCheckTime = processTime;
 			return;
 		}
 		double ds = Math.sqrt(d);
 		double x1 = (-b + ds) / Math.scalb(a, 1);
 		double x2 = (-b - ds) / Math.scalb(a, 1);
-		double x;
-		if(x1 >= 0 || x2 >= 0){
-			x = Math.max(x1, x2);
-		}else if(x1 >= 0){
-			x = x1;
-		}else if(x2 >= 0){
-			x = x2;
-		}else{
+		double x = Math.max(x1, x2);
+		if(x < 0){
+//			System.out.println("Wrong max Result " + x);
 			lastCheckTime = processTime;
 			return;
 		}
-		float targetRotation = convertToTargetRotation(Math.acos(Math.sqrt(x)));
+		double t2 = l2 / (s2 * x);
+		x = Math.sqrt(x);
+		double xRad = Math.acos(x);
+		if(this.bulletAcceleration * t2 / 2 > -dz){
+			xRad *= -1;
+		}
+//		System.out.println("Found calc rad: " + xRad);
+		float targetRotation = convertToTargetRotation(xRad);
 		rotateToTarget(targetRotation, processTime);
 	}
 	

@@ -19,7 +19,7 @@
     <property name="basedir" value="/home/oleh/git/Bricks/bricks/bricks-annotation"/>
     <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/endorsed"/>
     <property name="os.arch" value="amd64"/>
-    <property name="surefire.real.class.path" value="/home/oleh/git/Bricks/bricks/bricks-annotation/target/surefire/surefirebooter4214141387853372900.jar"/>
+    <property name="surefire.real.class.path" value="/home/oleh/git/Bricks/bricks/bricks-annotation/target/surefire/surefirebooter7168834508381520031.jar"/>
     <property name="java.io.tmpdir" value="/tmp"/>
     <property name="line.separator" value="
 "/>
@@ -42,7 +42,7 @@
     <property name="java.vm.specification.version" value="1.7"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/usr/lib/jvm/java-7-openjdk-amd64/jre"/>
-    <property name="sun.java.command" value="/home/oleh/git/Bricks/bricks/bricks-annotation/target/surefire/surefirebooter4214141387853372900.jar /home/oleh/git/Bricks/bricks/bricks-annotation/target/surefire/surefire7057656327811292670tmp /home/oleh/git/Bricks/bricks/bricks-annotation/target/surefire/surefire5698349660888466544tmp"/>
+    <property name="sun.java.command" value="/home/oleh/git/Bricks/bricks/bricks-annotation/target/surefire/surefirebooter7168834508381520031.jar /home/oleh/git/Bricks/bricks/bricks-annotation/target/surefire/surefire6981209851827567832tmp /home/oleh/git/Bricks/bricks/bricks-annotation/target/surefire/surefire7136877940809498453tmp"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="en"/>
     <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
