@@ -12,18 +12,18 @@ public class Walk3D extends Walk<Vector3>{
 
 	private double moveXTime = System.currentTimeMillis();
 	private double moveYTime = moveXTime, moveZTime = moveXTime;
-	
-	
+	private boolean rolledBack = false;
+/*	
 	public Walk3D(Walker<?, Vector3> walker){
 		super(walker);
 	}
-	
+*/	
 	protected Origin<Vector3> initLastMoveOrigin(){
 		return new Origin3D();
 	}
 	
 	public void flushTimer(long nTime){
-		moveXTime = moveYTime = nTime;
+		moveXTime = moveYTime = moveZTime = nTime;
 	}
 	
 	public boolean move(long checkTime, Vector3 p){
@@ -35,7 +35,6 @@ public class Walk3D extends Walk<Vector3>{
 		lastMove.source.x = (int) /*Math.round*/(x * diffX / 1000);
 		if(lastMove.source.x != 0){
 			if(lastMove.source.x > moveLimit){
-//				System.out.println("Used move limit: " + lastMoveX);
 				lastMove.source.x = moveLimit;
 			}else if(lastMove.source.x < -moveLimit){
 				lastMove.source.x = -moveLimit;
@@ -66,21 +65,23 @@ public class Walk3D extends Walk<Vector3>{
 			moveZTime += /*(int)*/ (lastMove.source.z * 1000 / z);
 		}
 		Validate.isTrue(diffX >= 0 && diffY >= 0 && diffZ >= 0);
-		if(res){
-			owner.translateNoView(lastMove);
+		if(res && rolledBack){
+//			owner.translateNoView(lastMove);
+			rolledBack = false;
 		}
 		return res;
 	}
 	
 	@Override
 	public boolean moveBack(long checkTime, float k){
-		if(lastMove.isZero()){
+		if(rolledBack || lastMove.isZero()){
 			return false;
 		}
 		Validate.isTrue(checkTime >= moveXTime && checkTime >= moveYTime && checkTime >= moveZTime);
 		lastMove.mult(-1f * k);
-		owner.translate(lastMove);
-		lastMove.mult(0f);
+//		owner.translate(lastMove);
+//		lastMove.mult(0f);
+		rolledBack = true;
 		moveXTime = moveYTime = moveZTime = checkTime;
 		return true;
 	}

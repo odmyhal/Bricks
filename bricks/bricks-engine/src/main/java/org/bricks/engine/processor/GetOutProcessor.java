@@ -17,7 +17,6 @@ public class GetOutProcessor extends ImmediateActProcessor{
 	@Override
 	protected void processSingle(Liver target, long processTime) {
 		target.disappear();
-//		System.out.println(target.getClass().getCanonicalName() + " get out of world");
 	}
 
 }

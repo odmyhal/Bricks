@@ -24,7 +24,7 @@ public class RollToPointProcessorChecker<T extends MultiRoller<?, ?, Fpoint, ?>>
 
 	public RollToPointProcessorChecker(Fpoint targetDirectionPoint, float startRotationSpeed) {
 		super(RollToMarkProcessorChecker.CHECKER_TYPE);
-		this.supplant(RollToMarkProcessorChecker.CHECKER_TYPE);
+		this.addSupplant(RollToMarkProcessorChecker.CHECKER_TYPE);
 		
 		this.init(targetDirectionPoint, startRotationSpeed);
 		

@@ -31,7 +31,7 @@ public class RollToMarkProcessorChecker<T extends Roller> extends ChunkEventChec
 	
 	public RollToMarkProcessorChecker(final float targetRotation, final float startSpeed, final float finishSpeed){
 		super(CHECKER_TYPE);
-		this.supplant(CHECKER_TYPE);
+		this.addSupplant(CHECKER_TYPE);
 		
 		init(targetRotation, startSpeed, finishSpeed);
 

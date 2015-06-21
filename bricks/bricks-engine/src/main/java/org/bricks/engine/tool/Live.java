@@ -43,17 +43,28 @@ public class Live implements Iterable<EventChecker>{
 			checkers.remove(checker);
 		}
 		for(EventChecker<Liver> checker : tmpAddCheckers){
-			for(CheckerType cht : checker.supplants()){
-				Iterator<EventChecker> iterator = checkers.iterator();
-				while(iterator.hasNext()){
-					if(cht.equals(iterator.next().checkerType())){
-						iterator.remove();
-					}
-				}
+			if(applyChecker(checker)){
+				checker.activate(liver, currentTime);
+				checkers.add(checker);
 			}
-			checker.activate(liver, currentTime);
-			checkers.add(checker);
 		}
+	}
+	
+	private boolean applyChecker(EventChecker newChecker){
+		for(EventChecker check : checkers){
+			if(check.abort(newChecker)){
+				return false;
+			}
+		}
+		Iterator<EventChecker> iterator = checkers.iterator();
+		while(iterator.hasNext()){
+			EventChecker check = iterator.next();
+			if(newChecker.supplant(check)){
+				iterator.remove();
+				continue;
+			}
+		}
+		return true;
 	}
 
 	public boolean hasChekers() {

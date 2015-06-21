@@ -23,7 +23,7 @@ public class NodeScaleProcessor<T extends MultiLiver<ModelBrickSubject<?, ?, ?, 
 	 
 	public NodeScaleProcessor(T target, String nodeOperatorName){
 		super(target, CheckerType.registerCheckerType(), nodeOperatorName);
-		supplant(checkerType());
+		addSupplant(checkerType());
 	} 
 	
 	public void init(Vector3 tScale, long sTime){

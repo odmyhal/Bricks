@@ -16,6 +16,7 @@ public abstract class EventChecker<T extends Liver> {
 	 * @author Oleh Myhal
 	 */
 	private final Loop<CheckerType> supplants = new LinkLoop<CheckerType>();
+	private final Loop<CheckerType> aborts = new LinkLoop<CheckerType>();
 /*	
 	public EventChecker(){
 		this(CheckerType.registerCheckerType());
@@ -65,15 +66,33 @@ public abstract class EventChecker<T extends Liver> {
 		}
 	}
 	
-	public CheckerType checkerType(){
+	protected CheckerType checkerType(){
 		return type;
 	}
 	
-	public void supplant(CheckerType chType){
+	public void addSupplant(CheckerType chType){
 		supplants.add(chType);
 	}
 	
-	public Loop<CheckerType> supplants(){
-		return supplants;
+	public void addAbort(CheckerType chType){
+		aborts.add(chType);
 	}
+	
+	public boolean supplant(EventChecker<?> anotherChecker){
+		return matchCheckerType(supplants, anotherChecker);
+	}
+	
+	public boolean abort(EventChecker<?> anotherChecker){
+		return matchCheckerType(aborts, anotherChecker);
+	}
+	
+	private boolean matchCheckerType(Loop<CheckerType> types, EventChecker<?> checker){
+		for(CheckerType chType : types){
+			if(chType.match(checker.type)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

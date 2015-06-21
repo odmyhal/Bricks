@@ -4,13 +4,13 @@ import org.bricks.engine.staff.Walker;
 
 public abstract class Walk<C> {
 	
-	protected Walker<?, C> owner;
+//	protected Walker<?, C> owner;
 	protected Origin<C> lastMove;
 
 	protected static final int moveLimit = 14;
 	
-	public Walk(Walker<?, C> walker){
-		this.owner = walker;
+	public Walk(/*Walker<?, C> walker*/){
+//		this.owner = walker;
 		lastMove = initLastMoveOrigin();
 	}
 	
@@ -21,4 +21,8 @@ public abstract class Walk<C> {
 	public abstract void flushTimer(long time);
 	
 	public abstract boolean moveBack(long checkTime, float k);
+	
+	public Origin<C> lastMove(){
+		return lastMove;
+	}
 }

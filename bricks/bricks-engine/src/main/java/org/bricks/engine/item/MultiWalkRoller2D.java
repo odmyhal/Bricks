@@ -29,7 +29,7 @@ public abstract class MultiWalkRoller2D<S extends Subject<?, ?, Fpoint, Roll>, P
 	}
 	
 	protected Walk<Fpoint> provideInitialLegs(){
-		return new Walk2D(this);
+		return new Walk2D();
 	}
 	
 	public Origin<Fpoint> provideInitialOrigin(){

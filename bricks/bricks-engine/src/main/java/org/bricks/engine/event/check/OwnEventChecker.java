@@ -11,11 +11,12 @@ import org.bricks.engine.staff.Liver;
  */
 public class OwnEventChecker<T extends Liver> extends EventChecker<T>{
 
+	private static final CheckerType OWN_CHECKER_TYPE = CheckerType.registerCheckerType();
 	private static final OwnEventChecker instance = new OwnEventChecker();
 	
 	private OwnEventChecker(){
-		super(CheckerType.registerCheckerType());
-		this.supplant(this.checkerType());
+		super(OWN_CHECKER_TYPE);
+		this.addSupplant(OWN_CHECKER_TYPE);
 	}
 	
 	public boolean isActive(){

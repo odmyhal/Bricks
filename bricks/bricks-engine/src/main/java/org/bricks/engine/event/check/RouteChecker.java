@@ -14,8 +14,8 @@ public class RouteChecker<T extends Walker<?, Fpoint>/*MultiWalker<?, ?, Fpoint,
 	
 	public RouteChecker(float rotationSpeed, float sensitiveDistance, Fpoint... route) {
 		super(CHECKER_TYPE);
-		this.supplant(CHECKER_TYPE);
-		this.supplant(RollToMarkProcessorChecker.CHECKER_TYPE);
+		this.addSupplant(CHECKER_TYPE);
+		this.addSupplant(RollToMarkProcessorChecker.CHECKER_TYPE);
 		Validate.isTrue(route.length > 1, "Route should comprise at least two points...");
 		initRoutes(route, rotationSpeed, sensitiveDistance);
 	}

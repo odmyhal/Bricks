@@ -22,7 +22,7 @@ public class AccelerateToSpeedChecker<T extends Walker<?, Fpoint>> extends Chunk
 		super(AccelerateToSpeedProcessorChecker.CHECKER_TYPE);
 		Validate.isFalse(accelerate == 0, "Adding checker with zero accelerate has no sense, and can be infinitelly");
 		
-		this.supplant(AccelerateToSpeedProcessorChecker.CHECKER_TYPE);
+		this.addSupplant(AccelerateToSpeedProcessorChecker.CHECKER_TYPE);
 		
 		this.addChecker(new ImmediateEventChecker<T>(){
 

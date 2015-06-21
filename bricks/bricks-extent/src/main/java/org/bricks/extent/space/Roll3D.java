@@ -1,7 +1,6 @@
 package org.bricks.extent.space;
 
 import org.bricks.engine.tool.Roll;
-
 import com.badlogic.gdx.math.Vector3;
 
 public class Roll3D extends Roll{

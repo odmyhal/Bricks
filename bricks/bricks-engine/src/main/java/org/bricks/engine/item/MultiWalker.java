@@ -53,6 +53,7 @@ public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkP
 	protected void innerProcess(long currentTime){
 		super.innerProcess(currentTime);
 		if(legs.move(currentTime, vector.source)){
+			translateNoView(legs.lastMove());
 			setUpdate();
 		}
 		applyAcceleration(currentTime);
@@ -110,18 +111,23 @@ public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkP
 
 //	@Override
 	public final void rollBack(long currentTime, float k){
-		boolean moveBack = legs.moveBack(currentTime, k);
+		if(legs.moveBack(currentTime, k)){
+			this.translateNoView(legs.lastMove());
+			setUpdate();
+		}
+		if(rotateBack(currentTime, k)){
+			applyRotation();
+			setUpdate();
+		}
+/*		
+		boolean moveBack = legs.moveBackExp(currentTime, k);
 		boolean rotateBack = rotateBack(currentTime, k);
 		if(rotateBack){
 			applyRotation();
 		}
 		if(rotateBack || moveBack){
 			setUpdate();
-/*			adjustCurrentPrint(false);
-			for(Satellite satellite : getSatellites()){
-				satellite.update();
-			}*/
-		}
+		}*/
 	}
 	
 //	@Override

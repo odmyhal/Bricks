@@ -33,7 +33,7 @@ public abstract class RollNodeToEntityVProcessor<T extends MultiLiver<? extends 
 
 	public RollNodeToEntityVProcessor(T target, String nodeOperatorName) {
 		super(target, nodeOperatorName);
-		this.supplant(this.checkerType());
+		this.addSupplant(this.checkerType());
 	}
 	
 	//Should be called in motor thread

@@ -11,7 +11,7 @@ public class Roll {
 	 */
 	protected float rotation;
 	private float rotationSpeed;
-	private float rotationBuff = (float) (Math.PI / 360);
+	public static final float rotationBuff = (float) (Math.PI / 360);
 	private long rotateTime = System.currentTimeMillis();
 	protected float lastRotation;
 

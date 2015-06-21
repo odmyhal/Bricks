@@ -41,7 +41,7 @@ public class RollToMarkChecker extends DoubleEventChecker<Roller>{
 		this.finishSpeed = finishSpeed;
 		this.targetRotation = targetRotation;
 		this.eventSource = eventSource;
-		this.supplant(RollToMarkProcessorChecker.CHECKER_TYPE);
+		this.addSupplant(RollToMarkProcessorChecker.CHECKER_TYPE);
 	}
 	
 	/**

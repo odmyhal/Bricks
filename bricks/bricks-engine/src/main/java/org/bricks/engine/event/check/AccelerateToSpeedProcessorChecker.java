@@ -32,7 +32,7 @@ public class AccelerateToSpeedProcessorChecker<T extends Walker<?, Fpoint>> exte
 		super(CHECKER_TYPE);
 		init(accelerate, targetSpeed);
 		
-		this.supplant(CHECKER_TYPE);
+		this.addSupplant(CHECKER_TYPE);
 		
 		changeAccelerationProcessor = new ChangeAccelerationProcessor(new Origin2D());
 		this.addProcessor(changeAccelerationProcessor);

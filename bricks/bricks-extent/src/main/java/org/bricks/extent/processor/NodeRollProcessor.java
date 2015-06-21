@@ -24,7 +24,7 @@ public class NodeRollProcessor<T extends MultiLiver<ModelBrickSubject<?, ?, ?, ?
 	
 	public NodeRollProcessor(T target, String nodeOperatorName){
 		super(target, nodeOperatorName);
-		supplant(checkerType());
+		addSupplant(checkerType());
 	}
 	
 	

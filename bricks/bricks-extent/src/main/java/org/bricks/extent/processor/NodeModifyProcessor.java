@@ -1,6 +1,7 @@
 package org.bricks.extent.processor;
 
 import org.bricks.engine.event.check.CheckerType;
+import org.bricks.engine.event.check.IdentityCheckerType;
 import org.bricks.engine.item.MultiLiver;
 import org.bricks.engine.processor.WorkToConditionProcessor;
 import org.bricks.exception.Validate;
@@ -11,6 +12,8 @@ import org.bricks.extent.subject.model.NodeOperator;
 
 public abstract class NodeModifyProcessor<T extends MultiLiver<? extends ModelBrickSubject<?, ?, ?, ?, ModelBrickOperable>, ?, ?>> extends WorkToConditionProcessor<T> {
 	
+	public static final CheckerType CHECKER_TYPE = CheckerType.registerCheckerType();
+	
 	protected static final double minDiff = Math.PI / (180 * 16);
 	
 	protected ModelBrickSubject<?, ?, ?, ?, ModelBrickOperable> subject;
@@ -20,9 +23,9 @@ public abstract class NodeModifyProcessor<T extends MultiLiver<? extends ModelBr
 //	protected String nodeOperatorName;
 	
 	public NodeModifyProcessor(T target, String nodeOperatorName) {
-		this(target, new NodeModifyCheckerType(), nodeOperatorName);
-		initTargetOperator(target, nodeOperatorName);
-		((NodeModifyCheckerType)this.checkerType()).setNodeOperator(this.nodeOperator);
+		this(target, new IdentityCheckerType(CHECKER_TYPE), nodeOperatorName);
+//		initTargetOperator(target, nodeOperatorName);
+		((IdentityCheckerType)this.checkerType()).setIdentity(this.nodeOperator);
 	}
 
 	public NodeModifyProcessor(T target, CheckerType type, String nodeOperatorName) {
@@ -55,7 +58,7 @@ public abstract class NodeModifyProcessor<T extends MultiLiver<? extends ModelBr
 		lastCheckTime = curTime;
 		super.activate(target, curTime);
 	}
-	
+/*	
 	private static class NodeModifyCheckerType extends CheckerType{
 		
 		private NodeOperator nodeOperator;
@@ -79,5 +82,5 @@ public abstract class NodeModifyProcessor<T extends MultiLiver<? extends ModelBr
 			}
 			return false;
 		}
-	}
+	}*/
 }

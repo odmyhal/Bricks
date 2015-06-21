@@ -9,12 +9,12 @@ public class Walk2D extends Walk<Fpoint>{
 
 	private double moveXTime = System.currentTimeMillis();
 	private double moveYTime = moveXTime;
-	
-	
+	private boolean rolledBack = false;
+/*	
 	public Walk2D(Walker<?, Fpoint> walker){
 		super(walker);
 	}
-	
+*/	
 	protected Origin<Fpoint> initLastMoveOrigin(){
 		return new Origin2D();
 	}
@@ -51,20 +51,22 @@ public class Walk2D extends Walk<Fpoint>{
 			moveYTime += /*(int)*/ (lastMove.source.y * 1000 / y);
 		}
 		Validate.isTrue(diffX >= 0 && diffY >= 0);
-		if(res){
-			owner.translateNoView(lastMove);
+		if(res && rolledBack){
+			rolledBack = false;
+//			owner.translateNoView(lastMove);
 		}
 		return res;
 	}
 	
 	public boolean moveBack(long checkTime, float k){
-		if(lastMove.isZero()){
+		if(rolledBack || lastMove.isZero()){
 			return false;
 		}
 		Validate.isTrue(checkTime >= moveXTime && checkTime >= moveYTime);
 		lastMove.mult(-1f * k);
-		owner.translate(lastMove);
-		lastMove.mult(0f);
+//		owner.translate(lastMove);
+//		lastMove.mult(0f);
+		rolledBack = true;
 		moveXTime = moveYTime = checkTime;
 		return true;
 	}

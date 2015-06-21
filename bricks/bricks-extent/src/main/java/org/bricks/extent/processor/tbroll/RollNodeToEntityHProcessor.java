@@ -47,7 +47,7 @@ public abstract class RollNodeToEntityHProcessor<T extends MultiLiver<? extends 
 	 */
 	public RollNodeToEntityHProcessor(T target, String nodeOperatorName/*, double radArrow, Matrix4... linkMatrices*/) {
 		super(target, nodeOperatorName);
-		this.supplant(this.checkerType());
+		this.addSupplant(this.checkerType());
 	}
 	
 	public void setButt(Butt butt){

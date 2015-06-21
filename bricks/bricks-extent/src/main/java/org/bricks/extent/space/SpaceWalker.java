@@ -11,7 +11,7 @@ public abstract class SpaceWalker<S extends SpaceSubject<?, ?, Vector3, Roll3D, 
 
 	@Override
 	protected Walk<Vector3> provideInitialLegs() {
-		return new Walk3D(this);
+		return new Walk3D();
 	}
 
 	@Override

@@ -104,10 +104,6 @@ public class SpaceInteract extends InputAdapter{
 	
 	private void tap(int screenX, int screenY){
 		Ray ray = camera.getPickRay(screenX, screenY);
-//		float len = camera.far;
-/*		if(ray.direction.z * ray.origin.z < 0){
-			len = Math.abs(ray.origin.z / ray.direction.z);
-		}*/
 		startHPoint.x = ray.origin.x;
 		startHPoint.y = ray.origin.y;
 		endHPoint.x = ray.origin.x + ray.direction.x * camera.far;
@@ -145,7 +141,6 @@ public class SpaceInteract extends InputAdapter{
 						}
 						if(subject instanceof ModelBrickSubject){
 							Entity entity = subject.getEntity();
-//							if(entity instanceof Butt || entity instanceof Stone){
 							if(InteractiveHandler.canHandle(entity)){
 								if(checkedEntities.contains(entity)){
 									continue areaLoop;
@@ -178,22 +173,12 @@ public class SpaceInteract extends InputAdapter{
 		}
 		if(maxK > 0){
 			Validate.isFalse(touchEntity == null, "TouchEntity must be set");
-		//	System.out.println("SpaceIntract : before find handler for " + touchEntity.getClass().getCanonicalName());
 			Interactive interactive = InteractiveHandler.getHandle(touchEntity);
 			Validate.isFalse(interactive == null, "Strange Error: no Handler for " + touchEntity.getClass().getCanonicalName());
-		//	System.out.println("SpaceIntract : after find handler for " + touchEntity.getClass().getCanonicalName());
 			Vector3 touchPoint = new Vector3(rayEnd.x - lastMove.x * maxK, rayEnd.y - lastMove.y * maxK, rayEnd.z - lastMove.z * maxK);
 			interactive.handleTap(touchEntity, touchPoint);
-/*			if(touchEntity instanceof Butt){
-				activeButt = (Butt) touchEntity;
-			}else if(touchEntity instanceof Stone){
-				activeButt = new Vector3Butt(rayEnd.x - lastMove.x * maxK, rayEnd.y - lastMove.y * maxK, rayEnd.z - lastMove.z * maxK);
-			}else{
-				throw new RuntimeException("Unexpected touchEntity of class " + touchEntity.getClass().getCanonicalName());
-			}*/
 		}else if(defaultHandler != null){
 			defaultHandler.handleTap(ray);
-//			activeButt = new Vector3Butt(ray.origin.x + ray.direction.x * len, ray.origin.y + ray.direction.y * len, ray.origin.z + ray.direction.z * len);
 		}
 		Cache.put(lastMove);
 		Cache.put(rayEnd);

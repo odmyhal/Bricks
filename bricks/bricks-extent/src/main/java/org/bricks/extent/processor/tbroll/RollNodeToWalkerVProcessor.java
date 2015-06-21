@@ -58,7 +58,7 @@ public abstract class RollNodeToWalkerVProcessor<T extends MultiLiver<? extends 
 		double minAngleDiff = tryAngle(myCenter, buttCenter, buttVector, minRad);
 		if(maxAngleDiff < -minLenDiff
 				|| minAngleDiff > minLenDiff){
-			System.out.println("wrong destination maxAngleDiff " + maxAngleDiff + " minAngleDiff " + minAngleDiff);
+//			System.out.println("wrong destination maxAngleDiff " + maxAngleDiff + " minAngleDiff " + minAngleDiff);
 			accessiblePoint.x = buttCenter.x;
 			accessiblePoint.y = buttCenter.y;
 			lastCheckTime = processTime;
