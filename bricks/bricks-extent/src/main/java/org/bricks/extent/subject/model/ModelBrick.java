@@ -46,6 +46,11 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 		this.translate(v.x, v.y, v.z);
 	}
 	
+	public void resetMatrix(){
+		transformMatrix.idt();
+		lastPrintModified = currentPrint;
+	}
+	
 	public void translate(float x, float y, float z) {
 		transformMatrix.trn(x, y, z);
 		lastPrintModified = currentPrint;

@@ -61,7 +61,7 @@ public class RollToPointProcessorChecker<T extends MultiRoller<?, ?, Fpoint, ?>>
 		}
 		
 		rotationSpeedProcessor.setRotationSpeed(sSpeed);
-		conditionalRotationProcessor.initialize(curRotation, targetRotation);
+//		conditionalRotationProcessor.initialize(curRotation, targetRotation);
 		super.activate(target, curTime);
 	}
 	
@@ -73,7 +73,7 @@ public class RollToPointProcessorChecker<T extends MultiRoller<?, ?, Fpoint, ?>>
 		
 		protected Fpoint directionPoint;
 		private Fpoint hPoint = new Fpoint();
-		private float previousTarget, previousRotation;
+//		private float previousTarget, previousRotation;
 		
 		public ConditionalRotationProcessor(Fpoint dp) {
 			super(CheckerType.NO_SUPLANT);
@@ -94,9 +94,13 @@ public class RollToPointProcessorChecker<T extends MultiRoller<?, ?, Fpoint, ?>>
 			PointHelper.normalize(hPoint);
 			float curRotation = target.getRotation();
 			float targetRotation = (float) AlgebraHelper.trigToRadians(hPoint.x, hPoint.y);
-			float rememberTargetRotation = targetRotation;
+//			float rememberTargetRotation = targetRotation;
+			float diff = targetRotation - curRotation;
 			if(curSpeed > 0){
-				if(previousTarget < previousRotation){
+				if((diff < 0 && diff > -Math.PI) || diff > Math.PI){
+					stopAction = true;
+				}
+/*				if(previousTarget < previousRotation){
 					previousTarget += RollToMarkProcessorChecker.rotationCycle;
 					if(Math.abs(targetRotation - previousTarget) > Math.PI){
 						targetRotation += RollToMarkProcessorChecker.rotationCycle;
@@ -107,9 +111,12 @@ public class RollToPointProcessorChecker<T extends MultiRoller<?, ?, Fpoint, ?>>
 				}
 				if(curRotation > targetRotation){
 					stopAction = true;
-				}
+				}*/
 			}else if(curSpeed < 0){
-				if(previousTarget > previousRotation){
+				if((diff > 0 && diff < Math.PI) || diff < -Math.PI){
+					stopAction = true;
+				}
+/*				if(previousTarget > previousRotation){
 					previousTarget -= RollToMarkProcessorChecker.rotationCycle;
 					if(Math.abs(targetRotation - previousTarget) > Math.PI){
 						targetRotation -= RollToMarkProcessorChecker.rotationCycle;
@@ -120,21 +127,21 @@ public class RollToPointProcessorChecker<T extends MultiRoller<?, ?, Fpoint, ?>>
 				}
 				if(curRotation < targetRotation){
 					stopAction = true;
-				}
+				}*/
 			}else{
-				System.out.println("WARN: " + this.getClass().getCanonicalName() + " checker will never provide event");
+//				System.out.println("WARN: " + this.getClass().getCanonicalName() + " checker will never provide event");
 				target.unregisterEventChecker(this);
 			}
-			previousRotation = curRotation;
-			previousTarget = rememberTargetRotation;
+//			previousRotation = curRotation;
+//			previousTarget = rememberTargetRotation;
 			return stopAction;
 		}
-		
+/*		
 		private void initialize(float previousRotation, float previousTarget){
 			this.previousRotation = previousRotation;
 			this.previousTarget = previousTarget;
 		}
-
+*/
 		@Override
 		protected void processSingle(T target, long processTime) {
 			RotationSpeedEvent.changeRollerRotationSpeed(target, processTime, 0f);

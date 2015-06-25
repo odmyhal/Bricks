@@ -7,16 +7,18 @@ import java.util.Map;
 import org.bricks.engine.event.Event;
 import org.bricks.engine.event.check.CheckerType;
 import org.bricks.engine.event.check.EventChecker;
+import org.bricks.engine.staff.AvareTimer;
 import org.bricks.engine.staff.Liver;
+import org.bricks.utils.Cache;
 import org.bricks.utils.LinkLoop;
 import org.bricks.utils.Loop;
 
-public class Live implements Iterable<EventChecker>{
+public class Live implements Iterable<EventChecker>, AvareTimer{
 	
 	private final Quarantine<Event> events = new Quarantine<Event>(50);
 	
 	private final Loop<EventChecker> checkers = new LinkLoop<EventChecker>();
-	private final Quarantine<EventChecker> tmpAddCheckers = new Quarantine<EventChecker>(5);
+	private final Quarantine<EventChecker> tmpAddCheckers = new Quarantine<EventChecker>(10);
 	private final Quarantine<EventChecker> tmpDelCheckers = new Quarantine<EventChecker>(5);
 	private final Map<Integer, Event> eventHistory = new HashMap<Integer, Event>();
 	
@@ -69,6 +71,64 @@ public class Live implements Iterable<EventChecker>{
 
 	public boolean hasChekers() {
 		return !checkers.isEmpty();
+	}
+	
+	/**
+	 * Call ONLY in motor thread
+	 * @param time
+	 */
+	public void timerSet(long time){
+		if(hasChekers()){
+			for(EventChecker checker : checkers){
+				if(checker instanceof AvareTimer){
+					((AvareTimer) checker).timerSet(time);
+				}
+			}
+		}
+		if(hasEvents()){
+			LinkLoop<Event> tmpLoop = Cache.get(LinkLoop.class);
+			while(hasEvents()){
+				Event e = popEvent();
+				e.timerSet(time);
+				tmpLoop.add(e);
+			}
+			for(Event e : tmpLoop){
+				addEvent(e);
+			}
+			tmpLoop.clear();
+			Cache.put(tmpLoop);
+		}
+	}
+	
+	/**
+	 * Call ONLY in motor thread
+	 * @param time
+	 */
+	public void timerAdd(long time){
+		if(hasChekers()){
+			for(EventChecker checker : checkers){
+				if(checker instanceof AvareTimer){
+					((AvareTimer) checker).timerAdd(time);
+				}
+			}
+		}
+		if(hasEvents()){
+			LinkLoop<Event> tmpLoop = Cache.get(LinkLoop.class);
+			while(hasEvents()){
+				Event e = popEvent();
+				e.timerAdd(time);
+				tmpLoop.add(e);
+			}
+			for(Event e : tmpLoop){
+				addEvent(e);
+			}
+			tmpLoop.clear();
+			Cache.put(tmpLoop);
+		}
+	}
+
+	public boolean hasEvents(){
+		return !events.isEmpty();
 	}
 
 	public Event popEvent() {

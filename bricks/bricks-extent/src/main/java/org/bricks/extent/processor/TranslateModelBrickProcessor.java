@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.bricks.engine.event.check.CheckerType;
 import org.bricks.engine.item.MultiLiver;
 import org.bricks.engine.processor.WorkToConditionProcessor;
+import org.bricks.engine.staff.AvareTimer;
 import org.bricks.extent.space.Walk3D;
 import org.bricks.extent.subject.model.ModelBrickSubject;
 
@@ -12,7 +13,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 
 public class TranslateModelBrickProcessor <T extends MultiLiver<? extends ModelBrickSubject, ?, ?>>
-	extends WorkToConditionProcessor<T>{
+	extends WorkToConditionProcessor<T> implements AvareTimer{
 	
 	private static final  float minDiff = 0.7f;
 	
@@ -38,10 +39,20 @@ public class TranslateModelBrickProcessor <T extends MultiLiver<? extends ModelB
 		float timeK = 1000f / time;
 		speed.set(translation.x * timeK, translation.y * timeK, translation.z * timeK);
 		leftTranslation.set(translation);
-		walk.flushTimer(curTime);
+//		walk.flushTimer(curTime);
+		walk.timerSet(curTime);
 		unchanged = false;
 //		Gdx.app.debug("MESSAGE", "Activated with speed " + speed + ", after leftRranslation: " + leftTranslation);
 		super.activate(target, curTime);
+	}
+	
+
+	public void timerSet(long time){
+		walk.timerSet(time);
+	}
+	
+	public void timerAdd(long time){
+		walk.timerAdd(time);
 	}
 
 	@Override

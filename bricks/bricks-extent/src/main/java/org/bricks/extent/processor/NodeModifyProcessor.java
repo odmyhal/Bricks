@@ -4,13 +4,16 @@ import org.bricks.engine.event.check.CheckerType;
 import org.bricks.engine.event.check.IdentityCheckerType;
 import org.bricks.engine.item.MultiLiver;
 import org.bricks.engine.processor.WorkToConditionProcessor;
+import org.bricks.engine.staff.AvareTimer;
 import org.bricks.exception.Validate;
 import org.bricks.extent.entity.mesh.ModelSubjectOperable;
 import org.bricks.extent.subject.model.ModelBrickOperable;
 import org.bricks.extent.subject.model.ModelBrickSubject;
 import org.bricks.extent.subject.model.NodeOperator;
 
-public abstract class NodeModifyProcessor<T extends MultiLiver<? extends ModelBrickSubject<?, ?, ?, ?, ModelBrickOperable>, ?, ?>> extends WorkToConditionProcessor<T> {
+public abstract class NodeModifyProcessor<T extends MultiLiver<? extends ModelBrickSubject<?, ?, ?, ?, ModelBrickOperable>, ?, ?>> 
+	extends WorkToConditionProcessor<T> 
+	implements AvareTimer{
 	
 	public static final CheckerType CHECKER_TYPE = CheckerType.registerCheckerType();
 	
@@ -57,6 +60,14 @@ public abstract class NodeModifyProcessor<T extends MultiLiver<? extends ModelBr
 		Validate.isTrue(checkEntity.equals(target));
 		lastCheckTime = curTime;
 		super.activate(target, curTime);
+	}
+	
+	public void timerSet(long time){
+		lastCheckTime = time;
+	}
+	
+	public void timerAdd(long time){
+		lastCheckTime += time;
 	}
 /*	
 	private static class NodeModifyCheckerType extends CheckerType{

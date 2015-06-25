@@ -60,7 +60,7 @@ public abstract class EventChecker<T extends Liver> {
 				if(e == null){
 					break;
 				}
-				e.setEventTime(currentTime);
+				e.timerSet(currentTime);
 				EventHandlerManager.processEvent(target, e);
 			}
 		}

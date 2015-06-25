@@ -10,8 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 public class Walk3D extends Walk<Vector3>{
 
 
-	private double moveXTime = System.currentTimeMillis();
-	private double moveYTime = moveXTime, moveZTime = moveXTime;
+	private double moveXTime, moveYTime, moveZTime;
 	private boolean rolledBack = false;
 /*	
 	public Walk3D(Walker<?, Vector3> walker){
@@ -21,11 +20,11 @@ public class Walk3D extends Walk<Vector3>{
 	protected Origin<Vector3> initLastMoveOrigin(){
 		return new Origin3D();
 	}
-	
+/*	
 	public void flushTimer(long nTime){
 		moveXTime = moveYTime = moveZTime = nTime;
 	}
-	
+*/	
 	public boolean move(long checkTime, Vector3 p){
 		float x = p.x;
 		float y = p.y;
@@ -85,11 +84,14 @@ public class Walk3D extends Walk<Vector3>{
 		moveXTime = moveYTime = moveZTime = checkTime;
 		return true;
 	}
-/*
-	@Override
-	public boolean moveBack(long checkTime, float k) {
-		// TODO Auto-generated method stub
-		return false;
+	
+	public void timerSet(long time) {
+		moveXTime = moveYTime = moveZTime = time;
+		
 	}
-*/
+	public void timerAdd(long time) {
+		moveXTime += time;
+		moveYTime += time;
+		moveZTime += time;
+	}
 }

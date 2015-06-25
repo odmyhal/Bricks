@@ -9,8 +9,11 @@ public abstract class BaseEvent<L extends EventSource> implements Event {
 	public long getEventTime(){
 		return eventTime;
 	}
-	public void setEventTime(long l){
+	public void timerSet(long l){
 		this.eventTime = l;
+	}
+	public void timerAdd(long l){
+		this.eventTime += l;
 	}
 	
 }

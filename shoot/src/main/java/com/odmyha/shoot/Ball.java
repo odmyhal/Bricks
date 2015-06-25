@@ -102,7 +102,8 @@ public class Ball extends MultiWalkRoller2D<BallSubjectNew, WalkPrint> implement
 		V.setY(V.y + swap.y);
 		this.adjustCurrentPrint();
 		if(swap.x != 0 || swap.y != 0){
-			flushTimer(curTime);
+			timerSet(curTime);
+//			flushTimer(curTime);
 		}
 	}
 
@@ -114,7 +115,8 @@ public class Ball extends MultiWalkRoller2D<BallSubjectNew, WalkPrint> implement
 		V.setY(V.y + swap.y);
 		this.adjustCurrentPrint();
 		if(swap.getFX() != 0 || swap.getFY() != 0){
-			flushTimer(curTime);
+//			flushTimer(curTime);
+			timerSet(curTime);
 		}
 	}
 	
@@ -130,7 +132,7 @@ public class Ball extends MultiWalkRoller2D<BallSubjectNew, WalkPrint> implement
 		myVector.setY(myVector.y + swap.y);
 		this.adjustCurrentPrint();
 		if(swap.getFX() != 0 || swap.getFY() != 0){
-			flushTimer(e.getEventTime());
+			timerSet(e.getEventTime());
 		}
 	}
 	

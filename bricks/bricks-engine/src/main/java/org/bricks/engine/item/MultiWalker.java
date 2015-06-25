@@ -77,12 +77,22 @@ public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkP
 		vector.add(tmpAcceleration);
 		accelerationTime = curTime;
 	}
-	
+/*	
 	@Override
 	public void flushTimer(long nTime){
 		super.flushTimer(nTime);
 		legs.flushTimer(nTime);
 //		System.out.println("CHECK: " + this.getClass().getCanonicalName() + " has flushed timer!!!");
+	}
+	*/
+	public void timerSet(long time){
+		super.timerSet(time);
+		legs.timerSet(time);
+	}
+	
+	public void timerAdd(long time){
+		super.timerAdd(time);
+		legs.timerAdd(time);
 	}
 
 	public void setVector(Origin<C> v) {

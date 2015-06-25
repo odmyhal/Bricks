@@ -62,27 +62,91 @@ public class ModelHelper {
 	}
 	
 	private static final void mmult(Matrix4 one, Matrix4 two, float tmp[]){
-		tmp[Matrix4.M00] = one.val[Matrix4.M00] * two.val[Matrix4.M00] + one.val[Matrix4.M01] * two.val[Matrix4.M10] + one.val[Matrix4.M02] * two.val[Matrix4.M20] + one.val[Matrix4.M03] * two.val[Matrix4.M30];
-		tmp[Matrix4.M01] = one.val[Matrix4.M00] * two.val[Matrix4.M01] + one.val[Matrix4.M01] * two.val[Matrix4.M11] + one.val[Matrix4.M02] * two.val[Matrix4.M21] + one.val[Matrix4.M03] * two.val[Matrix4.M31];
-		tmp[Matrix4.M02] = one.val[Matrix4.M00] * two.val[Matrix4.M02] + one.val[Matrix4.M01] * two.val[Matrix4.M12] + one.val[Matrix4.M02] * two.val[Matrix4.M22] + one.val[Matrix4.M03] * two.val[Matrix4.M32];
-		tmp[Matrix4.M03] = one.val[Matrix4.M00] * two.val[Matrix4.M03] + one.val[Matrix4.M01] * two.val[Matrix4.M13] + one.val[Matrix4.M02] * two.val[Matrix4.M23] + one.val[Matrix4.M03] * two.val[Matrix4.M33];
-		
-		tmp[Matrix4.M10] = one.val[Matrix4.M10] * two.val[Matrix4.M00] + one.val[Matrix4.M11] * two.val[Matrix4.M10] + one.val[Matrix4.M12] * two.val[Matrix4.M20] + one.val[Matrix4.M13] * two.val[Matrix4.M30];
-		tmp[Matrix4.M11] = one.val[Matrix4.M10] * two.val[Matrix4.M01] + one.val[Matrix4.M11] * two.val[Matrix4.M11] + one.val[Matrix4.M12] * two.val[Matrix4.M21] + one.val[Matrix4.M13] * two.val[Matrix4.M31];
-		tmp[Matrix4.M12] = one.val[Matrix4.M10] * two.val[Matrix4.M02] + one.val[Matrix4.M11] * two.val[Matrix4.M12] + one.val[Matrix4.M12] * two.val[Matrix4.M22] + one.val[Matrix4.M13] * two.val[Matrix4.M32];
-		tmp[Matrix4.M13] = one.val[Matrix4.M10] * two.val[Matrix4.M03] + one.val[Matrix4.M11] * two.val[Matrix4.M13] + one.val[Matrix4.M12] * two.val[Matrix4.M23] + one.val[Matrix4.M13] * two.val[Matrix4.M33];
-		
-		tmp[Matrix4.M20] = one.val[Matrix4.M20] * two.val[Matrix4.M00] + one.val[Matrix4.M21] * two.val[Matrix4.M10] + one.val[Matrix4.M22] * two.val[Matrix4.M20] + one.val[Matrix4.M23] * two.val[Matrix4.M30];
-		tmp[Matrix4.M21] = one.val[Matrix4.M20] * two.val[Matrix4.M01] + one.val[Matrix4.M21] * two.val[Matrix4.M11] + one.val[Matrix4.M22] * two.val[Matrix4.M21] + one.val[Matrix4.M23] * two.val[Matrix4.M31];
-		tmp[Matrix4.M22] = one.val[Matrix4.M20] * two.val[Matrix4.M02] + one.val[Matrix4.M21] * two.val[Matrix4.M12] + one.val[Matrix4.M22] * two.val[Matrix4.M22] + one.val[Matrix4.M23] * two.val[Matrix4.M32];
-		tmp[Matrix4.M23] = one.val[Matrix4.M20] * two.val[Matrix4.M03] + one.val[Matrix4.M21] * two.val[Matrix4.M13] + one.val[Matrix4.M22] * two.val[Matrix4.M23] + one.val[Matrix4.M23] * two.val[Matrix4.M33];
-		
-		tmp[Matrix4.M30] = one.val[Matrix4.M30] * two.val[Matrix4.M00] + one.val[Matrix4.M31] * two.val[Matrix4.M10] + one.val[Matrix4.M32] * two.val[Matrix4.M20] + one.val[Matrix4.M33] * two.val[Matrix4.M30];
-		tmp[Matrix4.M31] = one.val[Matrix4.M30] * two.val[Matrix4.M01] + one.val[Matrix4.M31] * two.val[Matrix4.M11] + one.val[Matrix4.M32] * two.val[Matrix4.M21] + one.val[Matrix4.M33] * two.val[Matrix4.M31];
-		tmp[Matrix4.M32] = one.val[Matrix4.M30] * two.val[Matrix4.M02] + one.val[Matrix4.M31] * two.val[Matrix4.M12] + one.val[Matrix4.M32] * two.val[Matrix4.M22] + one.val[Matrix4.M33] * two.val[Matrix4.M32];
-		tmp[Matrix4.M33] = one.val[Matrix4.M30] * two.val[Matrix4.M03] + one.val[Matrix4.M31] * two.val[Matrix4.M13] + one.val[Matrix4.M32] * two.val[Matrix4.M23] + one.val[Matrix4.M33] * two.val[Matrix4.M33];
+		arrayMmult(one.val, two.val, tmp);
 	}
 	
+	private static final void mmultDouble(Matrix4 one, Matrix4 two, float tmp[]){
+		arrayMmult(one.val, two.val, tmp);
+	}
+	
+	public static double[] castToDouble(float[] src){
+		double[] dest = new double[src.length];
+		for(int i = 0; i < src.length; i++){
+			dest[i] = (double) src[i];
+		}
+		return dest;
+	}
+	
+	public static float[] castToFloat(double[] src){
+		float[] dest = new float[src.length];
+		for(int i = 0; i < src.length; i++){
+			dest[i] = (float) src[i];
+		}
+		return dest;
+	}
+	
+	private static final void arrayMmult(float[] one, float[] two, float[] tmp){
+		tmp[Matrix4.M00] = one[Matrix4.M00] * two[Matrix4.M00] + one[Matrix4.M01] * two[Matrix4.M10] + one[Matrix4.M02] * two[Matrix4.M20] + one[Matrix4.M03] * two[Matrix4.M30];
+		tmp[Matrix4.M01] = one[Matrix4.M00] * two[Matrix4.M01] + one[Matrix4.M01] * two[Matrix4.M11] + one[Matrix4.M02] * two[Matrix4.M21] + one[Matrix4.M03] * two[Matrix4.M31];
+		tmp[Matrix4.M02] = one[Matrix4.M00] * two[Matrix4.M02] + one[Matrix4.M01] * two[Matrix4.M12] + one[Matrix4.M02] * two[Matrix4.M22] + one[Matrix4.M03] * two[Matrix4.M32];
+		tmp[Matrix4.M03] = one[Matrix4.M00] * two[Matrix4.M03] + one[Matrix4.M01] * two[Matrix4.M13] + one[Matrix4.M02] * two[Matrix4.M23] + one[Matrix4.M03] * two[Matrix4.M33];
+		
+		tmp[Matrix4.M10] = one[Matrix4.M10] * two[Matrix4.M00] + one[Matrix4.M11] * two[Matrix4.M10] + one[Matrix4.M12] * two[Matrix4.M20] + one[Matrix4.M13] * two[Matrix4.M30];
+		tmp[Matrix4.M11] = one[Matrix4.M10] * two[Matrix4.M01] + one[Matrix4.M11] * two[Matrix4.M11] + one[Matrix4.M12] * two[Matrix4.M21] + one[Matrix4.M13] * two[Matrix4.M31];
+		tmp[Matrix4.M12] = one[Matrix4.M10] * two[Matrix4.M02] + one[Matrix4.M11] * two[Matrix4.M12] + one[Matrix4.M12] * two[Matrix4.M22] + one[Matrix4.M13] * two[Matrix4.M32];
+		tmp[Matrix4.M13] = one[Matrix4.M10] * two[Matrix4.M03] + one[Matrix4.M11] * two[Matrix4.M13] + one[Matrix4.M12] * two[Matrix4.M23] + one[Matrix4.M13] * two[Matrix4.M33];
+		
+		tmp[Matrix4.M20] = one[Matrix4.M20] * two[Matrix4.M00] + one[Matrix4.M21] * two[Matrix4.M10] + one[Matrix4.M22] * two[Matrix4.M20] + one[Matrix4.M23] * two[Matrix4.M30];
+		tmp[Matrix4.M21] = one[Matrix4.M20] * two[Matrix4.M01] + one[Matrix4.M21] * two[Matrix4.M11] + one[Matrix4.M22] * two[Matrix4.M21] + one[Matrix4.M23] * two[Matrix4.M31];
+		tmp[Matrix4.M22] = one[Matrix4.M20] * two[Matrix4.M02] + one[Matrix4.M21] * two[Matrix4.M12] + one[Matrix4.M22] * two[Matrix4.M22] + one[Matrix4.M23] * two[Matrix4.M32];
+		tmp[Matrix4.M23] = one[Matrix4.M20] * two[Matrix4.M03] + one[Matrix4.M21] * two[Matrix4.M13] + one[Matrix4.M22] * two[Matrix4.M23] + one[Matrix4.M23] * two[Matrix4.M33];
+		
+		tmp[Matrix4.M30] = one[Matrix4.M30] * two[Matrix4.M00] + one[Matrix4.M31] * two[Matrix4.M10] + one[Matrix4.M32] * two[Matrix4.M20] + one[Matrix4.M33] * two[Matrix4.M30];
+		tmp[Matrix4.M31] = one[Matrix4.M30] * two[Matrix4.M01] + one[Matrix4.M31] * two[Matrix4.M11] + one[Matrix4.M32] * two[Matrix4.M21] + one[Matrix4.M33] * two[Matrix4.M31];
+		tmp[Matrix4.M32] = one[Matrix4.M30] * two[Matrix4.M02] + one[Matrix4.M31] * two[Matrix4.M12] + one[Matrix4.M32] * two[Matrix4.M22] + one[Matrix4.M33] * two[Matrix4.M32];
+		tmp[Matrix4.M33] = one[Matrix4.M30] * two[Matrix4.M03] + one[Matrix4.M31] * two[Matrix4.M13] + one[Matrix4.M32] * two[Matrix4.M23] + one[Matrix4.M33] * two[Matrix4.M33];
+	}
+	
+	public static final void arrayMmultDouble(double[] one, double[] two, double[] tmp){
+		tmp[Matrix4.M00] = one[Matrix4.M00] * two[Matrix4.M00] + one[Matrix4.M01] * two[Matrix4.M10] + one[Matrix4.M02] * two[Matrix4.M20] + one[Matrix4.M03] * two[Matrix4.M30];
+		tmp[Matrix4.M01] = one[Matrix4.M00] * two[Matrix4.M01] + one[Matrix4.M01] * two[Matrix4.M11] + one[Matrix4.M02] * two[Matrix4.M21] + one[Matrix4.M03] * two[Matrix4.M31];
+		tmp[Matrix4.M02] = one[Matrix4.M00] * two[Matrix4.M02] + one[Matrix4.M01] * two[Matrix4.M12] + one[Matrix4.M02] * two[Matrix4.M22] + one[Matrix4.M03] * two[Matrix4.M32];
+		tmp[Matrix4.M03] = one[Matrix4.M00] * two[Matrix4.M03] + one[Matrix4.M01] * two[Matrix4.M13] + one[Matrix4.M02] * two[Matrix4.M23] + one[Matrix4.M03] * two[Matrix4.M33];
+		
+		tmp[Matrix4.M10] = one[Matrix4.M10] * two[Matrix4.M00] + one[Matrix4.M11] * two[Matrix4.M10] + one[Matrix4.M12] * two[Matrix4.M20] + one[Matrix4.M13] * two[Matrix4.M30];
+		tmp[Matrix4.M11] = one[Matrix4.M10] * two[Matrix4.M01] + one[Matrix4.M11] * two[Matrix4.M11] + one[Matrix4.M12] * two[Matrix4.M21] + one[Matrix4.M13] * two[Matrix4.M31];
+		tmp[Matrix4.M12] = one[Matrix4.M10] * two[Matrix4.M02] + one[Matrix4.M11] * two[Matrix4.M12] + one[Matrix4.M12] * two[Matrix4.M22] + one[Matrix4.M13] * two[Matrix4.M32];
+		tmp[Matrix4.M13] = one[Matrix4.M10] * two[Matrix4.M03] + one[Matrix4.M11] * two[Matrix4.M13] + one[Matrix4.M12] * two[Matrix4.M23] + one[Matrix4.M13] * two[Matrix4.M33];
+		
+		tmp[Matrix4.M20] = one[Matrix4.M20] * two[Matrix4.M00] + one[Matrix4.M21] * two[Matrix4.M10] + one[Matrix4.M22] * two[Matrix4.M20] + one[Matrix4.M23] * two[Matrix4.M30];
+		tmp[Matrix4.M21] = one[Matrix4.M20] * two[Matrix4.M01] + one[Matrix4.M21] * two[Matrix4.M11] + one[Matrix4.M22] * two[Matrix4.M21] + one[Matrix4.M23] * two[Matrix4.M31];
+		tmp[Matrix4.M22] = one[Matrix4.M20] * two[Matrix4.M02] + one[Matrix4.M21] * two[Matrix4.M12] + one[Matrix4.M22] * two[Matrix4.M22] + one[Matrix4.M23] * two[Matrix4.M32];
+		tmp[Matrix4.M23] = one[Matrix4.M20] * two[Matrix4.M03] + one[Matrix4.M21] * two[Matrix4.M13] + one[Matrix4.M22] * two[Matrix4.M23] + one[Matrix4.M23] * two[Matrix4.M33];
+		
+		tmp[Matrix4.M30] = one[Matrix4.M30] * two[Matrix4.M00] + one[Matrix4.M31] * two[Matrix4.M10] + one[Matrix4.M32] * two[Matrix4.M20] + one[Matrix4.M33] * two[Matrix4.M30];
+		tmp[Matrix4.M31] = one[Matrix4.M30] * two[Matrix4.M01] + one[Matrix4.M31] * two[Matrix4.M11] + one[Matrix4.M32] * two[Matrix4.M21] + one[Matrix4.M33] * two[Matrix4.M31];
+		tmp[Matrix4.M32] = one[Matrix4.M30] * two[Matrix4.M02] + one[Matrix4.M31] * two[Matrix4.M12] + one[Matrix4.M32] * two[Matrix4.M22] + one[Matrix4.M33] * two[Matrix4.M32];
+		tmp[Matrix4.M33] = one[Matrix4.M30] * two[Matrix4.M03] + one[Matrix4.M31] * two[Matrix4.M13] + one[Matrix4.M32] * two[Matrix4.M23] + one[Matrix4.M33] * two[Matrix4.M33];
+	}
+	
+	public static void doubleMatrixTra(double[] src, double[] dest){
+		dest[Matrix4.M00] = src[Matrix4.M00];
+		dest[Matrix4.M01] = src[Matrix4.M10];
+		dest[Matrix4.M02] = src[Matrix4.M20];
+		dest[Matrix4.M03] = src[Matrix4.M30];
+		dest[Matrix4.M10] = src[Matrix4.M01];
+		dest[Matrix4.M11] = src[Matrix4.M11];
+		dest[Matrix4.M12] = src[Matrix4.M21];
+		dest[Matrix4.M13] = src[Matrix4.M31];
+		dest[Matrix4.M20] = src[Matrix4.M02];
+		dest[Matrix4.M21] = src[Matrix4.M12];
+		dest[Matrix4.M22] = src[Matrix4.M22];
+		dest[Matrix4.M23] = src[Matrix4.M32];
+		dest[Matrix4.M30] = src[Matrix4.M03];
+		dest[Matrix4.M31] = src[Matrix4.M13];
+		dest[Matrix4.M32] = src[Matrix4.M23];
+		dest[Matrix4.M33] = src[Matrix4.M33];
+	}
 
 	public static void setToRotation(float rad, Stone<?, ?, ?> target){
 		Roll roll = tmpRoll.get();

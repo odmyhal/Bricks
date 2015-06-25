@@ -1,8 +1,9 @@
 package org.bricks.engine.tool;
 
+import org.bricks.engine.staff.AvareTimer;
 import org.bricks.engine.staff.Walker;
 
-public abstract class Walk<C> {
+public abstract class Walk<C> implements AvareTimer{
 	
 //	protected Walker<?, C> owner;
 	protected Origin<C> lastMove;
@@ -18,7 +19,7 @@ public abstract class Walk<C> {
 
 	public abstract boolean move(long time, C trn);
 	
-	public abstract void flushTimer(long time);
+//	public abstract void flushTimer(long time);
 	
 	public abstract boolean moveBack(long checkTime, float k);
 	

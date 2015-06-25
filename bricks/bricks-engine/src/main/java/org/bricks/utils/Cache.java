@@ -24,6 +24,12 @@ public class Cache<T> {
 			}
 			
 		});
+		registerCache(LinkLoop.class, new DataProvider<LinkLoop>(){
+			public LinkLoop provideNew() {
+				return new LinkLoop();
+			}
+			
+		});
 	}
 	
 	private LinkedList<T> cache = new LinkedList<T>();

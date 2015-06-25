@@ -56,7 +56,8 @@ public class RotationSpeedEvent extends BaseEvent{
 
 	public static void changeRollerRotationSpeed(Roller target, long changeTime, float newSpeed){
 		target.setRotationSpeed(newSpeed);
-		target.flushTimer(changeTime);
+//		target.flushTimer(changeTime);
+		target.timerSet(changeTime);
 		target.adjustCurrentPrint();
 	}
 }

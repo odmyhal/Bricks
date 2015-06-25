@@ -16,7 +16,8 @@ import org.bricks.extent.subject.model.ModelBrickSubject;
 
 import com.badlogic.gdx.math.Vector3;
 
-public abstract class RollModelBrickProcessor<T extends MultiLiver<? extends ModelBrickSubject, ?, ?>> extends WorkToConditionProcessor<T>{
+public abstract class RollModelBrickProcessor<T extends MultiLiver<? extends ModelBrickSubject, ?, ?>> 
+	extends WorkToConditionProcessor<T>{
 	
 	private Roll3D roll = new Roll3D();
 	private float rotateRadians, rotationSpeed, targetRotation;
@@ -62,6 +63,15 @@ public abstract class RollModelBrickProcessor<T extends MultiLiver<? extends Mod
 		roll.setSpin(tmpSpin, startRotation, curTime);
 		unchanged = false;
 		super.activate(target, curTime);
+	}
+	
+
+	public void timerSet(long time){
+		roll.timerSet(time);
+	}
+	
+	public void timerAdd(long time){
+		roll.timerAdd(time);
 	}
 	
 	protected abstract Vector3 targetCenter(T target);

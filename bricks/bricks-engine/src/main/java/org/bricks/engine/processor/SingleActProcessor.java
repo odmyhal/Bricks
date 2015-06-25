@@ -6,6 +6,10 @@ import org.bricks.engine.staff.Liver;
 
 public abstract class SingleActProcessor<T extends Liver> extends Processor<T> {
 
+	public SingleActProcessor() {
+		super(CheckerType.NO_SUPLANT);
+	}
+	
 	public SingleActProcessor(CheckerType type) {
 		super(type);
 		// TODO Auto-generated constructor stub

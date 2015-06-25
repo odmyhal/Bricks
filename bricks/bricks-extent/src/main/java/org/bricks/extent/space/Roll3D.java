@@ -21,7 +21,8 @@ public class Roll3D extends Roll{
 	
 	public void setSpin(Vector3 nsp, float startRotation, long cTime){
 		this.rotation = startRotation;
-		flushTimer(cTime);
+		timerSet(cTime);
+//		flushTimer(cTime);
 		spin.set(nsp);
 	}
 	

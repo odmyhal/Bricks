@@ -31,7 +31,7 @@ public abstract class MultiSubjectEntity<S extends Subject, P extends EntityPrin
 	}
 	
 	public void applyEngine(Engine engine){
-		Validate.isTrue(this.engine == null);
+//		Validate.isTrue(this.engine == null);
 		this.engine = engine;
 	}
 	

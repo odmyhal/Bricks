@@ -1,11 +1,13 @@
 package org.bricks.engine.event;
 
-public interface Event {
+import org.bricks.engine.staff.AvareTimer;
+
+public interface Event extends AvareTimer{
 	
 	EventSource getEventSource();
 	int getEventGroupCode();
 	public String sourceType();
 	public long getEventTime();
-	public void setEventTime(long l);
+//	public void timerSet(long l);
 	
 }

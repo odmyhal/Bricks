@@ -15,14 +15,19 @@ import org.bricks.engine.event.overlap.OSRegister;
 import org.bricks.engine.event.overlap.OverlapStrategy;
 import org.bricks.engine.neve.EntityPrint;
 import org.bricks.engine.neve.Imprint;
+import org.bricks.engine.staff.AvareTimer;
 import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.staff.Subject;
 import org.bricks.engine.pool.World;
 import org.bricks.engine.staff.Liver;
 import org.bricks.engine.tool.Live;
 import org.bricks.engine.tool.Logger;
+import org.bricks.utils.Cache;
+import org.bricks.utils.LinkLoop;
 
-public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> extends MultiSubjectEntity<S, P, C> implements Liver<P>{
+public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> 
+	extends MultiSubjectEntity<S, P, C> 
+	implements Liver<P>{
 	
 	private Live live;
 	private Logger logger = new Logger();
@@ -53,8 +58,25 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> ex
 	public void refreshCheckers(long currentTime){
 		live.refreshCheckers(currentTime);
 	}
+	
 	public boolean hasChekers(){
 		return live.hasChekers();
+	}
+	
+	/**
+	 * Call ONLY in motor thread
+	 * @param time
+	 */
+	public void timerSet(long time){
+		live.timerSet(time);
+	}
+	
+	/**
+	 * Call ONLY in motor thread
+	 * @param time
+	 */
+	public void timerAdd(long time){
+		live.timerAdd(time);
 	}
 
 	public boolean isEventTarget(){

@@ -61,11 +61,21 @@ public abstract class MultiRoller<S extends Subject<?, ?, C, R>, P extends RollP
 		 * Method is suppose to be used before applyEngine, so do not need adjustCurrentPrint
 		 */
 	}
-
+	
+	public void timerSet(long time){
+		super.timerSet(time);
+		roll.timerSet(time);
+	}
+	
+	public void timerAdd(long time){
+		super.timerAdd(time);
+		roll.timerAdd(time);
+	}
+/*
 	public void flushTimer(long nTime) {
 		roll.flushTimer(nTime);
 	}
-
+*/
 	public boolean rotate(long checkTime) {
 		return roll.rotate(checkTime);
 	}

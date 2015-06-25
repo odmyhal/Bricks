@@ -102,4 +102,5 @@ public class NodeScaleProcessor<T extends MultiLiver<ModelBrickSubject<?, ?, ?, 
 //		System.out.println(", Scale speed: " + scaleSpeed);
 		super.activate(target, curTime);
 	}
+	
 }

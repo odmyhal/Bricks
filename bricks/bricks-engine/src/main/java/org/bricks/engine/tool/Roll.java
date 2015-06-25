@@ -1,8 +1,9 @@
 package org.bricks.engine.tool;
 
+import org.bricks.engine.staff.AvareTimer;
 import org.bricks.exception.Validate;
 
-public class Roll {
+public class Roll implements AvareTimer{
 	
 	public static final float rotationCycle = (float) (Math.PI * 2);
 
@@ -12,7 +13,7 @@ public class Roll {
 	protected float rotation;
 	private float rotationSpeed;
 	public static final float rotationBuff = (float) (Math.PI / 360);
-	private long rotateTime = System.currentTimeMillis();
+	private long rotateTime;
 	protected float lastRotation;
 
 
@@ -48,11 +49,18 @@ public class Roll {
 	public float lastRotation(){
 		return lastRotation;
 	}
-
-	public void flushTimer(long nTime){
-		rotateTime = nTime;
+	
+	public void timerSet(long time){
+		rotateTime = time;
+	}
+	public void timerAdd(long time){
+		rotateTime += time;
 	}
 
+/*	public void flushTimer(long nTime){
+		rotateTime = nTime;
+	}
+*/
 	public boolean rotate(long checkTime){
 		return rotate(checkTime, rotationSpeed);
 	}

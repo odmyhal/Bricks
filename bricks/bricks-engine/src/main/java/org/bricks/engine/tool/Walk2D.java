@@ -7,8 +7,7 @@ import org.bricks.engine.staff.Walker;
 
 public class Walk2D extends Walk<Fpoint>{
 
-	private double moveXTime = System.currentTimeMillis();
-	private double moveYTime = moveXTime;
+	private double moveXTime, moveYTime;
 	private boolean rolledBack = false;
 /*	
 	public Walk2D(Walker<?, Fpoint> walker){
@@ -18,11 +17,11 @@ public class Walk2D extends Walk<Fpoint>{
 	protected Origin<Fpoint> initLastMoveOrigin(){
 		return new Origin2D();
 	}
-	
+/*	
 	public void flushTimer(long nTime){
 		moveXTime = moveYTime = nTime;
 	}
-	
+*/	
 	public boolean move(long checkTime, Fpoint p){
 		float x = p.x;
 		float y = p.y;
@@ -70,4 +69,14 @@ public class Walk2D extends Walk<Fpoint>{
 		moveXTime = moveYTime = checkTime;
 		return true;
 	}
+	
+	public void timerSet(long time) {
+		moveXTime = moveYTime = time;
+		
+	}
+	public void timerAdd(long time) {
+		moveXTime += time;
+		moveYTime += time;
+	}
+
 }

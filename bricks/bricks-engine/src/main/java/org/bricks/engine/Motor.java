@@ -21,10 +21,12 @@ public class Motor implements Runnable {
 		hooks = 0;
 		System.out.println("Motor " + Thread.currentThread().getName() + " started...");
 		while(run){
+			long currentTime = System.currentTimeMillis();
 			for(Motorable mo : dead){
 				alive.remove(mo);
 			}
 			for(Motorable mo : added){
+				mo.timerSet(currentTime);
 				alive.add(mo);
 			}
 			if(alive.isEmpty()){
@@ -41,7 +43,6 @@ public class Motor implements Runnable {
 					}
 				}
 			}
-			long currentTime = System.currentTimeMillis();
 			for(Motorable subject : alive){
 				subject.motorProcess(currentTime);
 			}
