@@ -19,7 +19,7 @@ public class NodeScaleProcessor<T extends MultiLiver<ModelBrickSubject<?, ?, ?, 
 	
 	private Vector3 scaleSpeed = new Vector3();
 	private Vector3 helpV = new Vector3();
-	private boolean finish = false;
+	private boolean finish;
 	 
 	public NodeScaleProcessor(T target, String nodeOperatorName){
 		super(target, CheckerType.registerCheckerType(), nodeOperatorName);
@@ -33,6 +33,7 @@ public class NodeScaleProcessor<T extends MultiLiver<ModelBrickSubject<?, ?, ?, 
 	public void init(float targetScaleX, float targetScaleY, float targetScaleZ, long sTime){
 		initScale.set(targetScaleX, targetScaleY, targetScaleZ);
 		initTime = sTime;
+		finish = false;
 	}
 	
 	@Override

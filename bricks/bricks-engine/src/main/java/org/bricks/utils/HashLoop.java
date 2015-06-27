@@ -6,7 +6,7 @@ public class HashLoop<T> extends LinkLoop<T>{
 	
 	private HashMap<T, Link> index = new HashMap<T, Link>();
 
-	protected LoopIterator initIterator(){
+	protected LoopIterator defaultIterator(){
 		return new HashIterator();
 	}
 	
@@ -52,5 +52,12 @@ public class HashLoop<T> extends LinkLoop<T>{
 	
 	protected Link findLinkOfVal(T val){
 		return index.get(val);
+	}
+	
+	public static class MultiThreadIterable<K> extends HashLoop<K>{
+		
+		protected IteratorProvider defaultIteratorProvider(){
+			return threadLocalIteratorProvider();
+		}
 	}
 }

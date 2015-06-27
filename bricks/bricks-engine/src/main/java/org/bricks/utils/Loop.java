@@ -1,5 +1,7 @@
 package org.bricks.utils;
 
+import java.util.Iterator;
+
 public interface Loop<T> extends Iterable<T> {
 
 	public boolean add(T val);

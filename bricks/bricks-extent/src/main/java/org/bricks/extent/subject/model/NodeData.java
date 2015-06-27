@@ -17,16 +17,27 @@ public class NodeData<I extends NodeDataPrint> extends PrintableBase<I>{
 	private final Vector3 translation = new Vector3();
 	private final Vector3 scale = new Vector3();
 	private final Matrix4Safe transformMatrix = new Matrix4Safe();
+
+	public final String nodePath;
 	
-	public NodeData(Node node){
-		this(node.rotation, node.translation, node.scale);
+	public NodeData(Node node, String nodePath){
+		this(node.rotation, node.translation, node.scale, nodePath);
 	}
 	
-	public NodeData(Quaternion rotation, Vector3 translation, Vector3 scale){
+	public NodeData(Quaternion rotation, Vector3 translation, Vector3 scale, String nodePath){
+		this.nodePath = nodePath;
 		this.rotation.set(rotation);
 		this.translation.set(translation);
 		this.scale.set(scale);
 		initPrintStore();
+		adjustCurrentPrint();
+	}
+	
+	public void reset(Quaternion rotation, Vector3 translation, Vector3 scale){
+		this.rotation.set(rotation);
+		this.translation.set(translation);
+		this.scale.set(scale);
+		lastPrintModified = currentPrint;
 		adjustCurrentPrint();
 	}
 

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Tuple;
+import org.bricks.exception.Validate;
 
 public class Cache<T> {
 	
@@ -54,13 +55,18 @@ public class Cache<T> {
 		cache.addLast(obj);
 	}
 	
-	public static final <K> void registerCache(Class<K> cls, final DataProvider<K> provider){
+	public static final <K> boolean registerCache(Class<K> cls, final DataProvider<K> provider){
+		Validate.isFalse(cachePool.containsKey(cls));
+		if(cachePool.containsKey(cls)){
+			return false;
+		}
 		cachePool.put(cls, new ThreadLocal<Cache<?>>(){
 			@Override
 			protected Cache<K> initialValue(){
 				return new Cache<K>(provider);
 			}
 		});
+		return true;
 	}
 	
 	public static final <K> K get(Class<K> cls){

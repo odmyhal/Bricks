@@ -46,7 +46,7 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 		this.translate(v.x, v.y, v.z);
 	}
 	
-	public void resetMatrix(){
+	public void reset(){
 		transformMatrix.idt();
 		lastPrintModified = currentPrint;
 	}
@@ -121,6 +121,10 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 		modelInstance.getRenderables(renderables, pool);
 	}
 	
+	/**
+	 * Method used in Render Thread
+	 * @param modelBrickPrint
+	 */
 	protected void updateModelTransform(I modelBrickPrint){
 		Validate.isFalse(renderPrintModified > modelBrickPrint.lastPrintModified, "printModified can't be less than render last modified");
 		if(renderPrintModified < modelBrickPrint.lastPrintModified){

@@ -2,8 +2,8 @@ package org.bricks.core.entity;
 
 public class Tuple<A, B> {
 	
-	private A first;
-	private B second;
+	protected A first;
+	protected B second;
 	
 	public Tuple(){}
 
@@ -26,6 +26,11 @@ public class Tuple<A, B> {
 	
 	public void setSecond(B b){
 		second = b;
+	}
+	
+	public void reset(){
+		first = null;
+		second = null;
 	}
 	
 	public boolean equals(Object object){

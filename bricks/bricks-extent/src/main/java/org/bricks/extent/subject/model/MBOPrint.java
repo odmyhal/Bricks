@@ -9,6 +9,7 @@ import org.bricks.engine.staff.Entity;
 import org.bricks.engine.staff.Liver;
 import org.bricks.engine.tool.Logger;
 import org.bricks.exception.Validate;
+import org.bricks.utils.LoopMap;
 
 import com.badlogic.gdx.graphics.g3d.model.Node;
 
@@ -24,11 +25,11 @@ public class MBOPrint<P extends ModelBrickOperable<?>> extends MBPrint<P>{
 	public void init(){
 		super.init();
 		ModelBrickOperable target = getTarget();
-		Map<Node, NodeData<NodeDataPrint>> nm = target.dataNodes;
+		LoopMap<Node, NodeData<NodeDataPrint>> nm = target.dataNodes;
 		if(nm == null){
 			throw new RuntimeException("Oleh, Problem is here....");
 		}
-		for(Entry<Node, NodeData<NodeDataPrint>> entry : nm.entrySet()){
+		for(Entry<Node, NodeData<NodeDataPrint>> entry : nm.entryLoop()){
 			nodeData.put(entry.getKey(), entry.getValue().getSafePrint());
 		}
 	}

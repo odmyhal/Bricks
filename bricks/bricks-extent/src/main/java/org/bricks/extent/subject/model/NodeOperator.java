@@ -26,12 +26,12 @@ public class NodeOperator implements RotationProvider{
 	private float rotatedRadians;
 	private volatile float volatileRotatedRadians;
 
-	public NodeOperator(Node node){
-		nodeData = new NodeData(node);
+	public NodeOperator(Node node, String nodePath){
+		nodeData = new NodeData(node, nodePath);
 	}
 	
-	public NodeOperator(Vector3 spin, Vector3 point, Node node){
-		this(node);
+	public NodeOperator(Vector3 spin, Vector3 point, Node node, String nodePath){
+		this(node, nodePath);
 		setSpin(spin);
 		setPoint(point);
 	}
