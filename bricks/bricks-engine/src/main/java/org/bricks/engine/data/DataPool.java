@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+@Deprecated
 public class DataPool<D> implements Iterable<D> {
 	
 	private DataSlot<D>[] data;

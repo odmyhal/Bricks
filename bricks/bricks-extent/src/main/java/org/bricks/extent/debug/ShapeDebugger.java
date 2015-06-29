@@ -1,7 +1,5 @@
 package org.bricks.extent.debug;
 
-import java.util.Collection;
-
 import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.Point;
 import org.bricks.engine.Engine;
@@ -9,19 +7,14 @@ import org.bricks.engine.item.MultiSubjectEntity;
 import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.neve.PlanePointsPrint;
 import org.bricks.engine.pool.Boundary;
-import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.staff.Subject;
-import org.bricks.extent.rewrite.Matrix4Safe;
-import org.bricks.extent.space.SpaceSubject;
-import org.bricks.extent.space.overlap.MarkPoint;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
 public class ShapeDebugger implements Disposable{
@@ -29,11 +22,11 @@ public class ShapeDebugger implements Disposable{
 	public ShapeRenderer shR = new ShapeRenderer();
 	
 	
-	public <R> void drawSectors(Engine<R> engine, Matrix4 cameraMatrix){
+	public <R> void drawSectors(Engine<R> engine, Matrix4 cameraMatrix, Iterable<District> districts){
 		shR.setProjectionMatrix(cameraMatrix);
 		shR.begin(ShapeType.Line);
 		shR.setColor(Color.RED);
-		for(District<R, ?> d: engine.getDistricts()){
+		for(District<R, ?> d: districts){
 //			if(d.hasBoundaries()){
 				int n = 0;
 				Ipoint corner = d.getCorner();
@@ -54,7 +47,7 @@ public class ShapeDebugger implements Disposable{
 		
 	}
 	
-	public <Z> void drawSpaceShapes(ModelBatch modelBatch, Collection<Z> entities){
+	public <Z> void drawSpaceShapes(ModelBatch modelBatch, Iterable<Z> entities){
 		for(Z entity : entities){
 			if(entity instanceof SpaceDebug){
 				modelBatch.render(((SpaceDebug) entity).debugModel());
@@ -62,7 +55,7 @@ public class ShapeDebugger implements Disposable{
 		}
 	}
 	
-	public <K> void drawEntityShapes(Collection<K> entities, Matrix4 cameraMatrix){
+	public <K> void drawEntityShapes(Iterable<K> entities, Matrix4 cameraMatrix){
 		shR.setProjectionMatrix(cameraMatrix);
 		shR.begin(ShapeType.Line);
 		shR.setColor(Color.RED);
@@ -110,7 +103,7 @@ public class ShapeDebugger implements Disposable{
 		shR.end();
 	}
 	
-	private void drawPoints(Collection<Point> points, Matrix4 cameraMatrix){
+	private void drawPoints(Iterable<Point> points, Matrix4 cameraMatrix){
 		
 		Point one = null, first = null;
 		for(Point p: points){

@@ -26,7 +26,7 @@ public class SpaceSubject<E extends Entity, I extends SSPrint, C, R extends Roll
 	implements RenderableProvider, ModelBrickSubject<E, I, C, R, M>{
 
 	public M modelBrick;
-	public final MarkPoint markPoint;
+//	public final MarkPoint markPoint;
 	private final Ipoint monitorCenter = new Ipoint(0, 0);
 	private SpaceVehicle<C, R> vehicle;
 	private PrintFactory<I> printFactory = (PrintFactory<I>) SSPrint.printFactory;
@@ -35,18 +35,18 @@ public class SpaceSubject<E extends Entity, I extends SSPrint, C, R extends Roll
 	 * First point of "ctr" should be center processed be SectorMonitor
 	 */
 	public SpaceSubject(MBSVehicle<C, R> vehicle, ModelInstance ms, Vector3...ctr){
-		modelBrick = provideModelBrick(ms);
+		modelBrick = provideModelBrick(ms, ctr);
 		modelBrick.adjustCurrentPrint();
 		Validate.isTrue(ctr.length > 0, "At least central point should exists");
-		markPoint = new MarkPoint(ctr);
-		markPoint.addTransform(modelBrick.linkTransform());
+//		markPoint = new MarkPoint(ctr);
+//		markPoint.addTransform(modelBrick.linkTransform());
 		
 		vehicle.setModelBrick(modelBrick);
 		this.vehicle = vehicle;
 	}
 	
-	protected M provideModelBrick(ModelInstance modelInstance){
-		return (M) new ModelBrick(modelInstance);
+	protected M provideModelBrick(ModelInstance modelInstance, Vector3[] marks){
+		return (M) new ModelBrick(modelInstance, marks);
 	}
 	
 	public M linkModelBrick(){
@@ -75,8 +75,8 @@ public class SpaceSubject<E extends Entity, I extends SSPrint, C, R extends Roll
 	}
 	
 	private void updateCenter(){
-		markPoint.calculateTransforms();
-		Vector3 center = markPoint.getMark(0);
+		modelBrick.updateMarks();
+		Vector3 center = modelBrick.getCenter();
 		monitorCenter.setX((int)center.x);
 		monitorCenter.setY((int)center.y);
 	}

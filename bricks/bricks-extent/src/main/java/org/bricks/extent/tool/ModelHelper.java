@@ -8,6 +8,7 @@ import org.bricks.extent.space.Roll3D;
 
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.utils.Array;
 
 public class ModelHelper {
 	
@@ -43,6 +44,33 @@ public class ModelHelper {
 					return node;
 				}else{
 					return findNode(nodePath.substring(splitIndex + 1, nodePath.length()), node.getChildren());
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Method used for Model nodes, which can be iterable in multiple threads
+	 * @param nodePath
+	 * @param nodes
+	 * @return
+	 */
+	public static Node findSafeNode(String nodePath, Array<Node> nodes){
+		int splitIndex = nodePath.indexOf('/');
+		String curName;
+		if(splitIndex < 0){
+			curName = nodePath;
+		}else{
+			curName = nodePath.substring(0, splitIndex);
+		}
+		for(int i = 0; i < nodes.size; i++){
+			Node node = nodes.get(i);
+			if(curName.equals(node.id)){
+				if(curName.equals(nodePath)){
+					return node;
+				}else{
+					return findSafeNode(nodePath.substring(splitIndex + 1, nodePath.length()), (Array<Node>) node.getChildren());
 				}
 			}
 		}

@@ -10,20 +10,22 @@ import org.bricks.utils.LoopMap;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.model.Node;
+import com.badlogic.gdx.math.Vector3;
 
 public class ModelBrickOperable<I extends MBOPrint<?>> extends ModelBrick<I>{
 	
 	private Map<String, NodeOperator> operatedNodes = new HashMap<String, NodeOperator>();
-	protected LoopMap<Node, NodeData> dataNodes = new LoopMap.MultiThreadIterable<Node, NodeData>();
+	protected LoopMap<Node, NodeData> dataNodes = new LoopMap<Node, NodeData>();
+//	protected Map<Node, NodeData> dataNodes = new HashMap<Node, NodeData>();
 
-	public ModelBrickOperable(ModelInstance modelInstance, String... operNodes) {
-		super(modelInstance);
+	public ModelBrickOperable(ModelInstance modelInstance, Vector3[] marks, String... operNodes) {
+		super(modelInstance, marks);
 		initiateNodeOperators(operNodes);
 	}
 	
 	public void reset(){
 		for(NodeData nodeData : dataNodes){
-			Node initialNode = ModelHelper.findNode(nodeData.nodePath, this.modelInstance.model.nodes);
+			Node initialNode = ModelHelper.findSafeNode(nodeData.nodePath, this.modelInstance.model.nodes);
 			Validate.isFalse(initialNode == null, "Model has no node by path " + nodeData.nodePath);
 			nodeData.reset(initialNode.rotation, initialNode.translation, initialNode.scale);
 		}

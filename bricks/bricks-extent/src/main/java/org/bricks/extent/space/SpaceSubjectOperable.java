@@ -20,7 +20,7 @@ public class SpaceSubjectOperable<E extends Entity, I extends SSPrint, C, R exte
 	}
 
 	@Override
-	protected M provideModelBrick(ModelInstance modelInstance){
-		return (M) new ModelBrickOperable(modelInstance);
+	protected M provideModelBrick(ModelInstance modelInstance, Vector3[] marks){
+		return (M) new ModelBrickOperable(modelInstance, marks);
 	}
 }

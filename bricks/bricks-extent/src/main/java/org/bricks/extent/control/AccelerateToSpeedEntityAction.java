@@ -22,7 +22,10 @@ public class AccelerateToSpeedEntityAction<T extends Walker<?, Fpoint>> extends 
 
 	@Override
 	public void init(FlowSlider widget) {
-		float targetSpeed = widget.getValue();
+		init(widget.getValue());
+	}
+	
+	public void init(float targetSpeed){
 		float speedDiff = targetSpeed - speedProvider.provideDirectionalSpeed();
 		float accelerate = acceleration;
 		if(speedDiff < 0){

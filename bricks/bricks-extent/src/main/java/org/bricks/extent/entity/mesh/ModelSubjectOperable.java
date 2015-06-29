@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 
@@ -33,8 +34,8 @@ public class ModelSubjectOperable<E extends Entity, I extends ModelSubjectPrint,
 		this.modelBrick.initiateNodeOperators(operNodes);
 	}
 	
-	protected M provideModelBrick(ModelInstance modelInstance){
-		return (M) new ModelBrickOperable(modelInstance);
+	protected M provideModelBrick(ModelInstance modelInstance, Vector3[] marks){
+		return (M) new ModelBrickOperable(modelInstance, marks);
 	}
 	
 }

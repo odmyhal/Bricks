@@ -1,6 +1,7 @@
 package org.bricks.extent.entity.mesh;
 
 import org.bricks.core.entity.Fpoint;
+import org.bricks.core.entity.Point;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.engine.pool.BrickSubject;
 import org.bricks.engine.staff.Entity;
@@ -25,12 +26,13 @@ public class ModelSubject<E extends Entity, I extends ModelSubjectPrint, M exten
 	
 	public ModelSubject(Brick brick, ModelInstance modelInstance){
 		super(brick);
-		this.modelBrick = provideModelBrick(modelInstance);
+		Point center = getCenter();
+		this.modelBrick = provideModelBrick(modelInstance, new Vector3(center.getFX(), center.getFY(), 0f));
 		this.modelBrick.adjustCurrentPrint();
 	}
 	
-	protected M provideModelBrick(ModelInstance modelInstance){
-		return (M) new ModelBrick(modelInstance);
+	protected M provideModelBrick(ModelInstance modelInstance, Vector3... marks){
+		return (M) new ModelBrick(modelInstance, marks);
 	}
 	
 	public M linkModelBrick(){

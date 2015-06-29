@@ -6,9 +6,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.prefs.Preferences;
 
+import org.bricks.core.entity.Dimentions;
 import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.Point;
 import org.bricks.engine.data.DataPool;
+import org.bricks.utils.Loop;
 
 public class World<R> {
 	
@@ -25,7 +27,7 @@ public class World<R> {
 //	private Collection<R> tmpDecorPool = new HashSet<R>();
 //	private volatile Collection<R> decorPool = new HashSet<R>();
 	
-	private DataPool<R> decorPool = new DataPool<R>(8);
+//	private DataPool<R> decorPool = new DataPool<R>(8);
 	
 	public World(Preferences props){
 		sectorLen = props.getInt("sector.length", 100);
@@ -85,9 +87,21 @@ public class World<R> {
 	}
 	
 	public District<R, ?> pointSector(Point point){
-		int rowNumber = (int) Math.floor(point.getFY() / sectorLen);
-		int colNumber = (int) Math.floor(point.getFX() / sectorLen);
+		return pointSector(point.getFX(), point.getFY());
+	}
+	
+	public District<R, ?> pointSector(float x, float y){
+		int rowNumber = (int) Math.floor(y / sectorLen);
+		int colNumber = (int) Math.floor(x / sectorLen);
 		return getDistrict(rowNumber, colNumber);
+	}
+	
+	public int defineRowOfPointSectorY(float y){
+		return (int) Math.floor(y / sectorLen);
+	}
+	
+	public int defineColOfPointSectorX(float x){
+		return (int) Math.floor(x / sectorLen);
 	}
 	
 	public int detectSectorRow(Point point){
@@ -122,7 +136,7 @@ public class World<R> {
 	 * TODO: make one constant collection instead of creating each time new in getRenderEntities
 	 * @return
 	 */
-	public Collection<R> getRenderEntities(){
+/*	public Collection<R> getRenderEntities(){
 		Collection<R> result = decorPool.collection();
 		for(int i = 0; i < rowsCount; i++){
 			for(int j = 0; j < colsCount; j++){
@@ -135,17 +149,20 @@ public class World<R> {
 		}
 		return result;
 	}
+*/	
 	
+/*	
 	public boolean addDecor(R decor){
 		decorPool.addItem(decor);
 		return true;
 	}
+	*/
 /*	
 	public synchronized boolean removeDecor(R decor){
 		decorPool.addItem(item)
 	}
 */	
-	public Collection<District<R, ?>> getDistricts(){
+/*	public Collection<District<R, ?>> getDistricts(){
 		Collection<District<R, ?>> districts = new HashSet<District<R, ?>>();
 		for(int i = 0; i < rowsCount; i++){
 			for(int j = 0; j < colsCount; j++){
@@ -154,5 +171,5 @@ public class World<R> {
 		}
 		return districts;
 	}
-
+*/
 }

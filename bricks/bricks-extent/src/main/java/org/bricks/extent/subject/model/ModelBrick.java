@@ -11,6 +11,7 @@ import org.bricks.exception.Validate;
 import org.bricks.extent.rewrite.Matrix4Safe;
 import org.bricks.extent.space.Roll3D;
 import org.bricks.extent.space.SSPrint;
+import org.bricks.extent.space.overlap.MarkPoint;
 import org.bricks.extent.space.overlap.Skeleton;
 import org.bricks.extent.space.overlap.SkeletonWithPlane;
 import org.bricks.extent.tool.ModelHelper;
@@ -29,6 +30,7 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 	public List<Skeleton> skeletons;
 	protected ModelInstance modelInstance;
 	protected Matrix4Safe transformMatrix = new Matrix4Safe();
+	public final MarkPoint markPoint;
 	
 	private volatile int currentPrintVolatile = -1;
 	private int lastPrint = -2, currentPrint = -3, renderPrintModified = -5;
@@ -36,9 +38,17 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 
 	protected int planeSkeleton = -1;
 	
-	public ModelBrick(ModelInstance ms){
+	/**
+	 * first point of marks should be Center
+	 * @param ms
+	 * @param marks
+	 */
+	public ModelBrick(ModelInstance ms, Vector3... marks){
+		Validate.isTrue(marks.length > 0, "At least center point should be provided");
 		this.modelInstance = ms;
 		this.transformMatrix.set(ms.transform);
+		markPoint = new MarkPoint(marks);
+		markPoint.addTransform(linkTransform());
 		this.initPrintStore();
 	}
 	
@@ -70,6 +80,14 @@ public class ModelBrick<I extends MBPrint> extends PrintableBase<I> implements R
 		ModelHelper.mmultLeft(tmpM, transformMatrix);
 		transformMatrix.trn(centerX, centerY, centerZ);
 		lastPrintModified = currentPrint;
+	}
+	
+	public void updateMarks(){
+		markPoint.calculateTransforms();
+	}
+	
+	public Vector3 getCenter(){
+		return markPoint.getMark(0);
 	}
 	
 	public Skeleton initSkeleton(Vector3[] points, int[] indexes){

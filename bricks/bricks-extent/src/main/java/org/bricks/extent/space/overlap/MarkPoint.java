@@ -15,8 +15,8 @@ public class MarkPoint<I extends MarkPointPrint> extends PrintableBase<I>{
 
 	private Vector3[] marks;
 	protected Vector3[] modifiedMarks;
-	private Loop<Matrix4Safe> transforms = new LinkLoop<Matrix4Safe>();
-	protected int size;
+	private Loop<Matrix4> transforms = new LinkLoop<Matrix4>();
+	public final int size;
 	
 	public MarkPoint(Vector3... points){
 		marks = points;
@@ -31,13 +31,12 @@ public class MarkPoint<I extends MarkPointPrint> extends PrintableBase<I>{
 	public Vector3 getMark(int num){
 		return modifiedMarks[num];
 	}
-	
 	/**
 	 * Global transform matrix should be added first!!!
 	 * Because Vect3.mul(Matirix4) means: Matrix * Vector
 	 * @param transform
 	 */
-	public void addTransform(Matrix4Safe transform){
+	public void addTransform(Matrix4 transform){
 		transforms.add(transform);
 	}
 	

@@ -134,8 +134,9 @@ public class Engine<R>
 		}
 		service.shutdown();
 	}
-	
+/*	
 	public Collection<District<R, ?>> getDistricts(){
 		return world.getDistricts();
 	}
+	*/
 }

@@ -131,41 +131,43 @@ public class SpaceInteract extends InputAdapter{
 			colLoop:
 			while(j * colStep <= endPointCol * colStep){
 				District<ModelBrickSubject, ?> district = world.getDistrict(i,  j);
-				if(district != null && district.intersectLine(startHPoint, endHPoint)){
-					Area districtArea = district.getBuffer();
-					areaLoop:
-					for(int k = 0; k < districtArea.capacity(); k++){
-						Subject subject = districtArea.getSubject(k);
-						if(subject == null){
-							continue areaLoop;
-						}
-						if(subject instanceof ModelBrickSubject){
-							Entity entity = subject.getEntity();
-							if(InteractiveHandler.canHandle(entity)){
-								if(checkedEntities.contains(entity)){
-									continue areaLoop;
-								}
-								MBPrint mbPrint = ((ModelBrickSubject<?, ?, ?, ?, ModelBrick<? extends MBPrint>>) subject).linkModelBrick().getSafePrint();
-								Arrays.fill(lenK, 0f);
-								lsAlgorithm.lineCrosSkeletonAll(mbPrint, rayEnd, lastMove, lenK);
-								for(int l = 0; l < lenK.length; l++){
-									if(lenK[l] > maxK){
-										touchEntity = entity;
-										maxK = lenK[l];
+				if(district != null){
+					if(district.intersectLine(startHPoint, endHPoint)){
+						Area districtArea = district.getBuffer();
+						areaLoop:
+						for(int k = 0; k < districtArea.capacity(); k++){
+							Subject subject = districtArea.getSubject(k);
+							if(subject == null){
+								continue areaLoop;
+							}
+							if(subject instanceof ModelBrickSubject){
+								Entity entity = subject.getEntity();
+								if(InteractiveHandler.canHandle(entity)){
+									if(checkedEntities.contains(entity)){
+										continue areaLoop;
+									}
+									MBPrint mbPrint = ((ModelBrickSubject<?, ?, ?, ?, ModelBrick<? extends MBPrint>>) subject).linkModelBrick().getSafePrint();
+									Arrays.fill(lenK, 0f);
+									lsAlgorithm.lineCrosSkeletonAll(mbPrint, rayEnd, lastMove, lenK);
+									for(int l = 0; l < lenK.length; l++){
+										if(lenK[l] > maxK){
+											touchEntity = entity;
+											maxK = lenK[l];
+										}
 									}
 								}
 							}
 						}
+						if(maxK > 0){
+							break rowLoop;
+						}
+						maxK = 0f;
+						colIntersect = true;
+					}else  if(colIntersect){
+						break colLoop;
+					}else{
+						startPointCol += colStep;
 					}
-					if(maxK > 0){
-						break rowLoop;
-					}
-					maxK = 0f;
-					colIntersect = true;
-				}else if(colIntersect){
-					break colLoop;
-				}else{
-					startPointCol += colStep;
 				}
 				j += colStep;
 			}

@@ -36,11 +36,11 @@ public class Cache<T> {
 	private LinkedList<T> cache = new LinkedList<T>();
 	private DataProvider<T> dataProvider;
 	
-	private Cache(DataProvider<T> provider){
+	public Cache(DataProvider<T> provider){
 		this.dataProvider = provider;
 	}
 	
-	private T getLocal(){
+	public T getLocal(){
 		T res = cache.pollFirst();
 		if(res == null){
 			return dataProvider.provideNew();
@@ -48,7 +48,7 @@ public class Cache<T> {
 		return res;
 	}
 	
-	private void putLocal(T obj){
+	public void putLocal(T obj){
 		if(cache.size() > maxCacheSize){
 			return;
 		}
