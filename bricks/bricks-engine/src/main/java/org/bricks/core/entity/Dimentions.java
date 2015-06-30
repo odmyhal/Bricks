@@ -6,9 +6,9 @@ public class Dimentions{
 	private Point minX, minY, maxX, maxY;
 	
 	private static final Point initMinX = new Fpoint(Float.MAX_VALUE, 0);
-	private static final Point initMaxX = new Fpoint(Float.MIN_VALUE, 0);
+	private static final Point initMaxX = new Fpoint(Float.NEGATIVE_INFINITY, 0);
 	private static final Point initMinY = new Fpoint(0, Float.MAX_VALUE);
-	private static final Point initMaxY = new Fpoint(0, Float.MIN_VALUE);
+	private static final Point initMaxY = new Fpoint(0, Float.NEGATIVE_INFINITY);
 	
 	public Dimentions(){
 		this.reject();

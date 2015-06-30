@@ -6,6 +6,8 @@ import java.util.prefs.Preferences;
 import org.bricks.core.entity.Dimentions;
 import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Point;
+import org.bricks.engine.item.Stone;
+import org.bricks.engine.neve.EntityPointsPrint;
 import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.pool.Area;
 import org.bricks.engine.pool.AreaBase;
@@ -14,6 +16,7 @@ import org.bricks.engine.pool.World;
 import org.bricks.engine.staff.Entity;
 import org.bricks.engine.staff.Subject;
 import org.bricks.exception.Validate;
+import org.bricks.extent.entity.mesh.ModelSubjectSync;
 import org.bricks.extent.subject.model.ContainsMBPrint;
 import org.bricks.utils.HashLoop;
 import org.bricks.utils.LinkLoop;
@@ -72,8 +75,6 @@ public class CameraHelper {
 		int finishRow = world.defineRowOfPointSectorY(cameraDimentions.getMaxY()) + 1;
 		int startCol = world.defineColOfPointSectorX(cameraDimentions.getMinX());
 		int finishCol = world.defineColOfPointSectorX(cameraDimentions.getMaxX()) + 1;
-//		District start = world.pointSector(cameraDimentions.getMinX(), cameraDimentions.getMinY());
-//		District finish = world.pointSector(cameraDimentions.getMaxX(), cameraDimentions.getMaxY());
 		for(int i = startRow; i < finishRow; i++){
 			for(int j = startCol; j < finishCol; j++){
 				District d = world.getDistrict(i, j);
@@ -110,8 +111,17 @@ public class CameraHelper {
 					Imprint subjectPrint = subject.getSafePrint();
 					if(subjectPrint instanceof ContainsMBPrint){
 						Vector3 center = ((ContainsMBPrint) subjectPrint).linkModelBrickPrint().getCenter();
-						if(camera.frustum.sphereInFrustum(center, checkRadius)){
-							Entity entity = subject.getEntity();
+						Entity entity = subject.getEntity();
+						if( (entity instanceof Stone) || camera.frustum.sphereInFrustum(center, checkRadius)){
+							Validate.isTrue((entity instanceof RenderableProvider), "Wrong entity found " + entity.getClass().getCanonicalName());
+							RenderableProvider rr = (RenderableProvider) entity;
+							renderables.add(rr);
+						}
+					}//TODO: remove this:
+					else if(subjectPrint instanceof EntityPointsPrint){//Need just to support deprecated ModelSubjectSync
+						Point center = ((EntityPointsPrint) subjectPrint).getCenter();
+						Entity entity = subject.getEntity();
+						if( (entity instanceof Stone) || camera.frustum.sphereInFrustum(center.getFX(), center.getFY(), 0f, checkRadius)){
 							Validate.isTrue((entity instanceof RenderableProvider), "Wrong entity found " + entity.getClass().getCanonicalName());
 							RenderableProvider rr = (RenderableProvider) entity;
 							renderables.add(rr);

@@ -82,7 +82,6 @@ public abstract class AreaBase<E extends Entity> extends BrickWrap<PointSetPrint
 		myPoints.add(new Ipoint(corner.getX() + xLen - 1, corner.getY() + yLen - 1));
 		myPoints.add(new Ipoint(corner.getX(), corner.getY() + yLen -1));
 //		Ipoint center = new Ipoint(corner.getX() + (int) Math.round(xLen / 2), corner.getY() + (int) Math.round(yLen / 2));
-
 		PointSetBrick psb = new PointSetBrick(myPoints);
 		Point bCenter = psb.getCenter();
 		return psb;

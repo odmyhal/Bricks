@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 
+@Deprecated
 public class ModelSubjectSync<E extends Entity, I extends EntityPointsPrint> extends BrickSubject<E, I> implements RenderableProvider{
 	
 	private boolean edit = true;

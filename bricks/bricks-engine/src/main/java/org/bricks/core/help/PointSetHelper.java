@@ -17,7 +17,6 @@ public class PointSetHelper {
 
 	
 	public static Fpoint detectCentralPoint(Collection<? extends Point> points){
-		
 		Dimentions dimm = fetchDimentions(points);
 		Fpoint centralPoint = new Fpoint((dimm.getMaxX() + dimm.getMinX()) / 2, (dimm.getMaxY() + dimm.getMinY()) / 2);
 		points = calibrateByCenter(centralPoint, points);
@@ -236,21 +235,8 @@ public class PointSetHelper {
 	public static Dimentions fetchDimentions(Collection<? extends Point> points){
 		
 		Dimentions result = new Dimentions();
-		
 		for(Point point : points){
 			result.applyPoint(point);
-/*			if(result.getMinX() > point.getFX()){
-				result.setMinXPoint(point);
-			}
-			if(result.getMaxX() < point.getFX()){
-				result.setMaxXPoint(point);
-			}
-			if(result.getMinY() > point.getFY()){
-				result.setMinYPoint(point);
-			}
-			if(result.getMaxY() < point.getFY()){
-				result.setMaxYPoint(point);
-			}*/
 		}
 		return result;
 	}

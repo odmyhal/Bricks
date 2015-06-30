@@ -9,13 +9,31 @@
 				<entry key="buffer.luft" value="110"/>
 				<entry key="sector.initial.capacity" value="20"/>
 <!-- 				<entry key="world.rows.count" value="80"/>
-				<entry key="world.cols.count" value="80"/>	 -->
+				<entry key="world.cols.count" value="80"/>	 
 				<entry key="world.rows.count" value="30"/>
-				<entry key="world.cols.count" value="30"/>
+				<entry key="world.cols.count" value="30"/> -->
+				<entry key="world.row.min" value="0"/>
+				<entry key="world.row.max" value="80"/>
+				<entry key="world.col.min" value="0"/>
+				<entry key="world.col.max" value="80"/>
 				<entry key="motor.count" value="8"/>
 				<entry key="event.handel.registrator" value="org.bricks.engine.event.handler.EventHandlerRegistrator"/>
 				<entry key="model.construct.tool" value="org.bricks.enterprise.gen.GenModelConstructTool"/>
 				<entry key="overlap.strategy.registrator" value="org.bricks.engine.overlap.OSRegistrator"/>
+            </map>
+        </node>
+        
+        <node name="ball.camera.defaults">
+            <map>
+                <entry key="camera.move.maxRadius" value="10000.0"/>
+				<entry key="camera.move.speed" value="1500.0"/>
+				<entry key="camera.target.constant.rotation" value="1.571"/>
+				<entry key="camera.roll.speed.radians" value="1.571"/>
+				
+				<entry key="camera.altitude.min" value="-200"/>
+				<entry key="camera.altitude.max" value="3000"/>
+				
+				<entry key="camera.vertical.roll.speed" value="3.14159"/>
             </map>
         </node>
     </root>

@@ -1,5 +1,5 @@
 #surefire
-#Mon Jun 29 14:57:06 EEST 2015
+#Tue Jun 30 23:40:50 EEST 2015
 testClassesDirectory=/home/oleh/git/Bricks/bricks/bricks-extent/target/test-classes
 classPathUrl.4=/home/oleh/git/Bricks/bricks-enterprise/target/bricks-enterprise-0.0.1-SNAPSHOT.jar
 classPathUrl.3=/home/oleh/git/Bricks/bricks/bricks-engine/target/bricks-engine-0.0.1-SNAPSHOT.jar

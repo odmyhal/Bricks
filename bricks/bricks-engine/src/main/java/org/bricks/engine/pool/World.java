@@ -17,8 +17,9 @@ public class World<R> {
 	private int sectorLen;
 	private int bufferLuft;
 	private int sectorInitialCapacity;
-	private int colsCount;
-	private int rowsCount;
+//	private int colsCount;
+//	private int rowsCount;
+	private int minRowNum, maxRowNum, minColNum, maxColNum;
 	private final Map<Integer, Map<Integer, District<R, ?>>> sectors = new HashMap<Integer, Map<Integer, District<R, ?>>>();
 	
 //	private final LinkedList<DataPool<R>> entitiesPool = new LinkedList<DataPool<R>>();
@@ -33,20 +34,24 @@ public class World<R> {
 		sectorLen = props.getInt("sector.length", 100);
 		bufferLuft = props.getInt("buffer.luft", 40);
 		sectorInitialCapacity = props.getInt("sector.initial.capacity", 10);
-		rowsCount = props.getInt("world.rows.count", 10);
-		colsCount = props.getInt("world.cols.count", 10);
-		System.out.println("Created world with dimentions: " + rowsCount + " : " + colsCount);
+		minRowNum = props.getInt("world.row.min", 0);
+		maxRowNum = props.getInt("world.row.max", 10);
+		minColNum = props.getInt("world.col.min", 0);
+		maxColNum = props.getInt("world.col.max", 10);
+//		rowsCount = props.getInt("world.rows.count", 10);
+//		colsCount = props.getInt("world.cols.count", 10);
+//		System.out.println("Created world with dimentions: " + rowsCount + " : " + colsCount);
 		init();
 	}
 	
 	private void init(){
-		for(int i = 0; i < rowsCount; i++){
-			for(int j = 0; j < colsCount; j++){
+		for(int i = minRowNum; i < maxRowNum + 1; i++){
+			for(int j = minColNum; j < maxColNum + 1; j++){
 				this.addDistrict(i, j);
 			}
 		}
-		for(int i = 0; i < rowsCount; i++){
-			for(int j : new int[]{0, colsCount - 1}){
+		for(int i = minRowNum; i < maxRowNum + 1; i++){
+			for(int j : new int[]{minColNum, maxColNum}){
 				District bDistrict = getDistrict(i, j);
 				if(bDistrict == null){
 					System.out.println(String.format("No district: %d : %d", i, j));
@@ -54,8 +59,8 @@ public class World<R> {
 				bDistrict.refreshBoundaries();
 			}
 		}
-		for(int j = 1; j < colsCount - 1; j++){
-			for(int i : new int[]{0, rowsCount - 1}){
+		for(int j = minColNum + 1; j < maxColNum; j++){
+			for(int i : new int[]{minRowNum, maxRowNum}){
 				District bDistrict = getDistrict(i, j);
 				bDistrict.refreshBoundaries();
 			}

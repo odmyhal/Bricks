@@ -10,7 +10,11 @@ import org.bircks.enterprise.control.panel.InvisiblePanel;
 import org.bircks.enterprise.control.panel.camera.CameraPanel;
 import org.bircks.entierprise.model.ModelStorage;
 import org.bricks.engine.Engine;
+import org.bricks.engine.pool.District;
 import org.bricks.extent.debug.ShapeDebugger;
+import org.bricks.extent.tool.CameraHelper;
+import org.bricks.utils.LinkLoop;
+import org.bricks.utils.Loop;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
@@ -65,7 +69,7 @@ public class BallGame implements ApplicationListener {
 */		
 		
 		camera = new PerspectiveCamera(37f, 1250f, 750f);
-		camera.far = 300000;
+		camera.far = 5000;
 		camera.translate(875, -600, 1200);
 		camera.lookAt(875, 600, 0);	
 /*		camera.translate(875, 1200, 1200);
@@ -73,7 +77,7 @@ public class BallGame implements ApplicationListener {
 		camera.update();
 
 		interactiveController = new InteractiveController();
-		CameraPanel tp = new CameraPanel(camera);
+		CameraPanel tp = new CameraPanel(camera, "panel.defaults", "ball.camera.defaults");
 //		tp.activate();
 		interactiveController.addPanel(tp);
 		interactiveController.addPanel(new InvisiblePanel());
@@ -88,7 +92,7 @@ public class BallGame implements ApplicationListener {
 		BallProducer bp = new BallProducer();
 		
 
-//        Map<String, String> props = bp.produceProperties();
+//        Map<String, String> props = bp.produceProperties();config-defaults.xml
         
 		engine = new Engine<RenderableProvider>();
 		FileHandle fh = Gdx.files.internal("config/engine.prefs.xml");
@@ -135,14 +139,14 @@ public class BallGame implements ApplicationListener {
 //		Thread.currentThread().yield();
 
 		int cnt = 0;
-/*		for(int i=750; i < 250 * 40 - 40; i+=225){
-			for(int j=50; j< 250 * 40 - 40; j+= 225){*/
-		for(int i=750; i < 250 * 30 - 30; i+=500){
-			for(int j=50; j< 250 * 30 - 30; j+= 500){
+		for(int i=750; i < 250 * 40 - 40; i+=225){
+			for(int j=50; j< 250 * 40 - 40; j+= 225){
+//		for(int i=750; i < 250 * 30 - 30; i+=500){
+//			for(int j=50; j< 250 * 30 - 30; j+= 500){
 				bp.produceBall(j, i, 400f * (i%10 == 0 ? 1 : -1), 400f * (j%10 == 0 ? -1 : 1)).applyEngine(engine);
 //				bp.produceBall(j, i, 20f * (i%10 == 0 ? 1 : -1), 15f * (j%10 == 0 ? -1 : 1)).applyEngine(engine);
 				cnt++;
-				if(cnt % 30 == 0){
+				if(cnt % 10 == 0){
 					Thread.yield();
 				}
 			}
@@ -171,6 +175,16 @@ public class BallGame implements ApplicationListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+/*		CameraHelper.tuneWorldCamera(engine.getWorld(), camera);
+		LinkLoop<District> districts = (LinkLoop<District>) CameraHelper.getInCameraDistricts();
+		for(District d : districts){
+			System.out.println("Found district: " + d);
+		}
+		Iterable<RenderableProvider> render = CameraHelper.getCameraRenderables();
+		for(RenderableProvider r: render){
+			System.out.println("Found to render: " + r.getClass().getCanonicalName());
+		}
+		System.exit(1);*/
 		Gdx.app.debug("OLEH-CHECK " + System.currentTimeMillis(), "Game started !!!!!!!!!!!!!!!!!!!");
 	}
 	@Override
@@ -200,16 +214,17 @@ public class BallGame implements ApplicationListener {
 //		drawSectors();
 //		DataPool<RenderableProvider> entitiesPool = engine.getWorld().getRenderEntities();
 		
-		Collection<RenderableProvider> entities = engine.getWorld().getRenderEntities();
+		CameraHelper.tuneWorldCamera(engine.getWorld(), camera);
+		Iterable<RenderableProvider> entitiesPool = CameraHelper.getCameraRenderables();
+//		Collection<RenderableProvider> entities = engine.getWorld().getRenderEntities();
 
 		modelBatch.begin(camera);
-		for(RenderableProvider entity : entities){
+		for(RenderableProvider entity : entitiesPool){
 			modelBatch.render(entity, environment);
 		}
-
 		modelBatch.end();
 		if(debugEnabled){
-			debug.drawEntityShapes(entities, camera.combined);
+			debug.drawEntityShapes(entitiesPool, camera.combined);
 		}
 		
 		interactiveController.render(Gdx.graphics.getDeltaTime());
