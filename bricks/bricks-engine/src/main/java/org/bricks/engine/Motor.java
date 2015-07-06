@@ -2,9 +2,9 @@ package org.bricks.engine;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import org.bricks.engine.item.Motorable;
-import org.bricks.engine.tool.Quarantine;
 import org.bricks.utils.HashLoop;
 import org.bricks.utils.Loop;
+import org.bricks.utils.Quarantine;
 
 public class Motor implements Runnable {
 	

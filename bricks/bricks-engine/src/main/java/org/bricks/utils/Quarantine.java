@@ -1,4 +1,4 @@
-package org.bricks.engine.tool;
+package org.bricks.utils;
 
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
