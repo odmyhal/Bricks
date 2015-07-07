@@ -88,31 +88,19 @@ public class EffectSystem {
 		Iterator<TemporaryEffect> iterator = effects.iterator();
 		while(iterator.hasNext()){
 			TemporaryEffect effect = iterator.next();
-			if(effect.emitter.finished()){
+			if(effect.done()){
 				effect.end();
 				iterator.remove();
 				particleSystem.remove(effect);
 				Cache.put(effect);
 			}else{
-				effect.controller.deltaTime = deltaTime;
-				effect.controller.deltaTimeSqr = deltaTime * deltaTime;
+				effect.setDeltaTime(deltaTime);
 			}
 		}
 		particleSystem.update();
 		particleSystem.begin();
 		particleSystem.draw();
 		particleSystem.end();
-	}
-	
-	public abstract static class TemporaryEffect extends ParticleEffect{
-
-		protected ParticleController controller;
-		protected NonContiniousEmitter emitter;
-		
-		protected void setToTranslation(Vector3 trn){
-			controller.transform.idt();
-			translate(trn);
-		}
 	}
 
 	public static class NonContiniousEmitter extends RegularEmitter{
@@ -122,7 +110,7 @@ public class EffectSystem {
 		}
 		
 		public boolean finished(){
-			return durationTimer > duration && this.controller.particles.size == 0;
+			return durationTimer > duration;
 		}
 	}
 

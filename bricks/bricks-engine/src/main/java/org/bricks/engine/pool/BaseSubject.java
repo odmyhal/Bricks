@@ -14,18 +14,15 @@ import org.bricks.exception.Validate;
 
 public abstract class BaseSubject<E extends Entity, I extends Imprint, C, R extends Roll> extends PrintableBase<I> implements Subject<E, I, C, R>{
 	
-	private final Map<AreaBase, Integer> pools = new HashMap<AreaBase, Integer>();
-	private District<?, E> district;
-	private int sectorMask;
+//	private final Map<AreaBase, Integer> pools = new HashMap<AreaBase, Integer>();
+//	private District<?, E> district;
+//	private int sectorMask;
 	protected E entity;
-/*	
-	public Subject(Brick brick, Point origin){
-		super(brick, origin);
-	}
-*/	
+	private Tenant<E> tenant;
 	
 	public BaseSubject(){
 		this.initPrintStore();
+		this.tenant = new Tenant(this);
 	}
 	
 	public abstract Point getCenter();
@@ -39,11 +36,13 @@ public abstract class BaseSubject<E extends Entity, I extends Imprint, C, R exte
 	}
 	
 	public District<?, E> getDistrict() {
-		return district;
+//		return district;
+		return tenant.getDistrict();
 	}
 
 	public boolean inPool(Pool pool){
-		return pools.containsKey(pool);
+//		return pools.containsKey(pool);
+		return tenant.inPool(pool);
 	}
 
 	/*
@@ -51,11 +50,12 @@ public abstract class BaseSubject<E extends Entity, I extends Imprint, C, R exte
 	 * or before engine.start()
 	 */
 	public boolean joinPool(AreaBase pool){
-		if(pools.containsKey(pool)){
+/*		if(pools.containsKey(pool)){
 			return false;
 		}
 		pools.put(pool, pool.addSubject(this));
-		return true;
+		return true;*/
+		return tenant.joinPool(pool);
 	}
 	
 	/*
@@ -63,12 +63,13 @@ public abstract class BaseSubject<E extends Entity, I extends Imprint, C, R exte
 	 * or before engine.start()
 	 */
 	public boolean leavePool(AreaBase pool){
-		Integer reslt = pools.remove(pool);
+/*		Integer reslt = pools.remove(pool);
 		if(reslt == null){
 			return false;
 		}
 		pool.freeSubject(reslt);
-		return true;
+		return true;*/
+		return tenant.leavePool(pool);
 	}
 	
 	/*
@@ -76,13 +77,14 @@ public abstract class BaseSubject<E extends Entity, I extends Imprint, C, R exte
 	 * or before engine.start()
 	 */
 	public boolean joinDistrict(District<?, E> sector){
-		boolean result = joinPool(sector);
+/*		boolean result = joinPool(sector);
 		if(result){
 			this.district = sector;
 			joinPool(sector.getBuffer());
 			SectorMonitor.monitor(this);
 		}
-		return result;
+		return result;*/
+		return tenant.joinDistrict(sector);
 	}
 
 	/*
@@ -92,7 +94,7 @@ public abstract class BaseSubject<E extends Entity, I extends Imprint, C, R exte
 	public boolean leaveDistrict(){
 //condition is not appropriatable for Stone
 //		Validate.isTrue(this.district != null, "Subject is out of sector");
-		boolean result = leavePool(this.district);
+/*		boolean result = leavePool(this.district);
 		if(result){
 			this.district = null;
 		}
@@ -101,11 +103,12 @@ public abstract class BaseSubject<E extends Entity, I extends Imprint, C, R exte
 		}
 		pools.clear();
 		setDistrictMask(0);
-		return result;
+		return result;*/
+		return tenant.leaveDistrict();
 	}
 	
 	public void moveToDistrict(District<?, E> newOne){
-		if(district.equals(newOne)){
+/*		if(district.equals(newOne)){
 			System.out.println("Wrong district found for point: " + this.getCenter());
 		}
 		Validate.isTrue(!(district.equals(newOne)));
@@ -121,15 +124,18 @@ public abstract class BaseSubject<E extends Entity, I extends Imprint, C, R exte
 		pools.clear();
 		setDistrictMask(0);
 		this.joinDistrict(newOne);
-		oldOne.freeSubject(oldDistrictNum);
+		oldOne.freeSubject(oldDistrictNum);*/
+		tenant.moveToDistrict(newOne);
 	}
 
 	public int getDistrictMask() {
-		return sectorMask;
+//		return sectorMask;
+		return tenant.getDistrictMask();
 	}
 
 	public void setDistrictMask(int sectorMask) {
-		this.sectorMask = sectorMask;
+//		this.sectorMask = sectorMask;
+		tenant.setDistrictMask(sectorMask);
 	}
 	
 	public void joinWorld(World world){

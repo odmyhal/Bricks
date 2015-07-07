@@ -2,6 +2,8 @@ package org.bricks.engine.pool;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.bricks.engine.staff.Subject;
 import org.bricks.core.entity.Ipoint;
 import org.bricks.engine.staff.Entity;
@@ -12,7 +14,7 @@ public final class District<R, E extends Entity> extends AreaBase<E> implements 
 	private World<E> world;
 	public int rowNumber, colNumber;
 	private int luft;
-//	private int viewLock;
+	
 	private volatile ArrayList<Boundary> boundaries;
 	private final ThreadLocal<EntityIterator> localIterator = new ThreadLocal<EntityIterator>(){
 		@Override protected EntityIterator initialValue() {
@@ -20,8 +22,11 @@ public final class District<R, E extends Entity> extends AreaBase<E> implements 
         }
 	};
 	
-//	private final LinkedList<DataPool<E>> districtEntities = new LinkedList<DataPool<E>>();
-//	private DataPool<E> currentEntities = new DataPool<E>(districtEntities); 
+	/**
+	 * Value should be incremented and read in separate threads, but immediate reflection 
+	 * to value changes is not important. So it is no need to make it volatile.
+	 */
+	private int cameraShoot = 0;
 	
 	public District(Ipoint corner, int capacity, int len, int bufferLuft, World world){
 		super(corner, capacity, len);
@@ -44,81 +49,7 @@ public final class District<R, E extends Entity> extends AreaBase<E> implements 
 	public World getWorld(){
 		return world;
 	}
-/*
-	public void lockView(){
-		synchronized(districtEntities){
-			viewLock++;
-		}
-	}
-	//wait should be used in some method like getView
-	public void unlockView(){
-		synchronized(districtEntities){
-			if(--viewLock <= 0){
-				districtEntities.notifyAll();
-			}
-		}
-	}
-	
-	private DataPool<E> getEntities(){
-		synchronized(districtEntities){
-			if(viewLock > 0){
-				try {
-					districtEntities.wait();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			DataPool<E> di = districtEntities.poll();
-			if(di == null){
-				di = new DataPool<E>(districtEntities);
-			}
-			di.occupy();
-			di.addAll(currentEntities);
-			return di;
-		}
-	}
-	
-	public DataPool<R> getRenderEntities(){
-		return (DataPool<R>) getEntities();
-	}
-	
-	private boolean addEntity(E e){
-		synchronized(districtEntities){
-			return currentEntities.add(e);
-		}
-	}
-	
-	private boolean removeEntity(E e){
-		synchronized(districtEntities){
-			return currentEntities.remove(e);
-		}
-	}
-*/
-	/*
-	@Override
-	synchronized Subject<E, ?> freeSubject(int i){
-		Subject<E, ?> res = super.freeSubject(i);
-		if(res == null){
-			return null;
-		}
-//		removeEntity(res.getEntity());
-		return res;
-	}
-	
-	@Override
-	int addSubject(Subject<E, ?> subject){
-		for(int i=0; i<pool.length; i++){
-			if(pool[i].setSubject(subject)){
-//				addEntity(subject.getEntity());
-				return i;
-			}
-		}
-		//TODO: Need handler for Pool is full exception
-		throw new RuntimeException("Pool is full, need handler");
-//		throw new PoolFullException(this);
-	}
-*/
+
 	public boolean hasBoundaries(){
 		return boundaries != null;
 	}
@@ -128,6 +59,14 @@ public final class District<R, E extends Entity> extends AreaBase<E> implements 
 			return null;
 		}
 		return boundaries.get(i);
+	}
+	
+	public void incrementCameraShoot(){
+		++cameraShoot;
+	}
+	
+	public int getCameraShoot(){
+		return cameraShoot;
 	}
 
 	public void refreshBoundaries(){

@@ -4,7 +4,7 @@ import org.bricks.utils.ThreadTransferCache;
 
 import com.badlogic.gdx.math.Vector3;
 
-public class EffectTransferData<K extends EffectSystem.TemporaryEffect> extends ThreadTransferCache.AbstractTransferData {
+public class EffectTransferData<K extends TemporaryEffect> extends ThreadTransferCache.AbstractTransferData {
 
 	protected Class<K> effectClass;
 	protected Vector3 translationData = new Vector3();

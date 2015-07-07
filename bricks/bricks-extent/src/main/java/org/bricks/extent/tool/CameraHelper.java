@@ -95,7 +95,9 @@ public class CameraHelper {
 			float halfHeight = habarites.getFY() / 2;
 			float x = corner.getFX() + halfWidth;
 			float y = corner.getFY() + halfHeight;
-			if(!camera.frustum.boundsInFrustum(x, y, altituteCenter, halfWidth, halfHeight, altituteHalf)){
+			if(camera.frustum.boundsInFrustum(x, y, altituteCenter, halfWidth, halfHeight, altituteHalf)){
+				d.incrementCameraShoot();
+			}else{
 				dIterator.remove();
 			}
 		}
