@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.annotation.processing.AbstractProcessor;
+import javax.lang.model.element.Element;
 import javax.tools.JavaFileObject;
 
 import org.apache.velocity.Template;
@@ -80,5 +81,18 @@ public abstract class CreateSourceProcessor extends AbstractProcessor {
 	
 	public void error(String msg){
 		throw new RuntimeException(msg);
+	}
+	
+	public Element findElementByName(Iterable<? extends Element> elements, String name){
+		for( Element element : elements ){
+			if(element.asType().toString().indexOf(name) >= 0){
+				return element;
+			}
+			Element res = findElementByName(element.getEnclosedElements(), name);
+			if(res != null){
+				return res;
+			}
+		}
+		return null;
 	}
 }

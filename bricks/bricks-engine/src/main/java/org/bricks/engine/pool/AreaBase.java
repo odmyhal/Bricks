@@ -10,9 +10,11 @@ import org.bricks.core.entity.impl.PointSetBrick;
 import org.bricks.core.entity.impl.PointSetPrint;
 import org.bricks.core.help.PointHelper;
 import org.bricks.engine.staff.Entity;
+import org.bricks.engine.staff.EntityCore;
+import org.bricks.engine.staff.Habitant;
 import org.bricks.engine.staff.Subject;
 
-public abstract class AreaBase<E extends Entity> extends BrickWrap<PointSetPrint> implements Pool{
+public abstract class AreaBase<E extends EntityCore> extends BrickWrap<PointSetPrint> implements Pool{
 
 	private Ipoint corner;
 	private Ipoint dimm;
@@ -40,11 +42,11 @@ public abstract class AreaBase<E extends Entity> extends BrickWrap<PointSetPrint
 		return x && y;
 	}
 	
-	protected Subject<E, ?, ?, ?> freeSubject(int i){
+	protected Habitant<E> freeSubject(int i){
 		return pool[i].freeSubject();
 	}
 	
-	protected int addSubject(Subject<E, ?, ?, ?> subject){
+	protected int addSubject(Habitant<E> subject){
 		for(int i=0; i<pool.length; i++){
 			if(pool[i].setSubject(subject)){
 				return i;
@@ -59,7 +61,7 @@ public abstract class AreaBase<E extends Entity> extends BrickWrap<PointSetPrint
 		return subject.inPool(this);
 	}
 	
-	public Subject getSubject(int num){
+	public Habitant getSubject(int num){
 		return pool[num].getSubject();
 	}
 	

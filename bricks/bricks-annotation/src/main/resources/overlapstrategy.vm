@@ -2,15 +2,15 @@ package ${packageName};
 
 import org.bricks.engine.event.overlap.OverlapStrategy;
 import org.bricks.engine.event.overlap.OverlapAlgorithm;
-import org.bricks.engine.staff.Subject;
+import org.bricks.engine.staff.Habitant;
 
-public class ${strategyClassName} extends OverlapStrategy<${targetClassName}>{
+public class ${strategyClassName} extends OverlapStrategy<${targetClassName}, ? extends Habitant, ?, ?, ?>{
 
-	public ${strategyClassName}(OverlapAlgorithm algorithm){
-		super(algorithm);
+	public ${strategyClassName}(OverlapAlgorithm algorithm, OverlapStrategy.HabitantDataExtractor extractor, OverlapStrategy.EventProducer producer){
+		super(algorithm, extractor, producer);
 	}
 	
-	public boolean hasToCheckOverlap(${targetClassName} target, Subject source){
+	public boolean hasToCheckOverlap(${targetClassName} target, Habitant source){
 		return target.$!{methodName.replace('"',"")}(source);
 	}
 }

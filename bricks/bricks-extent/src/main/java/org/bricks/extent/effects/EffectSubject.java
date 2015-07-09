@@ -17,14 +17,16 @@ import org.bricks.engine.pool.Pool;
 import org.bricks.engine.pool.Tenant;
 import org.bricks.engine.pool.World;
 import org.bricks.engine.staff.Entity;
+import org.bricks.engine.staff.EntityCore;
+import org.bricks.engine.staff.Habitant;
 import org.bricks.engine.staff.Subject;
 import org.bricks.engine.tool.Origin;
 
 import com.badlogic.gdx.math.Vector3;
 
-public class EffectSubject implements Subject<Entity, Imprint, Vector3, Roll3D>, Entity<Imprint>, Motorable{
+public class EffectSubject implements Habitant, EntityCore, Motorable{
 	
-	private Tenant<Entity> tenant;
+	private Tenant tenant;
 	private TemporaryEffect effect;
 	private Engine engine;
 	
@@ -32,98 +34,6 @@ public class EffectSubject implements Subject<Entity, Imprint, Vector3, Roll3D>,
 		tenant = new Tenant(this);
 	}
 
-	public int adjustCurrentPrint() {
-		throw new NotSupportedMethodException();
-	}
-
-	public Imprint getInnerPrint() {
-		throw new NotSupportedMethodException();
-	}
-
-	public Imprint getSafePrint() {
-		throw new NotSupportedMethodException();
-	}
-
-	public Imprint print() {
-		throw new NotSupportedMethodException();
-	}
-
-	public boolean isLastPrint(int pNum) {
-		throw new NotSupportedMethodException();
-	}
-
-	public void translate(Origin vector) {
-		// TODO Auto-generated method stub
-	}
-
-	public void rotate(Roll3D roll, Origin<Vector3> central) {
-		// TODO Auto-generated method stub
-	}
-
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public Point getCenter() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void setEntity(Entity e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public Entity getEntity() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public District<?, Entity> getDistrict() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean inPool(Pool pool) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean joinPool(AreaBase pool) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean leavePool(AreaBase pool) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean joinDistrict(District<?, Entity> sector) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean leaveDistrict() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public void moveToDistrict(District<?, Entity> newOne) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public int getDistrictMask() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public void setDistrictMask(int sectorMask) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	public void joinWorld(World world) {
 		District d = world.pointSector(this.getCenter());
@@ -144,54 +54,117 @@ public class EffectSubject implements Subject<Entity, Imprint, Vector3, Roll3D>,
 		motor.addLiver(this);
 	}
 
-	public Engine getEngine() {
-		return engine;
-	}
-
-	public boolean isEventTarget() {
-		return false;
-	}
-
-	public ArrayList<? extends Subject> getStaff() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Origin origin() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void disappear() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void outOfWorld() {
-		disappear();
-	}
-
-	public Origin provideInitialOrigin() {
-		return new Origin3D();
-	}
 
 	public void timerSet(long time) {
 		// TODO Auto-generated method stub
 		
 	}
 
+
 	public void timerAdd(long time) {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 	public void motorProcess(long currentTime) {
 		// TODO Auto-generated method stub
 		
 	}
 
+
 	public boolean alive() {
-		return true;
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public Engine getEngine() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public void disappear() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void outOfWorld() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public District getDistrict() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public boolean inPool(Pool pool) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public boolean joinPool(AreaBase pool) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public boolean leavePool(AreaBase pool) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public boolean joinDistrict(District sector) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public boolean leaveDistrict() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public void moveToDistrict(District newOne) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public int getDistrictMask() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	public void setDistrictMask(int sectorMask) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public Point getCenter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public void setEntity(EntityCore e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public EntityCore getEntity() {
+		return this;
 	}
 
 }

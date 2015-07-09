@@ -55,24 +55,19 @@ public class BorderTouchChecker<T extends Liver> extends EventChecker<T>{
 				if(border == null){
 					break bloop;
 				}
-//				targetP.startLog();
-//				targetP.appendLog("With center " + target.getPoint() + " checking border: " + border);
-//				targetP.appendLog("Current vector: " + ((Walker)targetP).getVector());
 				BorderEvent event = checkTouch(target, border);
-//				System.out.println(eventTime + " " + this.getClass().getCanonicalName() + " after check touch");
-				boolean isLast = checkIntHistory(targetP, border);
+				if(event != null){
+					return event;
+				}
+/*				boolean isLast = checkIntHistory(targetP, border);
 				if(event == null){
-//					targetP.appendLog("No touch found");
 					if(isLast){
 						targetP.removeHistory(BaseEvent.touchEventCode);
 					}
 				}else if(!isLast){
-//					targetP.appendLog("Found touch: " + event.getTargetView());
-//					targetP.finishLog();
 					targetP.putHistory(event);
 					return event;
-				}
-//				targetP.finishLog();
+				}*/
 			}
 			entityNum = eventState.incrementEntityState();
 		}
@@ -112,7 +107,7 @@ public class BorderTouchChecker<T extends Liver> extends EventChecker<T>{
 		sv.occupy();
 		return new BorderEvent(sv, border, touch);
 	}
-	
+/*	
 	private boolean checkIntHistory(Liver target, Boundary check){
 		Event hEvent = target.getHistory(BaseEvent.touchEventCode);
 		if(hEvent == null){
@@ -120,5 +115,5 @@ public class BorderTouchChecker<T extends Liver> extends EventChecker<T>{
 		}
 		return check.equals(hEvent.getEventSource());
 	}
-
+*/
 }

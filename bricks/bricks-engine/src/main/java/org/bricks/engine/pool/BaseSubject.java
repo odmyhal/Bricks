@@ -1,13 +1,9 @@
 package org.bricks.engine.pool;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.bricks.core.entity.Point;
 import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.neve.PrintableBase;
 import org.bricks.engine.staff.Entity;
-import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.staff.Subject;
 import org.bricks.engine.tool.Roll;
 import org.bricks.exception.Validate;
@@ -35,7 +31,7 @@ public abstract class BaseSubject<E extends Entity, I extends Imprint, C, R exte
 		return entity;
 	}
 	
-	public District<?, E> getDistrict() {
+	public District<E> getDistrict() {
 //		return district;
 		return tenant.getDistrict();
 	}
@@ -76,7 +72,7 @@ public abstract class BaseSubject<E extends Entity, I extends Imprint, C, R exte
 	 * Method should occur only in motor thread
 	 * or before engine.start()
 	 */
-	public boolean joinDistrict(District<?, E> sector){
+	public boolean joinDistrict(District<E> sector){
 /*		boolean result = joinPool(sector);
 		if(result){
 			this.district = sector;
@@ -107,7 +103,7 @@ public abstract class BaseSubject<E extends Entity, I extends Imprint, C, R exte
 		return tenant.leaveDistrict();
 	}
 	
-	public void moveToDistrict(District<?, E> newOne){
+	public void moveToDistrict(District<E> newOne){
 /*		if(district.equals(newOne)){
 			System.out.println("Wrong district found for point: " + this.getCenter());
 		}

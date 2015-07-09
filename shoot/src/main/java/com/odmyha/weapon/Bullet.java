@@ -13,7 +13,7 @@ import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.impl.PointSetBrick;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.core.help.PointHelper;
-import org.bricks.engine.event.OverlapEvent;
+import org.bricks.engine.event.PrintOverlapEvent;
 import org.bricks.engine.event.check.OverlapChecker;
 import org.bricks.engine.event.overlap.BrickOverlapAlgorithm;
 import org.bricks.engine.event.overlap.OverlapStrategy;
@@ -105,19 +105,19 @@ public class Bullet extends MultiWalkRoller2D<ModelSubjectSync<?, ?>, WalkPrint>
 */
 	@OverlapCheck(algorithm = BrickOverlapAlgorithm.class, sourceType = Shield.SHIELD_SOURCE, strategyClass = OverlapStrategy.TrueOverlapStrategy.class)
 	@EventHandle(eventType = Shield.SHIELD_SOURCE)
-	public void faceShield(OverlapEvent e){
+	public void faceShield(PrintOverlapEvent e){
 		this.disappear();
 	}
 	
 	@OverlapCheck(algorithm = BrickOverlapAlgorithm.class, sourceType = Ball.BALL_SOURCE_TYPE, strategyClass = OverlapStrategy.TrueOverlapStrategy.class)
 	@EventHandle(eventType = Ball.BALL_SOURCE_TYPE)
-	public void faceBall(OverlapEvent e){
+	public void faceBall(PrintOverlapEvent e){
 		this.disappear();
 	}
 	
 	@OverlapCheck(algorithm = BrickOverlapAlgorithm.class, sourceType = Cannon.CANNON_SOURCE, strategyMethod = "checkCannonOverlap")
 	@EventHandle(eventType = Cannon.CANNON_SOURCE)
-	public void faceOtherCannon(OverlapEvent e){
+	public void faceOtherCannon(PrintOverlapEvent e){
 		this.disappear();
 	}
 	

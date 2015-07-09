@@ -12,7 +12,7 @@ import org.bricks.engine.neve.PrintStore;
 import org.bricks.engine.neve.Printable;
 import org.bricks.extent.subject.model.MBPrint;
 
-public class SSPlanePrint<P extends SpaceSubject, EP extends EntityPrint, M extends MBPrint>
+public class SSPlanePrint<P extends SpaceSubject<?, ?, ?, ?, ?>, EP extends EntityPrint, M extends MBPrint>
 	extends SSPrint<P, EP, M>
 	implements PlanePointsPrint<P>{
 	

@@ -16,6 +16,8 @@ public @interface OverlapCheck{
 
 	String sourceType();
 	Class<? extends OverlapAlgorithm> algorithm();
+	Class<? extends OverlapStrategy.HabitantDataExtractor> extractor();
+	Class<? extends OverlapStrategy.EventProducer> producer();
 	Class<? extends OverlapStrategy> strategyClass() default OverlapStrategy.class;
 	String strategyMethod() default "default";
 }

@@ -18,6 +18,8 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Types;
 
 import org.bricks.annotation.OverlapCheck;
 
@@ -43,12 +45,13 @@ public class OverlapStrategyProcessor extends CreateSourceProcessor {
 					this.error(String.format("Method '%s.%s' annotated with OverlapCheck should have only one parameter",
 							te.asType().toString(), ee.asType().toString()));
 				}
-				VariableElement ve = params.get(0);
+/*				VariableElement ve = params.get(0);
+				TypeMirror paramTypeMirror = ve.asType();
 				String paramClassName = this.fetchSimpleClassName(ve.asType().toString());
 				if(!paramClassName.equals("OverlapEvent")){
 					this.error(String.format("Method '%s.%s' annotated with OverlapCheck should have OverlapEvent parameter, but '%s' given",
 							te.asType().toString(), ee.asType().toString(), paramClassName));
-				}
+				}*/
 				if(te.getKind() == ElementKind.CLASS){
 					Map<String, String> handlerData = new HashMap<String, String>();
 					String targetClassName = this.stripTemplates(te.asType().toString());
@@ -65,6 +68,8 @@ public class OverlapStrategyProcessor extends CreateSourceProcessor {
 						this.error("Could not find mirror of CheckOverlap annotation...");
 					}
 					String algorithmClassName = null;
+					String extractorClassName = null;
+					String producerClassName = null;
 					String sourceType = null;
 					String methodName = null;
 					String strategyClassName = null;
@@ -79,6 +84,10 @@ public class OverlapStrategyProcessor extends CreateSourceProcessor {
 							strategyClassName = this.stripClassEnding(this.stripTemplates(annotationValue.toString()));
 						}else if(key.equals("strategyMethod")){
 							methodName = annotationValue.toString();
+						}else if(key.equals("extractor")){
+							extractorClassName = this.stripClassEnding(this.stripTemplates(annotationValue.toString()));
+						}else if(key.equals("producer")){
+							producerClassName = this.stripClassEnding(this.stripTemplates(annotationValue.toString()));
 						}
 					}
 					
@@ -101,6 +110,8 @@ public class OverlapStrategyProcessor extends CreateSourceProcessor {
 						strategyClassName = packageName + "." + strategyClassName;
 					}
 					handlerData.put("targetClassName", targetClassName);
+					handlerData.put("extractorClassName", extractorClassName);
+					handlerData.put("producerClassName", producerClassName);
 					handlerData.put("sourceType", sourceType);
 					handlerData.put("algorithmClassName", algorithmClassName);
 					handlerData.put("strategyClassName", strategyClassName);

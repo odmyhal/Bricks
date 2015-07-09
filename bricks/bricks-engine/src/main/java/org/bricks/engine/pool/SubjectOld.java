@@ -15,7 +15,7 @@ import org.bricks.exception.Validate;
 public abstract class SubjectOld<E extends Entity, I extends Imprint, C, R extends Roll> extends PrintableBase<I> implements Satellite<C, R>{
 	
 	private final Map<AreaBase, Integer> pools = new HashMap<AreaBase, Integer>();
-	private District<?, E> district;
+	private District<E> district;
 	private int sectorMask;
 	protected E entity;
 /*	
@@ -38,7 +38,7 @@ public abstract class SubjectOld<E extends Entity, I extends Imprint, C, R exten
 		return entity;
 	}
 	
-	public District<?, E> getDistrict() {
+	public District<E> getDistrict() {
 		return district;
 	}
 
@@ -75,7 +75,7 @@ public abstract class SubjectOld<E extends Entity, I extends Imprint, C, R exten
 	 * Method should occur only in motor thread
 	 * or before engine.start()
 	 */
-	public boolean joinDistrict(District<?, E> sector){
+	public boolean joinDistrict(District<E> sector){
 		boolean result = joinPool(sector);
 		if(result){
 			this.district = sector;
@@ -104,12 +104,12 @@ public abstract class SubjectOld<E extends Entity, I extends Imprint, C, R exten
 		return result;
 	}
 	
-	public void moveToDistrict(District<?, E> newOne){
+	public void moveToDistrict(District<E> newOne){
 		if(district.equals(newOne)){
 			System.out.println("Wrong district found for point: " + this.getCenter());
 		}
 		Validate.isTrue(!(district.equals(newOne)));
-		District<?, E> oldOne = district;
+		District<E> oldOne = district;
 		int oldDistrictNum = -1;
 		for(AreaBase ar : pools.keySet()){
 			if(ar == district){

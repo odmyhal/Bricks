@@ -8,7 +8,7 @@ import org.bricks.core.entity.Point;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.core.help.VectorHelper;
 import org.bricks.engine.event.BorderEvent;
-import org.bricks.engine.event.OverlapEvent;
+import org.bricks.engine.event.PrintOverlapEvent;
 import org.bricks.engine.event.check.BorderTouchChecker;
 import org.bricks.engine.event.check.OverlapChecker;
 import org.bricks.engine.event.overlap.BrickOverlapAlgorithm;
@@ -122,7 +122,7 @@ public class Ball extends MultiWalkRoller2D<BallSubjectNew, WalkPrint> implement
 	
 	@OverlapCheck(algorithm = BrickOverlapAlgorithm.class, sourceType = Ball.BALL_SOURCE_TYPE, strategyClass = SmallEventStrategy.class)
 	@EventHandle(eventType = Ball.BALL_SOURCE_TYPE)
-	public void vectorHit(OverlapEvent<EntityPointsPrint<?, WalkPrint<?, Fpoint>>, EntityPointsPrint<?, WalkPrint<?, Fpoint>>, Point> e){
+	public void vectorHit(PrintOverlapEvent<EntityPointsPrint<?, WalkPrint<?, Fpoint>>, EntityPointsPrint<?, WalkPrint<?, Fpoint>>, Point> e){
 		EntityPointsPrint<?, WalkPrint<?, Fpoint>> target = e.getTargetPrint();
 		Validate.isTrue(this.equals(target.entityPrint.getTarget()));
 		EntityPointsPrint<?, WalkPrint<?, Fpoint>> source = e.getSourcePrint();
@@ -138,13 +138,13 @@ public class Ball extends MultiWalkRoller2D<BallSubjectNew, WalkPrint> implement
 	
 	@OverlapCheck(algorithm = BrickOverlapAlgorithm.class, sourceType = Shield.SHIELD_SOURCE, strategyClass = OverlapStrategy.TrueOverlapStrategy.class)
 	@EventHandle(eventType = Shield.SHIELD_SOURCE)
-	public void stoneHit(OverlapEvent<EntityPointsPrint<?, WalkPrint<?, Fpoint>>, EntityPointsPrint<?, WalkPrint<?, Fpoint>>, Point> e){
+	public void stoneHit(PrintOverlapEvent<EntityPointsPrint<?, WalkPrint<?, Fpoint>>, EntityPointsPrint<?, WalkPrint<?, Fpoint>>, Point> e){
 		reflectOfPoint(e.getTargetPrint(), e.getTouchPoint(), e.getEventTime());
 	}
 	
 	@OverlapCheck(algorithm = BrickOverlapAlgorithm.class, sourceType = Cannon.CANNON_SOURCE, strategyClass = OverlapStrategy.TrueOverlapStrategy.class)
 	@EventHandle(eventType = Cannon.CANNON_SOURCE)
-	public void cannonHit(OverlapEvent<EntityPointsPrint<?, WalkPrint<?, Fpoint>>, EntityPointsPrint<?, WalkPrint>, Point> e){
+	public void cannonHit(PrintOverlapEvent<EntityPointsPrint<?, WalkPrint<?, Fpoint>>, EntityPointsPrint<?, WalkPrint>, Point> e){
 		EntityPointsPrint<?, WalkPrint> source = e.getSourcePrint();
 		RollPrint rv = source.entityPrint;
 		if(rv.getRotationSpeed() == 0){
@@ -157,7 +157,7 @@ public class Ball extends MultiWalkRoller2D<BallSubjectNew, WalkPrint> implement
 	}
 	
 	@EventHandle(eventType = Bullet.BULLET_SOURCE)
-	public void faceBullet(OverlapEvent e){
+	public void faceBullet(PrintOverlapEvent e){
 		this.outOfWorld(true);
 	}
 	

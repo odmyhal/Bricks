@@ -17,7 +17,7 @@ import org.bricks.core.entity.impl.PointSetBrick;
 import org.bricks.core.entity.type.Brick;
 import org.bricks.core.help.PointHelper;
 import org.bricks.engine.event.BaseEvent;
-import org.bricks.engine.event.OverlapEvent;
+import org.bricks.engine.event.PrintOverlapEvent;
 import org.bricks.engine.event.check.OverlapChecker;
 import org.bricks.engine.event.overlap.BrickOverlapAlgorithm;
 import org.bricks.engine.event.overlap.OverlapStrategy;
@@ -144,17 +144,17 @@ public class Cannon extends MultiRoller<ModelSubjectSync<?, ?>, RollPrint, Fpoin
 	
 	@OverlapCheck(algorithm = BrickOverlapAlgorithm.class, sourceType = Cannon.CANNON_SOURCE, strategyClass = SmallEventStrategy.class)
 	@EventHandle(eventType = Cannon.CANNON_SOURCE)
-	public void hitCannon(OverlapEvent e){
+	public void hitCannon(PrintOverlapEvent e){
 		this.rollBack(e.getEventTime());
 		this.removeHistory(BaseEvent.touchEventCode);
 	}
 	
 	@EventHandle(eventType = Ball.BALL_SOURCE_TYPE)
-	public void doNothing(OverlapEvent e){}
+	public void doNothing(PrintOverlapEvent e){}
 	
 	@OverlapCheck(algorithm = BrickOverlapAlgorithm.class, sourceType = Shield.SHIELD_SOURCE, strategyClass = OverlapStrategy.TrueOverlapStrategy.class)
 	@EventHandle(eventType = Shield.SHIELD_SOURCE)
-	public void faceShield(OverlapEvent e){
+	public void faceShield(PrintOverlapEvent e){
 		this.rollBack(e.getEventTime());
 		this.removeHistory(BaseEvent.touchEventCode);
 	}

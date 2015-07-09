@@ -10,9 +10,11 @@ public class ${className} implements OverlapStrategyRegistrator{
 		#set($tcn = $handlerData.get('targetClassName'))
 		#set($stp = $handlerData.get('sourceType'))
 		#set($acm = $handlerData.get('algorithmClassName'))
+		#set($ecn = $handlerData.get('extractorClassName'))
+		#set($pcn = $handlerData.get('producerClassName'))
 		#set($scm = $handlerData.get('strategyClassName'))
 		OSRegister.registerStrategy(${tcn}.class, "$!{stp.replace('"',"")}", 
-			   new ${scm}(new $acm()));
+			   new ${scm}(new ${acm}(), new ${ecn}(), new ${pcn}()));
 	#end
 	}
 }

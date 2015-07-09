@@ -3,12 +3,14 @@ package org.bricks.engine.pool;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.bricks.engine.staff.Entity;
+import org.bricks.engine.staff.EntityCore;
+import org.bricks.engine.staff.Habitant;
 import org.bricks.exception.Validate;
 import org.bricks.engine.staff.Subject;
 
-public class PoolSlot<E extends Entity> {
+public class PoolSlot<E extends EntityCore> {
 	
-	private volatile Subject<E, ?, ?, ?> subject;
+	private volatile Habitant<E> subject;
 	private final AtomicBoolean exists = new AtomicBoolean(false);
 /*	
 	public synchronized boolean setSubject(Subject<E, ?> s){
@@ -19,7 +21,7 @@ public class PoolSlot<E extends Entity> {
 		return false;
 	}
 */
-	public boolean setSubject(Subject<E, ?, ?, ?> s){
+	public boolean setSubject(Habitant<E> s){
 		if(exists.compareAndSet(false, true)){
 			subject = s;
 			return true;
@@ -36,15 +38,15 @@ public class PoolSlot<E extends Entity> {
 		return res;
 	}
 */
-	public Subject<E, ?, ?, ?> freeSubject(){
+	public Habitant<E> freeSubject(){
 		Validate.isTrue(exists.get(), "Slot is empty");
-		Subject res = subject;
+		Habitant res = subject;
 		subject = null;
 		exists.set(false);
 		return res;
 	}
 	
-	public Subject<E, ?, ?, ?> getSubject(){
+	public Habitant<E> getSubject(){
 		return this.subject;
 	}
 

@@ -1,18 +1,16 @@
 package org.bricks.extent.space.overlap;
 
-import org.bricks.engine.event.overlap.BaseOverlapAlgorithm;
 import org.bricks.engine.event.overlap.OverlapAlgorithm;
 import org.bricks.engine.help.GausHelper;
 import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.neve.OriginMovePrint;
-import org.bricks.engine.pool.BaseSubject;
 import org.bricks.engine.staff.Subject;
 import org.bricks.extent.subject.model.MBPrint;
 
 import com.badlogic.gdx.math.Vector3;
 
 public abstract class MeshLineCrossAlgorithm<T extends Imprint<? extends Subject>, K extends Imprint<? extends Subject>> 
-	extends BaseOverlapAlgorithm<T, K, Vector3> {
+	implements OverlapAlgorithm<T, K, Vector3> {
 	
 	protected Vector3 findCrossPoint(MBPrint<?> mbPrint, OriginMovePrint<?, Vector3> omPrint){
 		for(SkeletonPrint<?> sp : mbPrint.skeletons){

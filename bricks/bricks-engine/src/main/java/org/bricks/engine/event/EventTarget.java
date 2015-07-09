@@ -26,7 +26,7 @@ public interface EventTarget {
 //	public boolean hasChekers();
 //	public Collection<EventChecker> getCheckers();
 
-	public Event getHistory(int eventGroupCode);
-	public Event putHistory(Event event);
-	public Event removeHistory(int groupCode);
+//	public Event getHistory(int eventGroupCode);
+//	public Event putHistory(Event event);
+//	public Event removeHistory(int groupCode);
 }

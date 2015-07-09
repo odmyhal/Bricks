@@ -3,7 +3,7 @@ package org.bricks.engine.event.check;
 public class EventCheckState {
 	
 	private Object current;
-	private Object last;
+//	private Object last;
 	private int entityState = 0;
 	private int areaState = 0;
 	
@@ -14,10 +14,10 @@ public class EventCheckState {
 		current = o;
 		entityState = 0;
 		areaState = 0;
-		last = null;
+//		last = null;
 		return true;
 	}
-
+/*
 	public Object getLast() {
 		return last;
 	}
@@ -25,7 +25,7 @@ public class EventCheckState {
 	public void setLast(Object last) {
 		this.last = last;
 	}
-	
+*/	
 	public int getAndIncrementAreaState(){
 		return areaState++;
 	}
@@ -41,7 +41,7 @@ public class EventCheckState {
 	
 	public void reject(){
 		current = null;
-		last = null;
+//		last = null;
 		areaState = 0;
 		entityState = 0;
 	}

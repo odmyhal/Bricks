@@ -6,7 +6,7 @@ import java.util.Map;
 import org.bricks.engine.event.BorderEvent;
 import org.bricks.engine.event.Event;
 import org.bricks.engine.event.EventTarget;
-import org.bricks.engine.event.OverlapEvent;
+import org.bricks.engine.event.PrintOverlapEvent;
 
 
 public class EventHandlerManager {

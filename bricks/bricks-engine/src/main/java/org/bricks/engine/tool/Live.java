@@ -21,7 +21,7 @@ public class Live implements Iterable<EventChecker>, AvareTimer{
 	private final Loop<EventChecker> checkers = new LinkLoop<EventChecker>();
 	private final Quarantine<EventChecker> tmpAddCheckers = new Quarantine<EventChecker>(10);
 	private final Quarantine<EventChecker> tmpDelCheckers = new Quarantine<EventChecker>(5);
-	private final Map<Integer, Event> eventHistory = new HashMap<Integer, Event>();
+//	private final Map<Integer, Event> eventHistory = new HashMap<Integer, Event>();
 	
 	private final Liver liver;
 	
@@ -135,7 +135,7 @@ public class Live implements Iterable<EventChecker>, AvareTimer{
 	public Event popEvent() {
 		return events.poll();
 	}
-	
+/*	
 	public Event putHistory(Event event){
 		synchronized(eventHistory){
 			return eventHistory.put(event.getEventGroupCode(), event);
@@ -159,7 +159,7 @@ public class Live implements Iterable<EventChecker>, AvareTimer{
 			return eventHistory.remove(groupCode);
 		}
 	}
-
+*/
 	public Iterator<EventChecker> iterator() {
 		return checkers.iterator();
 	}

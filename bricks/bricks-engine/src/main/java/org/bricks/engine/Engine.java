@@ -13,16 +13,16 @@ import org.bricks.engine.pool.World;
 import org.bricks.engine.event.handler.EventHandleRegistrator;
 import org.bricks.engine.event.overlap.OverlapStrategyRegistrator;
 
-public class Engine<R> 
+public class Engine 
 {
-	private World<R> world;
+	private World world;
 	private Motor[] motors;
 	private ExecutorService service;
 	public static Preferences preferences;
 	
 	public void init(Preferences props){
 		preferences = props;
-		this.world = new World<R>(props);
+		this.world = new World(props);
 		int motorCount = props.getInt("motor.count", 1);
 		this.motors = new Motor[motorCount];
 		for(int i = 0; i < motorCount; i++){
@@ -34,7 +34,7 @@ public class Engine<R>
 		
 	}
 	
-	public World<R> getWorld(){
+	public World getWorld(){
 		return world;
 	}
 	

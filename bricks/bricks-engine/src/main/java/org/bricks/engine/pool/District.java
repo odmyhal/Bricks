@@ -4,24 +4,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.bricks.engine.staff.EntityCore;
+import org.bricks.engine.staff.Habitant;
 import org.bricks.engine.staff.Subject;
 import org.bricks.core.entity.Ipoint;
 import org.bricks.engine.staff.Entity;
 
-public final class District<R, E extends Entity> extends AreaBase<E> implements Iterable<R> {
+public final class District<E extends EntityCore> extends AreaBase<E>/* implements Iterable<R>*/ {
 	
 	private Area buffer;
-	private World<E> world;
+	private World world;
 	public int rowNumber, colNumber;
 	private int luft;
 	
 	private volatile ArrayList<Boundary> boundaries;
-	private final ThreadLocal<EntityIterator> localIterator = new ThreadLocal<EntityIterator>(){
+/*	private final ThreadLocal<EntityIterator> localIterator = new ThreadLocal<EntityIterator>(){
 		@Override protected EntityIterator initialValue() {
             return new EntityIterator();
         }
 	};
-	
+*/	
 	/**
 	 * Value should be incremented and read in separate threads, but immediate reflection 
 	 * to value changes is not important. So it is no need to make it volatile.
@@ -149,7 +151,7 @@ public final class District<R, E extends Entity> extends AreaBase<E> implements 
 		return String.format("District row=%s,  col=%s, corner=%s", rowNumber, colNumber, getCorner());
 	}
 	
-
+/*
 	public EntityIterator iterator(){
 		EntityIterator iterator = localIterator.get();
 		iterator.reject();
@@ -165,7 +167,7 @@ public final class District<R, E extends Entity> extends AreaBase<E> implements 
 		}
 
 		public R next() {
-			Subject<E, ?, ?, ?> sbj =  pool[cursor++].getSubject();
+			Habitant<E> sbj =  pool[cursor++].getSubject();
 			if(sbj == null){
 				return null;
 			}
@@ -181,5 +183,5 @@ public final class District<R, E extends Entity> extends AreaBase<E> implements 
 		}
 		
 	}
-
+*/
 }

@@ -2,11 +2,12 @@ package org.bricks.engine.pool;
 
 import org.bricks.core.entity.Ipoint;
 import org.bricks.core.entity.Point;
+import org.bricks.engine.staff.Habitant;
 import org.bricks.engine.staff.Subject;
 
 public class SectorMonitor {
 	
-	private static int provideSectorMask(Subject subject){
+	private static int provideSectorMask(Habitant subject){
 		int curMask = 0;
 		Point point = subject.getCenter();
 		District sector = subject.getDistrict();
@@ -36,7 +37,7 @@ public class SectorMonitor {
 		return curMask;
 	}
 	
-	public static void monitor(Subject subject){
+	public static void monitor(Habitant subject){
 		int curMask = provideSectorMask(subject);
 		if(curMask > 15){
 //			System.out.println("The mask is " + curMask + ", subject Point: " + subject.getPoint());
@@ -134,7 +135,7 @@ public class SectorMonitor {
 		subject.setDistrictMask(curMask);
 	}
 	
-	private static boolean joinCloseArea(Subject subject, int diffX, int diffY){
+	private static boolean joinCloseArea(Habitant subject, int diffX, int diffY){
 		District sector = subject.getDistrict();
 		World w = sector.getWorld();
 		District neighbor = w.getDistrict(sector.rowNumber + diffY, sector.colNumber + diffX);
@@ -144,7 +145,7 @@ public class SectorMonitor {
 		return subject.joinPool(neighbor.getBuffer());
 	}
 	
-	private static boolean leaveCloseArea(Subject subject, int diffX, int diffY){
+	private static boolean leaveCloseArea(Habitant subject, int diffX, int diffY){
 		District sector = subject.getDistrict();
 		World w = sector.getWorld();
 		District neighbor = w.getDistrict(sector.rowNumber + diffY, sector.colNumber + diffX);

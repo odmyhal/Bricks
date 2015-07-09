@@ -10,7 +10,7 @@ import org.bricks.core.help.PointHelper;
 import org.bricks.engine.neve.PlanePointsPrint;
 import org.bricks.engine.pool.BaseSubject;
 
-public class BrickOverlapAlgorithm extends BaseOverlapAlgorithm<PlanePointsPrint<? extends BaseSubject>, PlanePointsPrint<? extends BaseSubject>, Point>{
+public class BrickOverlapAlgorithm implements OverlapAlgorithm<PlanePointsPrint<? extends BaseSubject>, PlanePointsPrint<? extends BaseSubject>, Point>{
 
 	public static final BrickOverlapAlgorithm instance = new BrickOverlapAlgorithm();
 	private static final int[] sectors = new int[5];

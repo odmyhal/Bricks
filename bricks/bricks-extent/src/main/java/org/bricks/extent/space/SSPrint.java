@@ -12,7 +12,7 @@ import org.bricks.extent.subject.model.MBPrint;
 
 import com.badlogic.gdx.math.Matrix4;
 
-public class SSPrint<P extends SpaceSubject, EP extends EntityPrint, M extends MBPrint> 
+public class SSPrint<P extends SpaceSubject<?, ?, ?, ?, ?>, EP extends EntityPrint, M extends MBPrint> 
 	extends BasePrint<P>
 	implements ContainsMBPrint<P, M>, ContainsEntityPrint<P, EP>{
 	

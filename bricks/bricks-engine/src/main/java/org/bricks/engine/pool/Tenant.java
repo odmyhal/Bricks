@@ -4,21 +4,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bricks.engine.staff.Entity;
+import org.bricks.engine.staff.EntityCore;
+import org.bricks.engine.staff.Habitant;
 import org.bricks.engine.staff.Subject;
 import org.bricks.exception.Validate;
 
-public class Tenant<E extends Entity> {
+public class Tenant<E extends EntityCore> {
 
 	private final Map<AreaBase, Integer> pools = new HashMap<AreaBase, Integer>();
-	private District<?, E> district;
+	private District<E> district;
 	private int sectorMask;
-	private Subject<?, ?, ?, ?> subject;
+	private Habitant<E> subject;
 	
-	public Tenant(Subject subject){
+	public Tenant(Habitant<E> subject){
 		this.subject = subject;
 	}
 	
-	public District<?, E> getDistrict() {
+	public District<E> getDistrict() {
 		return district;
 	}
 
@@ -55,7 +57,7 @@ public class Tenant<E extends Entity> {
 	 * Method should occur only in motor thread
 	 * or before engine.start()
 	 */
-	public boolean joinDistrict(District<?, E> sector){
+	public boolean joinDistrict(District<E> sector){
 		boolean result = joinPool(sector);
 		if(result){
 			this.district = sector;
@@ -84,12 +86,12 @@ public class Tenant<E extends Entity> {
 		return result;
 	}
 	
-	public void moveToDistrict(District<?, E> newOne){
+	public void moveToDistrict(District<E> newOne){
 		if(district.equals(newOne)){
 			System.out.println("Wrong district found for point: " + subject.getCenter());
 		}
 		Validate.isTrue(!(district.equals(newOne)));
-		District<?, E> oldOne = district;
+		District<E> oldOne = district;
 		int oldDistrictNum = -1;
 		for(AreaBase ar : pools.keySet()){
 			if(ar == district){

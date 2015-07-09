@@ -12,7 +12,7 @@ import org.bricks.core.entity.Point;
 import org.bricks.engine.data.DataPool;
 import org.bricks.utils.Loop;
 
-public class World<R> {
+public class World {
 	
 	private int sectorLen;
 	private int bufferLuft;
@@ -20,7 +20,7 @@ public class World<R> {
 //	private int colsCount;
 //	private int rowsCount;
 	private int minRowNum, maxRowNum, minColNum, maxColNum;
-	private final Map<Integer, Map<Integer, District<R, ?>>> sectors = new HashMap<Integer, Map<Integer, District<R, ?>>>();
+	private final Map<Integer, Map<Integer, District<?>>> sectors = new HashMap<Integer, Map<Integer, District<?>>>();
 	
 //	private final LinkedList<DataPool<R>> entitiesPool = new LinkedList<DataPool<R>>();
 //	private DataPool<R> currentEntities;
@@ -69,11 +69,11 @@ public class World<R> {
 	
 	
 	public synchronized boolean addDistrict(int rowNumber, int colNumber){
-		Map<Integer, District<R, ?>> row; 
+		Map<Integer, District<?>> row; 
 		if(sectors.containsKey(rowNumber)){
 			row = sectors.get(rowNumber);
 		}else{
-			row = new HashMap<Integer, District<R, ?>>();
+			row = new HashMap<Integer, District<?>>();
 			sectors.put(rowNumber, row);
 		}
 		if(row.containsKey(colNumber)){
@@ -84,18 +84,18 @@ public class World<R> {
 		return true;
 	}
 	
-	public District<R, ?> getDistrict(int rowNumber, int colNumber){
+	public District<?> getDistrict(int rowNumber, int colNumber){
 		if(sectors.containsKey(rowNumber)){
 			return sectors.get(rowNumber).get(colNumber);
 		}
 		return null;
 	}
 	
-	public District<R, ?> pointSector(Point point){
+	public District<?> pointSector(Point point){
 		return pointSector(point.getFX(), point.getFY());
 	}
 	
-	public District<R, ?> pointSector(float x, float y){
+	public District<?> pointSector(float x, float y){
 		int rowNumber = (int) Math.floor(y / sectorLen);
 		int colNumber = (int) Math.floor(x / sectorLen);
 		return getDistrict(rowNumber, colNumber);

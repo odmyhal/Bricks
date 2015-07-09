@@ -22,11 +22,11 @@ public class ShapeDebugger implements Disposable{
 	public ShapeRenderer shR = new ShapeRenderer();
 	
 	
-	public <R> void drawSectors(Engine<R> engine, Matrix4 cameraMatrix, Iterable<District> districts){
+	public <R> void drawSectors(Engine engine, Matrix4 cameraMatrix, Iterable<District> districts){
 		shR.setProjectionMatrix(cameraMatrix);
 		shR.begin(ShapeType.Line);
 		shR.setColor(Color.RED);
-		for(District<R, ?> d: districts){
+		for(District<?> d: districts){
 //			if(d.hasBoundaries()){
 				int n = 0;
 				Ipoint corner = d.getCorner();

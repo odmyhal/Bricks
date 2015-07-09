@@ -9,6 +9,8 @@ import org.bricks.engine.pool.Area;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.pool.World;
 import org.bricks.engine.staff.Entity;
+import org.bricks.engine.staff.EntityCore;
+import org.bricks.engine.staff.Habitant;
 import org.bricks.engine.staff.Subject;
 import org.bricks.exception.Validate;
 import org.bricks.extent.interact.InteractiveHandler.Interactive;
@@ -29,7 +31,7 @@ import com.badlogic.gdx.math.collision.Ray;
 public class SpaceInteract extends InputAdapter{
 	
 	private Camera camera;
-	private World<ModelBrickSubject> world;
+	private World world;
 	private static final int poolSize = 64;
 	private static final double tapPercentPreciseK = 2d / 100d;
 	private int[] touchPool = new int[poolSize << 1];
@@ -122,7 +124,7 @@ public class SpaceInteract extends InputAdapter{
 		Vector3 rayEnd = Cache.get(Vector3.class);
 		lastMove.set(endHPoint.x - startHPoint.x, endHPoint.y - startHPoint.y, ray.direction.z * camera.far);
 		rayEnd.set(endHPoint.x, endHPoint.y, ray.origin.z + ray.direction.z * camera.far);
-		Entity touchEntity = null;
+		EntityCore touchEntity = null;
 		float maxK = 0f;
 		rowLoop:
 		while(i * rowStep <= endPointRow * rowStep){
@@ -130,23 +132,23 @@ public class SpaceInteract extends InputAdapter{
 			boolean colIntersect = false;
 			colLoop:
 			while(j * colStep <= endPointCol * colStep){
-				District<ModelBrickSubject, ?> district = world.getDistrict(i,  j);
+				District<?> district = world.getDistrict(i,  j);
 				if(district != null){
 					if(district.intersectLine(startHPoint, endHPoint)){
 						Area districtArea = district.getBuffer();
 						areaLoop:
 						for(int k = 0; k < districtArea.capacity(); k++){
-							Subject subject = districtArea.getSubject(k);
-							if(subject == null){
+							Habitant habitant = districtArea.getSubject(k);
+							if(habitant == null){
 								continue areaLoop;
 							}
-							if(subject instanceof ModelBrickSubject){
-								Entity entity = subject.getEntity();
+							if(habitant instanceof ModelBrickSubject){
+								EntityCore entity = habitant.getEntity();
 								if(InteractiveHandler.canHandle(entity)){
 									if(checkedEntities.contains(entity)){
 										continue areaLoop;
 									}
-									MBPrint mbPrint = ((ModelBrickSubject<?, ?, ?, ?, ModelBrick<? extends MBPrint>>) subject).linkModelBrick().getSafePrint();
+									MBPrint mbPrint = ((ModelBrickSubject<?, ?, ?, ?, ModelBrick<? extends MBPrint>>) habitant).linkModelBrick().getSafePrint();
 									Arrays.fill(lenK, 0f);
 									lsAlgorithm.lineCrosSkeletonAll(mbPrint, rayEnd, lastMove, lenK);
 									for(int l = 0; l < lenK.length; l++){

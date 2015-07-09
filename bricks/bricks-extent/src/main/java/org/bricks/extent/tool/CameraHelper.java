@@ -14,6 +14,7 @@ import org.bricks.engine.pool.AreaBase;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.pool.World;
 import org.bricks.engine.staff.Entity;
+import org.bricks.engine.staff.Habitant;
 import org.bricks.engine.staff.Subject;
 import org.bricks.exception.Validate;
 import org.bricks.extent.entity.mesh.ModelSubjectSync;
@@ -69,7 +70,7 @@ public class CameraHelper {
 		cameraDimentions.applyPoint(finish);
 	}
 	
-	private static void setDistrictsOfDimentions(World<RenderableProvider> world){
+	private static void setDistrictsOfDimentions(World world){
 		cameraDistricts.clear();
 		int startRow = world.defineRowOfPointSectorY(cameraDimentions.getMinY());
 		int finishRow = world.defineRowOfPointSectorY(cameraDimentions.getMaxY()) + 1;
@@ -108,28 +109,33 @@ public class CameraHelper {
 		for(District d : cameraDistricts){
 			Area area = d.getBuffer();
 			for(int i = 0; i < area.capacity(); i++){
-				Subject subject = area.getSubject(i);
-				if(subject != null){
-					Imprint subjectPrint = subject.getSafePrint();
-					if(subjectPrint instanceof ContainsMBPrint){
-						Vector3 center = ((ContainsMBPrint) subjectPrint).linkModelBrickPrint().getCenter();
-						Entity entity = subject.getEntity();
-						if( (entity instanceof Stone) || camera.frustum.sphereInFrustum(center, checkRadius)){
-							Validate.isTrue((entity instanceof RenderableProvider), "Wrong entity found " + entity.getClass().getCanonicalName());
-							RenderableProvider rr = (RenderableProvider) entity;
-							renderables.add(rr);
+				Habitant habitant = area.getSubject(i);
+				if(habitant != null){
+					if(habitant instanceof Subject){
+						Subject<? extends Entity, ?, ?, ?> subject = (Subject) habitant;
+						Imprint subjectPrint = subject.getSafePrint();
+						if(subjectPrint instanceof ContainsMBPrint){
+							Vector3 center = ((ContainsMBPrint) subjectPrint).linkModelBrickPrint().getCenter();
+							Entity entity = subject.getEntity();
+							if( (entity instanceof Stone) || camera.frustum.sphereInFrustum(center, checkRadius)){
+								Validate.isTrue((entity instanceof RenderableProvider), "Wrong entity found " + entity.getClass().getCanonicalName());
+								RenderableProvider rr = (RenderableProvider) entity;
+								renderables.add(rr);
+							}
+						}//TODO: remove this:
+						else if(subjectPrint instanceof EntityPointsPrint){//Need just to support deprecated ModelSubjectSync
+							Point center = ((EntityPointsPrint) subjectPrint).getCenter();
+							Entity entity = subject.getEntity();
+							if( (entity instanceof Stone) || camera.frustum.sphereInFrustum(center.getFX(), center.getFY(), 0f, checkRadius)){
+								Validate.isTrue((entity instanceof RenderableProvider), "Wrong entity found " + entity.getClass().getCanonicalName());
+								RenderableProvider rr = (RenderableProvider) entity;
+								renderables.add(rr);
+							}
 						}
-					}//TODO: remove this:
-					else if(subjectPrint instanceof EntityPointsPrint){//Need just to support deprecated ModelSubjectSync
-						Point center = ((EntityPointsPrint) subjectPrint).getCenter();
-						Entity entity = subject.getEntity();
-						if( (entity instanceof Stone) || camera.frustum.sphereInFrustum(center.getFX(), center.getFY(), 0f, checkRadius)){
-							Validate.isTrue((entity instanceof RenderableProvider), "Wrong entity found " + entity.getClass().getCanonicalName());
-							RenderableProvider rr = (RenderableProvider) entity;
-							renderables.add(rr);
-						}
+						subjectPrint.free();
+					}else if(false){
+						
 					}
-					subjectPrint.free();
 				}
 			}
 		}
