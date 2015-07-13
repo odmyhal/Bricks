@@ -1,23 +1,25 @@
 package org.bricks.extent.effects;
 
-import org.bricks.extent.effects.EffectSystem.NonContiniousEmitter;
+import org.bricks.extent.effects.BricksParticleSystem.NonContiniousEmitter;
 
 import com.badlogic.gdx.graphics.g3d.particles.ParticleController;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
+import com.badlogic.gdx.graphics.g3d.particles.renderers.ParticleControllerRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 
 public abstract class TemporaryEffect extends ParticleEffect{
+	
+	protected final SubChannelRenderer subChannelRenderer;
 
 	public TemporaryEffect(ParticleSystem particleSystem){
 		NonContiniousEmitter emitter = provideEmitter();
-		ParticleController controller1 = provideController(particleSystem, emitter);
-//		ParticleController controller2 = controller1.copy();
+		subChannelRenderer = provideRenderer();
+		ParticleController controller1 = provideController(particleSystem, emitter, (ParticleControllerRenderer) subChannelRenderer);
 		Array<ParticleController> controllers = getControllers();
 		controllers.add(controller1);
-//		controllers.add(controller2);
 	}
 	
 	protected void setToTranslation(Vector3 trn){
@@ -29,6 +31,11 @@ public abstract class TemporaryEffect extends ParticleEffect{
 		}
 	}
 	
+	public void init(){
+		super.init();
+		this.subChannelRenderer.setIdleController();
+	}
+	
 	public boolean done(){
 		Array<ParticleController> controllers = getControllers();
 		for (int i = 0, n = controllers.size; i < n; i++){
@@ -38,14 +45,10 @@ public abstract class TemporaryEffect extends ParticleEffect{
 			}
 		}
 		return true;
-	}
+	}	
 	
-	public void setDeltaTime(float deltaTime){
-//		controller.deltaTime = deltaTime;
-//		controller.deltaTimeSqr = deltaTime * deltaTime;
-	}
-	
+	protected abstract SubChannelRenderer provideRenderer();
 	protected abstract NonContiniousEmitter provideEmitter();
-	protected abstract ParticleController provideController(ParticleSystem particleSystem, NonContiniousEmitter emitter);
+	protected abstract ParticleController provideController(ParticleSystem particleSystem, NonContiniousEmitter emitter, ParticleControllerRenderer renderer);
 }
 

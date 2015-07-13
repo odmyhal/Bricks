@@ -1,39 +1,59 @@
 package org.bricks.extent.effects;
 
-import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.bricks.core.entity.Fpoint;
 import org.bricks.core.entity.Point;
 import org.bricks.exception.NotSupportedMethodException;
 import org.bricks.exception.Validate;
-import org.bricks.extent.space.Origin3D;
-import org.bricks.extent.space.Roll3D;
 import org.bricks.engine.Engine;
 import org.bricks.engine.Motor;
 import org.bricks.engine.item.Motorable;
-import org.bricks.engine.neve.Imprint;
 import org.bricks.engine.pool.AreaBase;
 import org.bricks.engine.pool.District;
 import org.bricks.engine.pool.Pool;
 import org.bricks.engine.pool.Tenant;
 import org.bricks.engine.pool.World;
-import org.bricks.engine.staff.Entity;
 import org.bricks.engine.staff.EntityCore;
 import org.bricks.engine.staff.Habitant;
-import org.bricks.engine.staff.Subject;
-import org.bricks.engine.tool.Origin;
-
+import org.bricks.utils.Cache;
+import org.bricks.utils.Quarantine;
+import org.bricks.utils.ThreadTransferCache;
+import org.bricks.utils.ThreadTransferCache.TransferData;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleController;
 import com.badlogic.gdx.math.Vector3;
 
 public class EffectSubject implements Habitant, EntityCore, Motorable{
 	
-	private Tenant tenant;
+	public static final String SOURCE_TYPE = "BricksEffect@bricks.extent.com";
+	
+	private Tenant<EffectSubject> tenant;
 	private TemporaryEffect effect;
 	private Engine engine;
+	private Motor motor;
+	private DoubleChannelRenderData renderData;
+	private Fpoint location = new Fpoint();
+//	private Logger logger = new Logger();
 	
-	public EffectSubject(){
+	private static final long eadleMinTime = 500;
+	
+	private volatile int activeEffectIndex = 0;
+	private int nonActiveIndex = 1;
+	private AtomicBoolean indexBlocked = new AtomicBoolean(false);
+	
+	private int districtCameraHook = 0;
+	private long effectTimer; 
+	
+	public EffectSubject(TemporaryEffect effect){
 		tenant = new Tenant(this);
+		this.effect = effect;
+		this.renderData = new DoubleChannelRenderData(effect.getControllers().get(0), effect.subChannelRenderer);
 	}
 
+	public void setToTranslation(Vector3 translation){
+		location.set(translation.x, translation.y);
+		effect.setToTranslation(translation);
+	}
 
 	public void joinWorld(World world) {
 		District d = world.pointSector(this.getCenter());
@@ -42,129 +62,233 @@ public class EffectSubject implements Habitant, EntityCore, Motorable{
 	}
 
 	public String sourceType() {
-		// TODO Auto-generated method stub
-		return null;
+		return SOURCE_TYPE;
 	}
 
 	public void applyEngine(Engine engine) {
+/*		if(!indexBlocked.get()){
+			System.out.println(logger.getlog());
+		}*/
+		Validate.isFalse(indexBlocked.get(), System.currentTimeMillis() + " effect " + this + " is blocked");
+		effect.start();
+		renderData.flushRenderData(0);
+		renderData.substituteRendererData(0);
+		nonActiveIndex = 1;
+		activeEffectIndex = 0;
 		this.engine = engine;
 		World world = engine.getWorld();
 		joinWorld(world);
-		Motor motor = engine.getLazyMotor();
+//		indexBlocked.set(false);
+		motor = engine.getLazyMotor();
 		motor.addLiver(this);
 	}
 
 
 	public void timerSet(long time) {
-		// TODO Auto-generated method stub
-		
+		effectTimer = time;
+//		Arrays.fill(effectTimer, time);
 	}
 
 
 	public void timerAdd(long time) {
-		// TODO Auto-generated method stub
-		
+		effectTimer += time;
+/*		for(int i=0; i<effectTimer.length; i++){
+			effectTimer[i] += time;
+		}*/
+	}
+	
+	private boolean updateDistrictCameraHook(){
+		District d = tenant.getDistrict();
+		if(d == null){
+			return true;
+		}
+		int dHook = d.getCameraShoot();
+		if(districtCameraHook < dHook){
+			districtCameraHook = dHook;
+			return true;
+		}
+		return false;
 	}
 
 
 	public void motorProcess(long currentTime) {
-		// TODO Auto-generated method stub
-		
+		long timeDiff = currentTime - effectTimer;
+		boolean cameraUpdate = updateDistrictCameraHook();
+		if(cameraUpdate || timeDiff > eadleMinTime){
+			if(effect.done()){
+				if(this.getDistrict() == null){
+					if(indexBlocked.get() == false){
+						disappear();
+//						logger.log(System.currentTimeMillis() + " effect disappeared " + Thread.currentThread().getName());
+					}
+				}else{
+					this.leaveDistrict();
+//					logger.log(System.currentTimeMillis() + " effect leaves district " + Thread.currentThread().getName());
+				}
+				return;
+			}
+			ParticleController activeController = effect.getControllers().get(0);
+			float deltaTime = ((float)timeDiff) / 1000f;
+			activeController.deltaTime = deltaTime;
+			activeController.deltaTimeSqr = deltaTime * deltaTime;
+			activeController.update();
+			effectTimer += timeDiff;
+			
+			renderData.flushRenderData(nonActiveIndex);
+			if(indexBlocked.compareAndSet(false, true)){
+//				logger.log(System.currentTimeMillis() + " effect blocked in thread " + Thread.currentThread().getName());
+				renderData.setChannelDataSize(activeController.particles.size);
+				renderData.substituteRendererData(nonActiveIndex);
+				nonActiveIndex = 1 - nonActiveIndex;
+				activeEffectIndex = nonActiveIndex;
+				Validate.isTrue(indexBlocked.get());
+				indexBlocked.set(false);
+//				logger.log(System.currentTimeMillis() + " effect made free in thread " + Thread.currentThread().getName());
+			}else if(cameraUpdate){
+				--districtCameraHook;
+			}
+		}
+	}
+	
+	/**
+	 * Method used in render thread
+	 */
+	private int cnt;
+	public void blockActive(){
+		cnt = 0;
+		while(!indexBlocked.compareAndSet(false, true)){
+//			Gdx.app.debug("WARNING", Thread.currentThread().getName() + ": EffectSubject " + cnt + "  try to block for render");
+			Thread.currentThread().yield();
+			Validate.isTrue(++cnt < 100, System.currentTimeMillis() + " Something is wrong " + this);
+		}
+//		logger.log(System.currentTimeMillis() + " effect blocked in thread " + Thread.currentThread().getName());
+	}
+	
+	/**
+	 * Method used in render thread
+	 */
+	public void freeActive(){
+		Validate.isTrue(indexBlocked.get(), System.currentTimeMillis() + " Somebody else made effect " + this + " free");
+		indexBlocked.set(false);
+//		logger.log(System.currentTimeMillis() + " effect made free in thread " + Thread.currentThread().getName());
+	}
+	
+	public void draw(){
+		effect.getControllers().get(0).draw();
 	}
 
 
 	public boolean alive() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 
 	public Engine getEngine() {
-		// TODO Auto-generated method stub
-		return null;
+		return engine;
 	}
 
 
 	public void disappear() {
-		// TODO Auto-generated method stub
-		
+		tenant.leaveDistrict();
+		boolean removed = motor.removeLiver(this);
+		Validate.isTrue(removed);
+		effect.end();
+//		System.out.println(System.currentTimeMillis() + " " + this + " effect dissapeared");
 	}
 
 
 	public void outOfWorld() {
-		// TODO Auto-generated method stub
-		
+		disappear();
 	}
 
 
 	public District getDistrict() {
-		// TODO Auto-generated method stub
-		return null;
+		return tenant.getDistrict();
 	}
 
 
 	public boolean inPool(Pool pool) {
-		// TODO Auto-generated method stub
-		return false;
+		return tenant.inPool(pool);
 	}
 
 
 	public boolean joinPool(AreaBase pool) {
-		// TODO Auto-generated method stub
-		return false;
+		return tenant.joinPool(pool);
 	}
 
 
 	public boolean leavePool(AreaBase pool) {
-		// TODO Auto-generated method stub
-		return false;
+		return tenant.leavePool(pool);
 	}
 
 
 	public boolean joinDistrict(District sector) {
-		// TODO Auto-generated method stub
-		return false;
+		this.districtCameraHook = 0;
+		return tenant.joinDistrict(sector);
 	}
 
 
 	public boolean leaveDistrict() {
-		// TODO Auto-generated method stub
-		return false;
+//		System.out.println(System.currentTimeMillis() + " " + this + " effect leaves district");
+		return tenant.leaveDistrict();
 	}
 
 
 	public void moveToDistrict(District newOne) {
-		// TODO Auto-generated method stub
-		
+		tenant.moveToDistrict(newOne);
 	}
 
 
 	public int getDistrictMask() {
-		// TODO Auto-generated method stub
-		return 0;
+		return tenant.getDistrictMask();
 	}
 
 
 	public void setDistrictMask(int sectorMask) {
-		// TODO Auto-generated method stub
-		
+		tenant.setDistrictMask(sectorMask);
 	}
 
 
 	public Point getCenter() {
-		// TODO Auto-generated method stub
-		return null;
+		return location;
 	}
 
 
 	public void setEntity(EntityCore e) {
-		// TODO Auto-generated method stub
-		
+		throw new NotSupportedMethodException("Entity of EffectSubject is this. You may rewrite this method in descendant classes.");
 	}
 
 
 	public EntityCore getEntity() {
 		return this;
+	}
+
+	public static class Transfered extends EffectSubject implements ThreadTransferCache.TransferData {
+		
+		private Quarantine<? extends TransferData> portal;
+		private final String cacheName;
+
+		public Transfered(TemporaryEffect effect){
+			this(effect, Cache.DEFAULT_CACHE_NAME);
+		}
+		
+		public Transfered(TemporaryEffect effect, String cacheName) {
+			super(effect);
+			this.cacheName = cacheName;
+		}
+
+		public void setPortal(Quarantine<? extends TransferData> portal) {
+			this.portal = portal;
+		}
+
+		public Quarantine<TransferData> getPortal() {
+			return (Quarantine<TransferData>) portal;
+		}
+
+		public void disappear() {
+			super.disappear();
+			Cache.put(cacheName, this);
+		}
 	}
 
 }

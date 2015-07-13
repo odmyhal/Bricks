@@ -17,6 +17,7 @@ import org.bricks.engine.staff.Entity;
 import org.bricks.engine.staff.Habitant;
 import org.bricks.engine.staff.Subject;
 import org.bricks.exception.Validate;
+import org.bricks.extent.effects.EffectSubject;
 import org.bricks.extent.entity.mesh.ModelSubjectSync;
 import org.bricks.extent.subject.model.ContainsMBPrint;
 import org.bricks.utils.HashLoop;
@@ -45,6 +46,7 @@ public class CameraHelper {
 	private static final float altituteCenter = (worldAltituteMax + worldAltituteMin) / 2;
 	private static final float checkRadius = Preferences.userRoot().node("engine.settings").getFloat("buffer.luft", 1000f) / 2;
 	private static final HashLoop<RenderableProvider> renderables = new HashLoop<RenderableProvider>();
+	private static final Loop<EffectSubject> effects = new HashLoop<EffectSubject>();
 	static{
 		for(int i = 0; i < 10; i++){
 			extrems.add(new Fpoint());
@@ -71,7 +73,7 @@ public class CameraHelper {
 	}
 	
 	private static void setDistrictsOfDimentions(World world){
-		cameraDistricts.clear();
+//		cameraDistricts.clear();
 		int startRow = world.defineRowOfPointSectorY(cameraDimentions.getMinY());
 		int finishRow = world.defineRowOfPointSectorY(cameraDimentions.getMaxY()) + 1;
 		int startCol = world.defineColOfPointSectorX(cameraDimentions.getMinX());
@@ -105,7 +107,7 @@ public class CameraHelper {
 	}
 	
 	private static void setCameraRenderables(Camera camera){
-		renderables.clear();
+//		renderables.clear();
 		for(District d : cameraDistricts){
 			Area area = d.getBuffer();
 			for(int i = 0; i < area.capacity(); i++){
@@ -133,8 +135,13 @@ public class CameraHelper {
 							}
 						}
 						subjectPrint.free();
-					}else if(false){
-						
+					}else if(habitant instanceof EffectSubject){
+						effects.add((EffectSubject) habitant);
+/*						EffectSubject effect = (EffectSubject) habitant;
+						if(effects.add(effect)){
+							effect.blockActive();
+							effect.draw();
+						}*/
 					}
 				}
 			}
@@ -147,6 +154,18 @@ public class CameraHelper {
 		setCameraDistricts(camera);
 		setCameraRenderables(camera);
 	}
+/*	
+	public static final void endEffects(){
+		for(EffectSubject effect : effects){
+			effect.freeActive();
+		}
+	}
+*/	
+	public static final void end(){
+		effects.clear();
+		cameraDistricts.clear();
+		renderables.clear();
+	}
 	
 	public static final Iterable<District> getInCameraDistricts(){
 		return cameraDistricts;
@@ -154,5 +173,9 @@ public class CameraHelper {
 	
 	public static final Iterable<RenderableProvider> getCameraRenderables(){
 		return renderables;
+	}
+	
+	public static final Iterable<EffectSubject> getCameraEffects(){
+		return effects;
 	}
 }

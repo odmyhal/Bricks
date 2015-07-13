@@ -24,11 +24,8 @@ public final class District<E extends EntityCore> extends AreaBase<E>/* implemen
         }
 	};
 */	
-	/**
-	 * Value should be incremented and read in separate threads, but immediate reflection 
-	 * to value changes is not important. So it is no need to make it volatile.
-	 */
-	private int cameraShoot = 0;
+	
+	private AtomicInteger cameraShoot = new AtomicInteger();
 	
 	public District(Ipoint corner, int capacity, int len, int bufferLuft, World world){
 		super(corner, capacity, len);
@@ -64,11 +61,11 @@ public final class District<E extends EntityCore> extends AreaBase<E>/* implemen
 	}
 	
 	public void incrementCameraShoot(){
-		++cameraShoot;
+		cameraShoot.incrementAndGet();
 	}
 	
 	public int getCameraShoot(){
-		return cameraShoot;
+		return cameraShoot.get();
 	}
 
 	public void refreshBoundaries(){

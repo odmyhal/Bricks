@@ -1,0 +1,5 @@
+#surefire
+#Mon Jul 13 21:28:15 EEST 2015
+user.dir=/home/oleh/git/Bricks/bricks/bricks-annotation
+localRepository=/home/oleh/.m2/repository
+basedir=/home/oleh/git/Bricks/bricks/bricks-annotation

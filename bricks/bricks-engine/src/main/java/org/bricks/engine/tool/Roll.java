@@ -12,7 +12,7 @@ public class Roll implements AvareTimer{
 	 */
 	protected float rotation;
 	private float rotationSpeed;
-	public static final float rotationBuff = (float) (Math.PI / 360);
+	public static final float rotationBuff = (float) (Math.PI / (360 * 4));
 	private long rotateTime;
 	protected float lastRotation;
 

@@ -15,23 +15,23 @@ public class SectorMonitor {
 		Ipoint corner = sector.getCorner();
 		int luft = sector.getLuft();
 		
-		if(point.getX() < corner.getX()){
+		if(point.getFX() < corner.getX()){
 			curMask += 64;
-		}else if(point.getX() < corner.getX() + luft){
+		}else if(point.getFX() < corner.getX() + luft){
 			curMask += 4;
-		}else if(point.getX() >= corner.getX() + dimm.getFX()){
+		}else if(point.getFX() >= corner.getX() + dimm.getFX()){
 			curMask += 16;
-		}else if(point.getX() >= corner.getX() + dimm.getFX() - luft){
+		}else if(point.getFX() >= corner.getX() + dimm.getFX() - luft){
 			curMask += 1;
 		}
 		
-		if(point.getY() < corner.getY()){
+		if(point.getFY() < corner.getY()){
 			curMask += 128;
-		}else if(point.getY() < corner.getY() + luft){
+		}else if(point.getFY() < corner.getY() + luft){
 			curMask += 8;
-		}else if(point.getY() >= corner.getY() + dimm.getY()){
+		}else if(point.getFY() >= corner.getY() + dimm.getY()){
 			curMask += 32;
-		}else if(point.getY() >= corner.getY() + dimm.getY() - luft){
+		}else if(point.getFY() >= corner.getY() + dimm.getY() - luft){
 			curMask += 2;
 		}
 		return curMask;

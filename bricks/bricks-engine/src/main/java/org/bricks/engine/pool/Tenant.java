@@ -14,10 +14,10 @@ public class Tenant<E extends EntityCore> {
 	private final Map<AreaBase, Integer> pools = new HashMap<AreaBase, Integer>();
 	private District<E> district;
 	private int sectorMask;
-	private Habitant<E> subject;
+	private Habitant<E> habitant;
 	
-	public Tenant(Habitant<E> subject){
-		this.subject = subject;
+	public Tenant(Habitant<E> habitant){
+		this.habitant = habitant;
 	}
 	
 	public District<E> getDistrict() {
@@ -36,7 +36,7 @@ public class Tenant<E extends EntityCore> {
 		if(pools.containsKey(pool)){
 			return false;
 		}
-		pools.put(pool, pool.addSubject(subject));
+		pools.put(pool, pool.addSubject(habitant));
 		return true;
 	}
 	
@@ -62,7 +62,7 @@ public class Tenant<E extends EntityCore> {
 		if(result){
 			this.district = sector;
 			joinPool(sector.getBuffer());
-			SectorMonitor.monitor(subject);
+			SectorMonitor.monitor(habitant);
 		}
 		return result;
 	}
@@ -75,11 +75,11 @@ public class Tenant<E extends EntityCore> {
 //condition is not appropriatable for Stone
 //		Validate.isTrue(this.district != null, "Subject is out of sector");
 		boolean result = leavePool(this.district);
-		if(result){
-			this.district = null;
-		}
 		for(AreaBase ar : pools.keySet()){
 			ar.freeSubject(pools.get(ar));
+		}
+		if(result){
+			this.district = null;
 		}
 		pools.clear();
 		setDistrictMask(0);
@@ -88,9 +88,9 @@ public class Tenant<E extends EntityCore> {
 	
 	public void moveToDistrict(District<E> newOne){
 		if(district.equals(newOne)){
-			System.out.println("Wrong district found for point: " + subject.getCenter());
+			System.out.println("Wrong district found for point: " + habitant.getCenter());
 		}
-		Validate.isTrue(!(district.equals(newOne)));
+		Validate.isFalse(district.equals(newOne));
 		District<E> oldOne = district;
 		int oldDistrictNum = -1;
 		for(AreaBase ar : pools.keySet()){
