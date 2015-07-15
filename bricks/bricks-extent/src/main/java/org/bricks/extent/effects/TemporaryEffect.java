@@ -31,6 +31,8 @@ public abstract class TemporaryEffect extends ParticleEffect{
 		}
 	}
 	
+	public void finish(){}
+	
 	public void init(){
 		super.init();
 		this.subChannelRenderer.setIdleController();

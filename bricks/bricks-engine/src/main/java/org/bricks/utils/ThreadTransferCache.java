@@ -4,8 +4,8 @@ import org.bricks.utils.Cache.DataProvider;
 
 public class ThreadTransferCache<T extends ThreadTransferCache.TransferData> extends Cache.LocalCache<T> {
 	
-	private static final int cacheSize = 64;
-	private Quarantine<T> portal = new Quarantine<T>(cacheSize);
+	private static final int cacheSize = 128;
+	private Quarantine<T> portal = new Quarantine.MissingQuarantine<T>(cacheSize);
 
 	public ThreadTransferCache(DataProvider<T> dataProvider) {
 		super(dataProvider);

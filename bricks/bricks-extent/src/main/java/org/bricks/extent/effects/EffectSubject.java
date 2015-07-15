@@ -73,6 +73,7 @@ public class EffectSubject implements Habitant, EntityCore, Motorable{
 		effect.start();
 		renderData.flushRenderData(0);
 		renderData.substituteRendererData(0);
+		renderData.setChannelDataSize(0);
 		nonActiveIndex = 1;
 		activeEffectIndex = 0;
 		this.engine = engine;
@@ -119,11 +120,10 @@ public class EffectSubject implements Habitant, EntityCore, Motorable{
 				if(this.getDistrict() == null){
 					if(indexBlocked.get() == false){
 						disappear();
-//						logger.log(System.currentTimeMillis() + " effect disappeared " + Thread.currentThread().getName());
 					}
 				}else{
+					effect.finish();
 					this.leaveDistrict();
-//					logger.log(System.currentTimeMillis() + " effect leaves district " + Thread.currentThread().getName());
 				}
 				return;
 			}

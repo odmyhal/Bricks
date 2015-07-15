@@ -7,8 +7,8 @@ import org.bricks.exception.Validate;
 
 public class Quarantine<Q> implements Iterable<Q>{
 	
-	private AtomicInteger buffCounter = new AtomicInteger(-1);
-	private Slot<Q>[] buffer;
+	protected AtomicInteger buffCounter = new AtomicInteger(-1);
+	protected Slot<Q>[] buffer;
 	private int position = 0;
 	private Iterator<Q> iterator = new QuarantineIterator();
 	
@@ -61,5 +61,20 @@ public class Quarantine<Q> implements Iterable<Q>{
 
 	private class Slot<Q>{
 		private volatile Q data;
+	}
+	
+	public static class MissingQuarantine<K> extends Quarantine<K>{
+
+		public MissingQuarantine(int size) {
+			super(size);
+		}
+		
+		public void push(K object){
+			int index = buffCounter.incrementAndGet() % buffer.length;
+			if(buffer[index].data != null){
+				System.out.println("Warning: Quarantine buffer for " + object.getClass().getCanonicalName() + " is overflow");
+			}
+			buffer[index].data = object;
+		}
 	}
 }
