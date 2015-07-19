@@ -48,6 +48,16 @@ public class FlowWidgetProvider {
 		return new FlowTouchPad(tps, listener);
 	}
 	
+	public static final <T> DrugMoveTouchPad produceDrugMoveTouchPad(FlowMutableAction<T, FlowTouchPad> touchAction, FlowMutableAction<T, FlowTouchPad> drugAction, String name, int radius, Preferences prefs){
+		String padName = name + "-Backgorund-" + radius;
+		int knobRadius = Math.max(10, radius / 13);
+		String knobName = name + "-Knob-" + knobRadius;
+		TouchpadStyle tps = new TouchpadStyle(produceBackground(padName, radius, prefs), produceKnob(knobName, knobRadius, prefs));
+		
+		DoubleActionListener<FlowTouchPad> listener = new DoubleActionListener<FlowTouchPad>(touchAction, drugAction);
+		return new DrugMoveTouchPad(tps, listener);
+	}
+	
 	public static final <T> HalfRTouchPad produceFlowHalfRTouchPad(FlowMutableAction<T, HalfRTouchPad> action, String name, int radius){
 		return produceFlowHalfRTouchPad(action, name, radius, defaults);
 	}
@@ -87,16 +97,38 @@ public class FlowWidgetProvider {
 	}
 
 	//TouchPads with defined textures
-	public static final <T> FlowTouchPad produceFlowTouchPad(FlowMutableAction<T, FlowTouchPad> action, Drawable... background){
-		TouchpadStyle tps = new TouchpadStyle(new CompoundDrawable(background), null);
+	public static final <T> FlowTouchPad produceFlowTouchPad(FlowMutableAction<T, FlowTouchPad> action, Drawable knob, Drawable... background){
+		TouchpadStyle tps = new TouchpadStyle(new CompoundDrawable(background), knob);
 		FlowTouchListener<FlowTouchPad> listener = new FlowTouchListener<FlowTouchPad>(action);
 		return new FlowTouchPad(tps, listener);
 	}
 	
-	public static final <T> FlowTouchPad produceFlowTouchPad(FlowMutableAction<T, FlowTouchPad> action, String... name){
-		TouchpadStyle tps = new TouchpadStyle(produceCompoundDrawable(name), null);
+	public static final <T> DrugMoveTouchPad produceDrugMoveTouchPad(FlowMutableAction<T, FlowTouchPad> touchAction, FlowMutableAction<T, FlowTouchPad> drugAction, Drawable knob, Drawable... background){
+		TouchpadStyle tps = new TouchpadStyle(new CompoundDrawable(background), knob);
+		DoubleActionListener<FlowTouchPad> listener = new DoubleActionListener<FlowTouchPad>(touchAction, drugAction);
+		return new DrugMoveTouchPad(tps, listener);
+	}
+	
+	public static final <T> FlowTouchPad produceFlowTouchPad(FlowMutableAction<T, FlowTouchPad> action, String knobName, String... backgroundName){
+		TouchpadStyle tps = null;
+		if(knobName == null){
+			tps = new TouchpadStyle(produceCompoundDrawable(backgroundName), null);
+		}else{
+			tps = new TouchpadStyle(produceCompoundDrawable(backgroundName), new DrawableRoll(Skinner.instance().skin().getRegion(knobName)));
+		}
 		FlowTouchListener<FlowTouchPad> listener = new FlowTouchListener<FlowTouchPad>(action);
 		return new FlowTouchPad(tps, listener);
+	}
+	
+	public static final <T> DrugMoveTouchPad produceDrugMoveTouchPad(FlowMutableAction<T, FlowTouchPad> touchAction, FlowMutableAction<T, FlowTouchPad> drugAction, String knobName, String... backgroundName){
+		TouchpadStyle tps = null;
+		if(knobName == null){
+			tps = new TouchpadStyle(produceCompoundDrawable(backgroundName), null);
+		}else{
+			tps = new TouchpadStyle(produceCompoundDrawable(backgroundName), new DrawableRoll(Skinner.instance().skin().getRegion(knobName)));
+		}
+		DoubleActionListener<FlowTouchPad> listener = new DoubleActionListener<FlowTouchPad>(touchAction, drugAction);
+		return new DrugMoveTouchPad(tps, listener);
 	}
 	
 	private static final Drawable produceCompoundDrawable(String... pName){

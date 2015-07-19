@@ -19,7 +19,7 @@ public class CameraRollAction extends FlowMutableAction<Camera, FlowTouchPad>{
 	private float rotationSpeed;// = Math.PI;
 	private double curRad, tarRad, curSpeed, diffRad;
 	
-	private Vector2 touchPercentile = new Vector2();
+	protected Vector2 touchPercentile = new Vector2();
 	
 	public CameraRollAction(Camera camera){
 		this(camera, InteractiveController.cameraDefaults);
@@ -64,16 +64,25 @@ public class CameraRollAction extends FlowMutableAction<Camera, FlowTouchPad>{
 		
 		return result;
 	}
+	
+	protected double currentRotation(){
+		return curRad;
+	}
 
 	@Override
 	public void init(FlowTouchPad widget) {
-		touchPercentile.set(widget.getKnobPercentX(), widget.getKnobPercentY());
-		touchPercentile.nor();
+		touchPercentile = calculateDirectionVector(widget);
 		tarRad = AlgebraUtils.trigToRadians(touchPercentile.x, touchPercentile.y);
 		curSpeed = rotationSpeed;
 		diffRad = tarRad - curRad;
 		if( diffRad > Math.PI || (diffRad < 0 && diffRad > - Math.PI)){
 			curSpeed *= -1;
 		}
+	}
+	
+	protected Vector2 calculateDirectionVector(FlowTouchPad widget){
+		touchPercentile.set(widget.getKnobPercentX(), widget.getKnobPercentY());
+		touchPercentile.nor();
+		return touchPercentile;
 	}
 }

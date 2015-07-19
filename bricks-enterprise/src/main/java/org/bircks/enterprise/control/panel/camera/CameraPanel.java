@@ -16,10 +16,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class CameraPanel extends AnimationRisePanel{
 	
-	private Camera camera;
-	private RotationDependAction.RotationProvider rotationProvider;
-	private Preferences widgetDefaults;
-	private Preferences cameraDefaults;
+	protected Camera camera;
+	protected RotationDependAction.RotationProvider rotationProvider;
+	protected Preferences widgetDefaults;
+	protected Preferences cameraDefaults;
 	
 	public CameraPanel(Camera camera){
 		this(camera, "panel.defaults", "camera.defaults");
@@ -46,7 +46,7 @@ public class CameraPanel extends AnimationRisePanel{
 		stack.add(controlPanel());
 	}
 
-	private Table controlPanel(){
+	protected Table controlPanel(){
 		Table controlPanel = new Table();
 		controlPanel.left().top();
 		controlPanel.pad(10f);

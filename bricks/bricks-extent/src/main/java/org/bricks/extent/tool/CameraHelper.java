@@ -18,7 +18,6 @@ import org.bricks.engine.staff.Habitant;
 import org.bricks.engine.staff.Subject;
 import org.bricks.exception.Validate;
 import org.bricks.extent.effects.EffectSubject;
-import org.bricks.extent.entity.mesh.ModelSubjectSync;
 import org.bricks.extent.subject.model.ContainsMBPrint;
 import org.bricks.utils.HashLoop;
 import org.bricks.utils.LinkLoop;
@@ -98,11 +97,14 @@ public class CameraHelper {
 			float halfHeight = habarites.getFY() / 2;
 			float x = corner.getFX() + halfWidth;
 			float y = corner.getFY() + halfHeight;
-			if(camera.frustum.boundsInFrustum(x, y, altituteCenter, halfWidth, halfHeight, altituteHalf)){
+			if(!camera.frustum.boundsInFrustum(x, y, altituteCenter, halfWidth, halfHeight, altituteHalf)){
+				dIterator.remove();
+			}
+/*			if(camera.frustum.boundsInFrustum(x, y, altituteCenter, halfWidth, halfHeight, altituteHalf)){
 				d.incrementCameraShoot();
 			}else{
 				dIterator.remove();
-			}
+			}*/
 		}
 	}
 	
@@ -163,6 +165,9 @@ public class CameraHelper {
 */	
 	public static final void end(){
 		effects.clear();
+		for(District d : cameraDistricts){
+			d.incrementCameraShoot();
+		}
 		cameraDistricts.clear();
 		renderables.clear();
 	}

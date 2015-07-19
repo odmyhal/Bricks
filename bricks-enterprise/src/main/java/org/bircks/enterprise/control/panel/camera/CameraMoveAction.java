@@ -76,6 +76,7 @@ public class CameraMoveAction extends RotationDependAction<Camera, FlowTouchPad>
 	public void init(FlowTouchPad widget) {
 		tarX = widget.getKnobPercentX() * maxRadius;
 		tarY = widget.getKnobPercentY() * maxRadius;
+//		System.out.println("Init camera move action (" + this + ") to x = " + widget.getKnobPercentX() + " , y = " + widget.getKnobPercentY() + ", maxRadius: " + maxRadius);
 		moveDirection.set(tarX - curX, tarY - curY);
 		moveDirection.scl(moveSpeed / moveDirection.len());
 	}

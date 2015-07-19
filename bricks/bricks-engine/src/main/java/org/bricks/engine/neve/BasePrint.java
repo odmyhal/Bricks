@@ -15,7 +15,11 @@ public abstract class BasePrint<P extends Printable> implements Imprint<P>{
 	
 	//should be protected without interface
 	private void checkCounterZero(){
-		Validate.isTrue(counter.get() == 0, "Counter should be zero, but we have: " + counter.get());
+		if(counter.get() != 0){
+			throw new RuntimeException("Counter should be zero, but we have: " + counter.get() +
+					"\n for print " + printStore.getInnerPrint().getClass().getCanonicalName() + " of target " + printStore.getInnerPrint().getTarget().getClass().getCanonicalName());
+		}
+//		Validate.isTrue(counter.get() == 0, "Counter should be zero, but we have: " + counter.get());
 	}
 
 	//should be protected without interface
