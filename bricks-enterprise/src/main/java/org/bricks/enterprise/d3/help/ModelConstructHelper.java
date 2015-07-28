@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+
+import org.bricks.core.entity.Tuple;
 import org.bricks.enterprise.d3.help.Vector3Helper;
 
 public class ModelConstructHelper {
@@ -39,12 +41,42 @@ public class ModelConstructHelper {
 		short i0 = meshBuilder.vertex(v0, null, null, null);
 		short i1 = meshBuilder.vertex(v1, null, null, null);
 		short i2 = meshBuilder.vertex(v2, null, null, null);
+		short i3 = meshBuilder.vertex(v3, null, null, null);
 		meshBuilder.index(i0, i2, i1);
+		meshBuilder.index(i1, i2, i3);
 
-		i0 = meshBuilder.vertex(v2, null, null, null);
+/*		i0 = meshBuilder.vertex(v2, null, null, null);
 		i1 = meshBuilder.vertex(v3, null, null, null);
 		i2 = meshBuilder.vertex(v1, null, null, null);
-		meshBuilder.index(i0, i1, i2);
+		meshBuilder.index(i0, i1, i2);*/
+	}
+	
+	public static void apply2Triangles(Tuple<Vector3, Short> v0, Tuple<Vector3, Short> v1, Tuple<Vector3, Short> v2, Tuple<Vector3, Short> v3, MeshPartBuilder meshBuilder){
+/*		short i0 = meshBuilder.vertex(v0, null, null, null);
+		short i1 = meshBuilder.vertex(v1, null, null, null);
+		short i2 = meshBuilder.vertex(v2, null, null, null);
+		short i3 = meshBuilder.vertex(v3, null, null, null);*/
+		updatePointTuple(v0, meshBuilder);
+		updatePointTuple(v1, meshBuilder);
+		updatePointTuple(v2, meshBuilder);
+		updatePointTuple(v3, meshBuilder);
+		
+		meshBuilder.index(v0.getSecond().shortValue(), v2.getSecond().shortValue(), v1.getSecond().shortValue());
+		meshBuilder.index(v1.getSecond().shortValue(), v2.getSecond().shortValue(), v3.getSecond().shortValue());
+
+/*		i0 = meshBuilder.vertex(v2, null, null, null);
+		i1 = meshBuilder.vertex(v3, null, null, null);
+		i2 = meshBuilder.vertex(v1, null, null, null);
+		meshBuilder.index(i0, i1, i2);*/
+	}
+	
+	private static boolean updatePointTuple(Tuple<Vector3, Short> v, MeshPartBuilder meshBuilder){
+		if(v.getSecond() == null){
+			short index = meshBuilder.vertex(v.getFirst(), null, null, null);
+			v.setSecond(new Short(index));
+			return true;
+		}
+		return false;
 	}
 	
 	public static void applyTriangleNormal(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 n, MeshPartBuilder meshBuilder){

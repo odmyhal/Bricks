@@ -15,11 +15,13 @@ public abstract class BasePrint<P extends Printable> implements Imprint<P>{
 	
 	//should be protected without interface
 	private void checkCounterZero(){
-		if(counter.get() != 0){
-			throw new RuntimeException("Counter should be zero, but we have: " + counter.get() +
+		int cnt = 0;
+		while(counter.get() != 0){
+			System.out.println("WARNING: (org.bricks.engine.neve.BasePrint) Counter should be zero, but we have: " + counter.get() +
 					"\n for print " + printStore.getInnerPrint().getClass().getCanonicalName() + " of target " + printStore.getInnerPrint().getTarget().getClass().getCanonicalName());
 		}
-//		Validate.isTrue(counter.get() == 0, "Counter should be zero, but we have: " + counter.get());
+		Validate.isTrue(++cnt < 3);
+		Thread.currentThread().yield();
 	}
 
 	//should be protected without interface
