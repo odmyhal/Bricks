@@ -15,6 +15,7 @@ public class DoubleActionListener<W extends Widget> extends FlowTouchListener<W>
 	
 	private InputListener nativeListener;
 	private Vector2 oldPosition = new Vector2();
+	private Vector2 knobPersents = new Vector2();
 	
 	public DoubleActionListener(FlowMutableAction<?, W> touchAction, FlowMutableAction<?, W> drugAction) {
 		super(touchAction);
@@ -34,6 +35,19 @@ public class DoubleActionListener<W extends Widget> extends FlowTouchListener<W>
 	
 	public Vector2 getPosition(){
 		return oldPosition;
+	}
+	
+	public void rememberKnobPersent(float persentX, float persentY){
+		knobPersents.set(persentX, persentY);
+	}
+	
+	public void tuneKnobAfterResize(float width, float height){
+		float xPos = width * (knobPersents.x + 1) / 2;
+		float yPos = height * (knobPersents.y + 1) / 2;
+//		System.out.println("TuneKnob after resize persents: " + knobPersents + ", width: " + width + ", height: " + height);
+		nativeListener.touchDown(null, xPos, yPos, 0, 0);
+		nativeListener.touchUp(null, xPos, yPos, 0, 0);
+		oldPosition.set(xPos, yPos);
 	}
 
 	@Override
@@ -62,8 +76,18 @@ public class DoubleActionListener<W extends Widget> extends FlowTouchListener<W>
 	
 	public void touchDragged (InputEvent event, float x, float y, int pointer) {
 		if(isDrug(pointer, x, y)){
+//			System.out.println("Touch drugged: " + x + ", " + y); 
 			tuneAction(this.drugAction);
 			oldPosition.set(x, y);
 		}
+	}
+	
+	public void simulateDrug(float x, float y){
+		nativeListener.touchDown(null, x + stayDiff + 1, y + stayDiff + 1, 0, 0);
+		touchDown(null, x + stayDiff + 1, y + stayDiff + 1, 0, 0);
+		nativeListener.touchDragged(null, x, y, 0);
+		touchDragged(null, x, y, 0);
+		nativeListener.touchUp(null, x, y, 0, 0);
+		touchUp(null, x, y, 0, 0);
 	}
 }

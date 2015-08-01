@@ -38,8 +38,14 @@ public class CameraRollAction extends FlowMutableAction<Camera, FlowTouchPad>{
 		newRad = curRad + rad;
 		if(curSpeed > 0){
 			if(newRad > Math.PI * 2){
-				newRad -= Math.PI * 2;
-				curRad = 0;
+				if(tarRad > Math.PI){
+					rad -= newRad - tarRad;
+					newRad = tarRad;
+					result = true;
+				}else{
+					newRad -= Math.PI * 2;
+					curRad = 0;
+				}
 			}
 			if(newRad >= tarRad && curRad <= tarRad){
 				rad -= newRad - tarRad;
@@ -48,8 +54,14 @@ public class CameraRollAction extends FlowMutableAction<Camera, FlowTouchPad>{
 			}
 		}else{
 			if(newRad < 0){
-				newRad += Math.PI * 2;
-				curRad = Math.PI * 2;
+				if(tarRad < Math.PI){
+					rad -= newRad - tarRad;
+					newRad = tarRad;
+					result = true;
+				}else{
+					newRad += Math.PI * 2;
+					curRad = Math.PI * 2;
+				}
 			}
 			if(newRad <= tarRad && curRad >= tarRad){
 				rad -= newRad - tarRad;
@@ -73,6 +85,7 @@ public class CameraRollAction extends FlowMutableAction<Camera, FlowTouchPad>{
 	public void init(FlowTouchPad widget) {
 		touchPercentile = calculateDirectionVector(widget);
 		tarRad = AlgebraUtils.trigToRadians(touchPercentile.x, touchPercentile.y);
+//		System.out.format("Found tar rad: " + tarRad + ", cur is : " + curRad);
 		curSpeed = rotationSpeed;
 		diffRad = tarRad - curRad;
 		if( diffRad > Math.PI || (diffRad < 0 && diffRad > - Math.PI)){

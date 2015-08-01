@@ -1,5 +1,7 @@
 package org.bricks.engine;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.bricks.engine.item.Motorable;
 import org.bricks.utils.HashLoop;
@@ -7,6 +9,8 @@ import org.bricks.utils.Loop;
 import org.bricks.utils.Quarantine;
 
 public class Motor implements Runnable {
+
+	private static final Map<Thread, Motor> threadMotors = new HashMap<Thread, Motor>(8, 1f);
 	
 	private volatile boolean run = true;
 	private Loop<Motorable> alive = new HashLoop<Motorable>();
@@ -17,6 +21,9 @@ public class Motor implements Runnable {
 
 	private long startTime, hooks;
 	public void run() {
+		synchronized(threadMotors){
+			threadMotors.put(Thread.currentThread(), this);
+		}
 		startTime = System.currentTimeMillis();
 		hooks = 0;
 		System.out.println("Motor " + Thread.currentThread().getName() + " started...");
@@ -81,4 +88,7 @@ public class Motor implements Runnable {
 		return capacity.get();
 	}
 
+	public static final Motor getCurrentMotor(){
+		return threadMotors.get(Thread.currentThread());
+	}
 }

@@ -22,7 +22,10 @@ import org.bricks.utils.Quarantine;
 import org.bricks.utils.ThreadTransferCache;
 import org.bricks.utils.ThreadTransferCache.TransferData;
 import org.bricks.extent.effects.DoubleChannelRenderData;
+import org.bricks.extent.effects.BricksParticleSystem.NonContiniousEmitter;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleChannels;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleController;
 import com.badlogic.gdx.math.Vector3;
 
@@ -36,7 +39,7 @@ public class EffectSubject implements Habitant, EntityCore, Motorable{
 	private Motor motor;
 	private DoubleChannelRenderData renderData;
 	private Fpoint location = new Fpoint();
-	private Logger logger = new Logger();
+//	private Logger logger = new Logger();
 	
 	private static final long eadleMinTime = 500;
 	
@@ -51,7 +54,7 @@ public class EffectSubject implements Habitant, EntityCore, Motorable{
 		tenant = new Tenant(this);
 		this.effect = effect;
 		this.renderData = new DoubleChannelRenderData(effect.getControllers().get(0), effect.subChannelRenderer);
-		logger.log("Effect subject created");
+//		logger.log("Effect subject created");
 	}
 
 	public void setToTranslation(Vector3 translation){
@@ -68,13 +71,13 @@ public class EffectSubject implements Habitant, EntityCore, Motorable{
 	public String sourceType() {
 		return SOURCE_TYPE;
 	}
-
+	
 	public void applyEngine(Engine engine) {
-/*		if(!indexBlocked.get()){
-			System.out.println(logger.getlog());
-		}*/
+		applyEngine(engine, engine.getLazyMotor());
+	}
+
+	public void applyEngine(Engine engine, Motor motor) {
 		Validate.isFalse(indexBlocked.get(), System.currentTimeMillis() + " effect " + this + " is blocked");
-		logger.log(" effect is applying engine");
 		effect.start();
 		renderData.flushRenderData(0);
 		renderData.substituteRendererData(0);
@@ -84,9 +87,9 @@ public class EffectSubject implements Habitant, EntityCore, Motorable{
 		this.engine = engine;
 		World world = engine.getWorld();
 		joinWorld(world);
-//		indexBlocked.set(false);
-		motor = engine.getLazyMotor();
+		this.motor = motor;
 		motor.addLiver(this);
+//		System.out.println(System.currentTimeMillis() + " " + Thread.currentThread().getName() + " -- effect " + this + " applyed to engine, with " + effect.getClass().getCanonicalName());
 	}
 
 
@@ -138,10 +141,13 @@ public class EffectSubject implements Habitant, EntityCore, Motorable{
 			activeController.deltaTimeSqr = deltaTime * deltaTime;
 			activeController.update();
 			effectTimer += timeDiff;
-			
 			renderData.flushRenderData(nonActiveIndex);
+//			System.out.println(System.currentTimeMillis() + " " + timeDiff + " " + Thread.currentThread().getName() + " -- effect " + this + " set new position: " + renderData.getFirstPosition(nonActiveIndex));
+/*			if(activeController.particles.size == 0){
+				System.out.println("Controller is empty. " + ((NonContiniousEmitter)activeController.emitter).showTimerData());
+			}*/
 			if(indexBlocked.compareAndSet(false, true)){
-				logger.log(" motor blocked effect");
+//				logger.log(" motor blocked effect");
 //				logger.log(System.currentTimeMillis() + " effect blocked in thread " + Thread.currentThread().getName());
 				renderData.setChannelDataSize(activeController.particles.size);
 				renderData.substituteRendererData(nonActiveIndex);
@@ -151,7 +157,7 @@ public class EffectSubject implements Habitant, EntityCore, Motorable{
 //				indexBlocked.set(false);
 				boolean set = indexBlocked.compareAndSet(true, false);
 				Validate.isTrue(set);
-				logger.log(" motor unblocked effect");
+//				logger.log(" motor unblocked effect");
 //				logger.log(System.currentTimeMillis() + " effect made free in thread " + Thread.currentThread().getName());
 			}else if(cameraUpdate){
 				--districtCameraHook;
@@ -169,11 +175,12 @@ public class EffectSubject implements Habitant, EntityCore, Motorable{
 			Gdx.app.debug("WARNING", Thread.currentThread().getName() + ": EffectSubject " + cnt + "  try to block for render");
 			Thread.currentThread().yield();
 			if(cnt > 200){
-				System.out.println(logger.getlog());
+				throw new RuntimeException("Could not block effect");
+//				System.out.println(logger.getlog());
 			}
 			Validate.isTrue(++cnt < 100, System.currentTimeMillis() + " Something is wrong " + this);
 		}
-		logger.log(" render	Blocked effect");
+//		logger.log(" render	Blocked effect");
 //		logger.log(System.currentTimeMillis() + " effect blocked in thread " + Thread.currentThread().getName());
 	}
 	
@@ -184,7 +191,7 @@ public class EffectSubject implements Habitant, EntityCore, Motorable{
 //		Validate.isTrue(indexBlocked.get(), System.currentTimeMillis() + " Somebody else made effect " + this + " free");
 		boolean set =  indexBlocked.compareAndSet(true, false);
 		Validate.isTrue(set);
-		logger.log(" render	Unblocked effect");
+//		logger.log(" render	Unblocked effect");
 //		logger.log(System.currentTimeMillis() + " effect made free in thread " + Thread.currentThread().getName());
 	}
 	
@@ -302,6 +309,7 @@ public class EffectSubject implements Habitant, EntityCore, Motorable{
 
 		public void disappear() {
 			super.disappear();
+//			System.out.println(System.currentTimeMillis() + " " + Thread.currentThread().getName() + " -- effect " + this + ", disappeared from engine ");
 			Cache.put(cacheName, this);
 		}
 	}

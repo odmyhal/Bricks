@@ -1,8 +1,8 @@
 #surefire
-#Sun Jul 26 13:54:04 EEST 2015
+#Sat Aug 01 11:51:28 EEST 2015
 testClassesDirectory=/home/oleh/git/Bricks/bricks-enterprise/target/test-classes
 classPathUrl.4=/home/oleh/.m2/repository/junit/junit/4.11/junit-4.11.jar
-classPathUrl.3=/home/oleh/git/Bricks/bricks/bricks-engine/target/bricks-engine-0.0.1-SNAPSHOT.jar
+classPathUrl.3=/home/oleh/.m2/repository/com/odmyhal/bricks-engine/0.0.1-SNAPSHOT/bricks-engine-0.0.1-SNAPSHOT.jar
 classPathUrl.2=/home/oleh/.m2/repository/com/badlogicgames/gdx/gdx/1.6.1/gdx-1.6.1.jar
 useManifestOnlyJar=true
 classPathUrl.1=/home/oleh/git/Bricks/bricks-enterprise/target/classes

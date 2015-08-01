@@ -34,6 +34,7 @@ public class CameraPanel extends AnimationRisePanel{
 	}
 	
 	public CameraPanel(Camera camera, RotationDependAction.RotationProvider rotationProvider, String widgetPrefName, String cameraPrefName){
+		super(Preferences.userRoot().node(widgetPrefName));
 		this.camera = camera;
 		this.rotationProvider = rotationProvider;
 		widgetDefaults = Preferences.userRoot().node(widgetPrefName);

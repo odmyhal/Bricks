@@ -23,4 +23,14 @@ public class DrugMoveTouchPad extends FlowTouchPad{
 	public DoubleActionListener getListener(){
 		return listener;
 	}
+	
+	public void layout(){
+		super.layout();
+		listener.tuneKnobAfterResize(this.getWidth(), this.getHeight());
+//		System.out.println("DrugMoveTouchPad layout");
+	}
+	
+	public void rememberKnobPersent(){
+		listener.rememberKnobPersent(this.getKnobPercentX(), this.getKnobPercentY());
+	}
 }

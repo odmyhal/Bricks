@@ -50,13 +50,18 @@ public class BricksParticleSystem {
 		}
 		
 		public boolean finished(){
-			return durationTimer > duration;
+			return durationTimer >= duration;
 		}
 		
 		@Override
 		public ParticleControllerComponent copy () {
 			return new NonContiniousEmitter(this);
 		}
+/*		
+		public String showTimerData(){
+			return "durationTimer: " + durationTimer + ", duration: " + duration;
+		}
+		*/
 	}
 	
 	
