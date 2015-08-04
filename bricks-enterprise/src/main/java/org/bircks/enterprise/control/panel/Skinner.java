@@ -54,6 +54,18 @@ public class Skinner {
 		pixmap.drawRectangle(padding, padding, width - padding * 2, height - padding * 2);
 		return new Texture(pixmap);
 	}
+	
+	public Texture produceFrameWithText(int width, int height, int padding, Color background, Color border,
+			int textX, int textY, Color textColor, String text){
+		Pixmap pixmap = new Pixmap(width, height, Format.RGBA8888);
+		pixmap.setColor(background);
+		pixmap.fillRectangle(padding, padding, width - padding * 2, height - padding * 2);
+		pixmap.setColor(border);
+		pixmap.drawRectangle(padding, padding, width - padding * 2, height - padding * 2);
+		Texture texture = new Texture(pixmap);
+		pixmap.dispose();
+		return texture;
+	}
 
 	public Skin skin(){
 		return skin;

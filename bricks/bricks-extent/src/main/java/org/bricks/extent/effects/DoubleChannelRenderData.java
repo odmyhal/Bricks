@@ -4,6 +4,8 @@ import java.util.Map.Entry;
 
 import org.bricks.exception.Validate;
 import org.bricks.utils.LoopMap;
+
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.particles.ParallelArray.FloatChannel;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleChannels;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleController;
@@ -44,17 +46,17 @@ public class DoubleChannelRenderData {
 		}
 	}
 /*	
-	public Vector3 getFirstPosition(int index){
+	public Color getFirstPosition(int index){
 		if(controller.particles.size > 0){
 			for(Entry<ChannelDescriptor, FloatChannel> entry : channels[index].entryLoop()){
-				if(entry.getKey().equals(ParticleChannels.Position)){
+				if(entry.getKey().equals(ParticleChannels.Color)){
 					FloatChannel posChannel = entry.getValue();
-					return new Vector3(posChannel.data[0], posChannel.data[1], posChannel.data[2]);
+					return new Color(posChannel.data[0], posChannel.data[1], posChannel.data[2], posChannel.data[3]);
 				}
 			}
 			System.out.println("Error could not found pos channel");
 		}
-		return new Vector3(-999999f, -999999f, -999999f);
+		return new Color(-999999f, -999999f, -999999f, -999999f);
 	}
 */	
 	protected void setChannelDataSize(int size){

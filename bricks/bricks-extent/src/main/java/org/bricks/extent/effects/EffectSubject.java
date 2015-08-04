@@ -142,6 +142,7 @@ public class EffectSubject implements Habitant, EntityCore, Motorable{
 			activeController.update();
 			effectTimer += timeDiff;
 			renderData.flushRenderData(nonActiveIndex);
+//			System.out.println("Data set Color: " + renderData.getFirstPosition(nonActiveIndex).a);
 //			System.out.println(System.currentTimeMillis() + " " + timeDiff + " " + Thread.currentThread().getName() + " -- effect " + this + " set new position: " + renderData.getFirstPosition(nonActiveIndex));
 /*			if(activeController.particles.size == 0){
 				System.out.println("Controller is empty. " + ((NonContiniousEmitter)activeController.emitter).showTimerData());
