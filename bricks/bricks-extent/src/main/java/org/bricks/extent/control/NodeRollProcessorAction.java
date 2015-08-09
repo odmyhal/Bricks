@@ -34,7 +34,7 @@ public class NodeRollProcessorAction<T extends MultiLiver<ModelBrickSubject<?, ?
 	}
 	
 	@Override
-	public void init(W widget) {
+	public boolean init(W widget) {
 		touchPercentile.set(widget.getKnobPercentX(), widget.getKnobPercentY());
 		touchPercentile.nor();
 		float tarRad = (float)AlgebraUtils.trigToRadians(touchPercentile.x, touchPercentile.y);
@@ -46,12 +46,7 @@ public class NodeRollProcessorAction<T extends MultiLiver<ModelBrickSubject<?, ?
 			nodeRollProcessor.init(targetRotation, curRotationSpeed);
 			addChecker(nodeRollProcessor);
 		}
-/*		RotationHelper.calculateRotationData(rotationProvider.provideRotation(), tarRad, rotationSpeed);
-		float curRotationSpeed = RotationHelper.getCalculatedRotationSpeed();
-		float targetRotation = RotationHelper.getCalculatedTargetRotation();
-		
-		nodeRollProcessor.init(targetRotation, curRotationSpeed);
-		addChecker(nodeRollProcessor);*/
+		return true;
 	}
 
 }

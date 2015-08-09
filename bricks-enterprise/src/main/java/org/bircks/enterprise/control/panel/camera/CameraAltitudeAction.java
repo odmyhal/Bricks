@@ -17,9 +17,10 @@ public class CameraAltitudeAction extends FlowMutableAction<Camera, CameraAltitu
 	}
 
 	@Override
-	public void init(CameraAltitudeSlider widget) {
+	public boolean init(CameraAltitudeSlider widget) {
 		tarAltitude = widget.getValue();
 		curSpeed = tarAltitude >= curAltitude ? altitudeSpeed : -altitudeSpeed;
+		return true;
 	}
 
 	@Override

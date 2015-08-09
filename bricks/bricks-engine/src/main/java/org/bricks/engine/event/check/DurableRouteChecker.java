@@ -22,7 +22,7 @@ public class DurableRouteChecker<T extends DurableRouteChecker.DurableRoutedWalk
 
 	@Override
 	protected Event popEvent(T target, long eventTime){
-		if(target.correctRoute()){
+		if(target.correctRoute(eventTime)){
 			if(this.nextIndex % 2 == 0){
 				this.indexBack();
 			}
@@ -34,6 +34,6 @@ public class DurableRouteChecker<T extends DurableRouteChecker.DurableRoutedWalk
 
 	public static interface DurableRoutedWalker<I extends WalkPrint> extends Walker<I, Fpoint>{
 		
-		public boolean correctRoute();
+		public boolean correctRoute(long curTime);
 	}
 }

@@ -27,6 +27,7 @@ public class CameraSatellite implements Satellite<Point, Roll>, RotationProvider
 	private int lastIndex = 0;
 	
 	private float generalRotation;
+	private boolean needUpdate = true;
 
 	Fpoint tmp = new Fpoint(0f, 0f);
 	
@@ -38,12 +39,17 @@ public class CameraSatellite implements Satellite<Point, Roll>, RotationProvider
 	/**
 	 * Method called in motor thread
 	 */
+//	public volatile int rotateIndex = 0;
+//	public float rotatedRotation = 0;
+//	public float updatedRotation = 0;
 	public void rotate(Roll roll, Origin<Point> central){
 		q[curIndex] = 1;
-		rotate[curIndex] = roll.lastRotation();
+		rotate[curIndex] += roll.lastRotation();
 		orgX[curIndex] = central.source.getX();
 		orgY[curIndex] = central.source.getY();
 		generalRotation = roll.getRotation();
+//		rotatedRotation += roll.lastRotation();
+//		++rotateIndex;
 	}
 
 	/**
@@ -51,23 +57,27 @@ public class CameraSatellite implements Satellite<Point, Roll>, RotationProvider
 	 */
 	public void translate(Origin<Point> trn) {
 		q[curIndex] = 2;
-		trX[curIndex] = trn.source.getX();
-		trY[curIndex] = trn.source.getY();
+		trX[curIndex] += trn.source.getX();
+		trY[curIndex] += trn.source.getY();
 	}
 
 	/**
 	 * Method called in motor thread
 	 */
+//	public volatile int updateIndex = 0;
 	public void update() {
 		int nextIndex = (curIndex + 1) % cap;
 		trX[nextIndex] = trY[nextIndex] = 0;
 		rotate[nextIndex] = 0f;
 		curIndex = nextIndex;
+//		++updateIndex;
 	}
 
 	/**
 	 * Method called in render thread
 	 */
+//	public int applyCounter = 0;
+//	public int trnApply = 0;
 	public void applyUpdates(){
 		int index = curIndex;
 		if(lastIndex != index){
@@ -80,16 +90,21 @@ public class CameraSatellite implements Satellite<Point, Roll>, RotationProvider
 				}else if(rotate[lastIndex] == 0){
 					translateX += trX[lastIndex];
 					translateY += trY[lastIndex];
+//					++trnApply;
 				}else{
 //					generalRotation = rotation[lastIndex];
 					if( (trX[lastIndex] == 0 && trY[lastIndex] == 0) || q[lastIndex] == 2 ){
 						this.camera.translate(translateX, translateY, 0f);
 						rotateCamera(rotate[lastIndex], orgX[lastIndex], orgY[lastIndex]);
+//						updatedRotation += rotate[lastIndex];
+//						++applyCounter;
 						translateX = trX[lastIndex];
 						translateY = trY[lastIndex];
 					}else{
 						this.camera.translate(translateX + trX[lastIndex], translateY + trY[lastIndex], 0f);
 						rotateCamera(rotate[lastIndex], orgX[lastIndex], orgY[lastIndex]);
+//						updatedRotation += rotate[lastIndex];
+//						++applyCounter;
 						translateX = 0;
 						translateY = 0;
 					}
@@ -98,6 +113,17 @@ public class CameraSatellite implements Satellite<Point, Roll>, RotationProvider
 			}while(lastIndex != index);
 			this.camera.translate(translateX, translateY, 0f);
 			this.camera.update();
+		}
+		needUpdate = false;
+
+//		System.out.println("Applying " + updateIndex + ", " + rotateIndex + ", applyed: " + applyCounter + ", appTrn " + trnApply + " || rotated: " + rotatedRotation + ", updated " + updatedRotation);
+	}
+	
+	public void checkUpdate(){
+		if(needUpdate){
+			applyUpdates();
+		}else{
+			needUpdate = true;
 		}
 	}
 	

@@ -6,7 +6,7 @@ import org.bricks.engine.tool.Origin;
 
 public class WalkPrint<P extends Walker, C> extends RollPrint<P, C>{
 
-	private final Origin<C> vector;// = new Fpoint(0f, 0f);
+	private final Origin<C> vector;
 
 	public WalkPrint(PrintStore<P, ?> ps) {
 		super(ps);
@@ -22,8 +22,5 @@ public class WalkPrint<P extends Walker, C> extends RollPrint<P, C>{
 	public void init(){
 		super.init();
 		vector.set(printStore.target.getVector());
-/*		Fpoint eVector = this.getTarget().getVector();
-		this.vector.setX(eVector.getFX());
-		this.vector.setY(eVector.getFY());*/
 	}
 }

@@ -4,9 +4,11 @@ import org.bricks.engine.neve.WalkPrint;
 import org.bricks.engine.staff.Subject;
 import org.bricks.engine.staff.Satellite;
 import org.bricks.engine.staff.Walker;
+import org.bricks.engine.tool.Accelerator;
 import org.bricks.engine.tool.Origin;
 import org.bricks.engine.tool.Roll;
 import org.bricks.engine.tool.Walk;
+import org.bricks.engine.tool.Walk2D;
 
 public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkPrint, C, R extends Roll> extends MultiRoller<S, P, C, R> implements Walker<P, C>{
 
@@ -14,8 +16,9 @@ public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkP
 	private Origin<C> vector;
 //	private float acceleration;
 	protected Origin<C> acceleration;
-	private Origin<C> tmpAcceleration;
-	private long accelerationTime;
+	private Accelerator<C> accelerator;
+//	private Origin<C> tmpAcceleration;
+//	private long accelerationTime;
 /*
 	protected MultiWalker() {
 		legs = new Walk(this);
@@ -27,29 +30,19 @@ public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkP
 		legs = provideInitialLegs();
 		vector = this.provideInitialOrigin();
 		acceleration = this.provideInitialOrigin();
-		tmpAcceleration = this.provideInitialOrigin();
+//		tmpAcceleration = this.provideInitialOrigin();
+		accelerator = this.provideAcceleration();
 		super.init();
 	}
 	
 	protected abstract Walk<C> provideInitialLegs();
-/*	
-	@Override
-	public final void motorProcess(long currentTime){
-		processEvents(currentTime);
-		if(!alive()){
-			return;
-		}
-		boolean rotate = rotate(currentTime);
-		if(rotate){
-			applyRotation();
-		}
-		applyAcceleration(currentTime);
-		boolean move = legs.move(currentTime, vector.source);
-		if(rotate || move){
-			adjustInMotorPrint();
-		}
+	
+	protected abstract Accelerator<C> provideAcceleration();
+
+	public Origin<C> lastMove(){
+		return legs.lastMove();
 	}
-*/	
+	
 	protected void innerProcess(long currentTime){
 		super.innerProcess(currentTime);
 		if(legs.move(currentTime, vector.source)){
@@ -71,11 +64,11 @@ public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkP
 		if(acceleration.isZero()){
 			return;
 		}
-		float diff = (curTime - accelerationTime) / 1000f;
-		tmpAcceleration.set(acceleration);
-		tmpAcceleration.mult(diff);
-		vector.add(tmpAcceleration);
-		accelerationTime = curTime;
+//		float diff = (curTime - accelerationTime) / 1000f;
+//		tmpAcceleration.set(acceleration);
+//		tmpAcceleration.mult(diff);
+		vector.add(accelerator.transformAcceleration(acceleration, curTime));
+//		accelerationTime = curTime;
 	}
 /*	
 	@Override
@@ -88,11 +81,13 @@ public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkP
 	public void timerSet(long time){
 		super.timerSet(time);
 		legs.timerSet(time);
+		accelerator.timerSet(time);
 	}
 	
 	public void timerAdd(long time){
 		super.timerAdd(time);
 		legs.timerAdd(time);
+		accelerator.timerAdd(time);
 	}
 
 	public void setVector(Origin<C> v) {
@@ -106,7 +101,8 @@ public abstract class MultiWalker<S extends Subject<?, ?, C, R>, P extends WalkP
 
 	public void setAcceleration(Origin<C> acc, long accTime){
 		this.acceleration.set(acc);
-		accelerationTime = accTime;
+		accelerator.timerSet(accTime);
+//		accelerationTime = accTime;
 	}
 	
 	public Origin<C> getAcceleration(){

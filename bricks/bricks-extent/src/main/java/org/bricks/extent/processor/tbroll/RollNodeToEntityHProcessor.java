@@ -130,12 +130,12 @@ public abstract class RollNodeToEntityHProcessor<T extends MultiLiver<? extends 
 				}else{
 					rRad = -absRotationDiff;
 				}
+				approve = true;
 			}
 			lastCheckTime = processTime;
 			nodeOperator.rotate(rRad);
 			nodeOperator.updatePrint();
 			subject.adjustCurrentPrint();
-//			target.setUpdate();
 		}else{
 			approve = true;
 		}

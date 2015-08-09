@@ -98,7 +98,6 @@ public abstract class RollNodeToEntityVProcessor<T extends MultiLiver<? extends 
 		if(this.bulletAcceleration * t2 / 2 > -dz){
 			xRad *= -1;
 		}
-//		System.out.println("Found calc rad: " + xRad);
 		float targetRotation = convertToTargetRotation(xRad);
 		rotateToTarget(targetRotation, processTime);
 	}
@@ -111,6 +110,7 @@ public abstract class RollNodeToEntityVProcessor<T extends MultiLiver<? extends 
 			if(rRad > minDiff){
 				if(rRad > Math.abs(diff)){
 					rRad = diff;
+					approve = true;
 				}else if(diff < 0){
 					rRad *= -1;
 				}

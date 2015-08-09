@@ -1,5 +1,6 @@
 package org.bricks.engine.tool;
 
+import org.bricks.engine.Engine;
 import org.bricks.engine.staff.AvareTimer;
 import org.bricks.engine.staff.Walker;
 
@@ -8,7 +9,7 @@ public abstract class Walk<C> implements AvareTimer{
 //	protected Walker<?, C> owner;
 	protected Origin<C> lastMove;
 
-	protected static final int moveLimit = 14;
+	protected static final int moveLimit = Engine.preferences.getInt("walk.motion.limin", 10);
 	
 	public Walk(/*Walker<?, C> walker*/){
 //		this.owner = walker;

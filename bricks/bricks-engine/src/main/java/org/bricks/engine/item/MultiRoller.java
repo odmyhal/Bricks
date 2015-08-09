@@ -9,11 +9,7 @@ import org.bricks.engine.tool.Roll;
 public abstract class MultiRoller<S extends Subject<?, ?, C, R>, P extends RollPrint, C, R extends Roll> extends MultiLiver<S, P, C> implements Roller<P>{
 	
 	private R roll;
-/*
-	protected MultiRoller() {
-		roll = new Roll();
-	}
-*/	
+	
 	@Override
 	protected void init(){
 		roll = initializeRoll();
@@ -39,13 +35,7 @@ public abstract class MultiRoller<S extends Subject<?, ?, C, R>, P extends RollP
 	public float getRotation() {
 		return roll.getRotation();
 	}
-/*	
-	public float getSafeRotation(){
-		synchronized(viewCache){
-			return ((RollView)view).getRotation();
-		}
-	}
-*/	
+
 	public float lastRotation(){
 		return roll.lastRotation();
 	}
@@ -71,11 +61,7 @@ public abstract class MultiRoller<S extends Subject<?, ?, C, R>, P extends RollP
 		super.timerAdd(time);
 		roll.timerAdd(time);
 	}
-/*
-	public void flushTimer(long nTime) {
-		roll.flushTimer(nTime);
-	}
-*/
+
 	public boolean rotate(long checkTime) {
 		return roll.rotate(checkTime);
 	}
@@ -86,24 +72,7 @@ public abstract class MultiRoller<S extends Subject<?, ?, C, R>, P extends RollP
 			setUpdate();
 		}
 	}
-/*	@Override
-	public void motorProcess(long currentTime){
-		processEvents(currentTime);
-		if(alive() && rotate(currentTime)){
-			adjustInMotorPrint();
-		}
-	}
-*/
 
-/*	
-	protected void adjustInMotorPrint(){
-		this.adjustCurrentPrint(false);
-		for(Satellite satellite : getSatellites()){
-			satellite.rotate(roll, this.origin());
-			satellite.update();
-		}
-	}
-*/	
 	public void applyRotation(){
 		for(int i = 0; i < satellites.size(); i++){
 			satellites.get(i).rotate(roll, this.origin());
@@ -118,11 +87,6 @@ public abstract class MultiRoller<S extends Subject<?, ?, C, R>, P extends RollP
 		if(roll.rotateBack(currentTime, k)){
 			applyRotation();
 			setUpdate();
-/*			this.adjustCurrentPrint(false);
-			for(Satellite satellite : getSatellites()){
-				satellite.rotate(roll, this.origin());
-				satellite.update();
-			}*/
 		}
 	}
 	

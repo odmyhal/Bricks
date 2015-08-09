@@ -25,9 +25,10 @@ public abstract class DoubleEventAction<T extends Liver, W extends Widget> exten
 	public abstract Event stopEvent();
 
 	@Override
-	public void init(W widget) {
+	public boolean init(W widget) {
 		Event startEvent = startEvent(widget);
 		target.addEvent(startEvent);
+		return true;
 	}
 
 	@Override

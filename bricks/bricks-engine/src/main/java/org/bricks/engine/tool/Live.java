@@ -16,7 +16,7 @@ import org.bricks.utils.Quarantine;
 
 public class Live implements Iterable<EventChecker>, AvareTimer{
 	
-	private final Quarantine<Event> events = new Quarantine<Event>(50);
+	private final Quarantine<Event> events;
 	
 	private final Loop<EventChecker> checkers = new LinkLoop<EventChecker>();
 	private final Quarantine<EventChecker> tmpAddCheckers = new Quarantine<EventChecker>(10);
@@ -25,8 +25,9 @@ public class Live implements Iterable<EventChecker>, AvareTimer{
 	
 	private final Liver liver;
 	
-	public Live(Liver liver){
+	public Live(Liver liver, int eventBufferSize){
 		this.liver = liver;
+		events = new Quarantine(eventBufferSize);
 	}
 
 	public void registerEventChecker(EventChecker<? extends Liver> checker) {
@@ -135,31 +136,7 @@ public class Live implements Iterable<EventChecker>, AvareTimer{
 	public Event popEvent() {
 		return events.poll();
 	}
-/*	
-	public Event putHistory(Event event){
-		synchronized(eventHistory){
-			return eventHistory.put(event.getEventGroupCode(), event);
-		}
-	}
-	
-	public Event getHistory(Event event){
-		synchronized(eventHistory){
-			return eventHistory.get(event.getEventGroupCode());
-		}
-	}
-	
-	public Event getHistory(int eventGroupCode){
-		synchronized(eventHistory){
-			return eventHistory.get(eventGroupCode);
-		}
-	}
-	
-	public Event removeHistory(int groupCode){
-		synchronized(eventHistory){
-			return eventHistory.remove(groupCode);
-		}
-	}
-*/
+
 	public Iterator<EventChecker> iterator() {
 		return checkers.iterator();
 	}

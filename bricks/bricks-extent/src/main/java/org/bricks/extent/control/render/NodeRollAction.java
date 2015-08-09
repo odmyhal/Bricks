@@ -24,6 +24,7 @@ import com.badlogic.gdx.math.Vector3;
  * @param <T>
  * @param <W>
  */
+@Deprecated
 public class NodeRollAction<T extends Entity, W extends FlowTouchPad> extends FlowMutableAction<T, W>{
 
 	private Vector3 rotationSpin = new Vector3();
@@ -52,7 +53,7 @@ public class NodeRollAction<T extends Entity, W extends FlowTouchPad> extends Fl
 	}
 
 	@Override
-	public void init(W widget) {
+	public boolean init(W widget) {
 		touchPercentile.set(widget.getKnobPercentX(), widget.getKnobPercentY());
 		touchPercentile.nor();
 		while(rotation < 0){
@@ -68,6 +69,7 @@ public class NodeRollAction<T extends Entity, W extends FlowTouchPad> extends Fl
 		deltaPotencial = 0f;
 		System.out.println(this.getClass().getCanonicalName() + " : initialized widget curRotation: "
 				+ rotation + ", targetRotation " + targetRotation + ", speed " + curRotationSpeed);
+		return true;
 	}
 
 	@Override

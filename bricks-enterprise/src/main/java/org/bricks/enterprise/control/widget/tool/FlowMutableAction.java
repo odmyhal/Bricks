@@ -12,6 +12,6 @@ public abstract class FlowMutableAction<T, W extends Widget> extends Action {
 		this.target = target;
 	}
 	
-	public abstract void init(W widget);
+	public abstract boolean init(W widget);
 
 }

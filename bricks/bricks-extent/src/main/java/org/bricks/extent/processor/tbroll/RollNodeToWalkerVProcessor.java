@@ -80,6 +80,8 @@ public abstract class RollNodeToWalkerVProcessor<T extends MultiLiver<? extends 
 			diff = tryAngle(myCenter, buttCenter, buttVector, curRad);
 			Validate.isTrue(++counter < 100, "Something is wrong here...");
 		};
+//		testTargetVRotation = String.format("Calculated rad: %.5f, bulletAcceleration: %.5f, bulletSpeed: %s", curRad, bulletAcceleration, bulletSpeed);
+//		System.out.println("Found target vertical rotation: " + curRad);
 		float targetRotation = convertToTargetRotation(curRad);
 		rotateToTarget(targetRotation, processTime);
 		approve = true;

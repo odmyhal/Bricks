@@ -28,36 +28,46 @@ public class Motor implements Runnable {
 		hooks = 0;
 		System.out.println("Motor " + Thread.currentThread().getName() + " started...");
 		while(run){
-			long currentTime = System.currentTimeMillis();
-			for(Motorable mo : dead){
-				alive.remove(mo);
-			}
-			for(Motorable mo : added){
-				mo.timerSet(currentTime);
-				alive.add(mo);
-			}
-			if(alive.isEmpty()){
-				synchronized(alive){
-					wait = true;
-					if(added.isEmpty()){
-						try {
-							alive.wait();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}else{
-						wait = false;
-					}
-				}
-			}
-			for(Motorable subject : alive){
-				subject.motorProcess(currentTime);
-			}
-			Thread.currentThread().yield();
-			hooks++;
+			loop();
 		}
 		long diffTime = System.currentTimeMillis() - startTime;
 		System.out.println(String.format("Motor %s: average delay - %.3f", Thread.currentThread().getName(), (((double) diffTime) / hooks) ));
+	}
+	
+	protected void loop(){
+		long currentTime = System.currentTimeMillis();
+		for(Motorable mo : dead){
+			alive.remove(mo);
+		}
+		for(Motorable mo : added){
+			mo.timerSet(currentTime);
+			alive.add(mo);
+		}
+		if(alive.isEmpty()){
+			synchronized(alive){
+				wait = true;
+				if(added.isEmpty()){
+					try {
+						alive.wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}else{
+					wait = false;
+				}
+			}
+		}
+		for(Motorable subject : alive){
+			subject.motorProcess(currentTime);
+		}
+		Thread.currentThread().yield();
+/*			try {
+			Thread.currentThread().sleep(3);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		hooks++;
 	}
 	
 	public void stop(){

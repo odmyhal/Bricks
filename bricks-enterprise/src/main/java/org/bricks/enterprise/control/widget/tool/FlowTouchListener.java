@@ -25,8 +25,9 @@ public class FlowTouchListener<W extends Widget> extends InputListener{
 	
 	protected void tuneAction(FlowMutableAction<?, W> action){
 		touchPad.removeAction(action);
-		action.init(touchPad);
-		touchPad.addAction(action);
+		if(action.init(touchPad)){
+			touchPad.addAction(action);
+		}
 	}
 	
 	public void setWidget(W widget){

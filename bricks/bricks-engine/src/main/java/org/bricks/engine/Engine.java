@@ -22,13 +22,20 @@ public class Engine
 	private ExecutorService service;
 	public static Preferences preferences;
 	
-	public void init(Preferences props){
+	public Engine(Preferences props){
 		preferences = props;
 		this.world = new World(props);
 		int motorCount = props.getInt("motor.count", 1);
 		this.motors = new Motor[motorCount];
-		for(int i = 0; i < motorCount; i++){
-			this.motors[i] = new Motor();
+		boolean motorSecured = props.getBoolean("motor.secure.error", false);
+		if(motorSecured){
+			for(int i = 0; i < motorCount; i++){
+				this.motors[i] = new SecuredMotor();
+			}
+		}else{
+			for(int i = 0; i < motorCount; i++){
+				this.motors[i] = new Motor();
+			}
 		}
 		
 		initEventHandlers(this.preferences);

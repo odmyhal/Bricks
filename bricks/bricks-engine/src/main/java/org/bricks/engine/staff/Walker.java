@@ -13,6 +13,6 @@ public interface Walker<I extends WalkPrint, C> extends Roller<I>{
 	public Origin<C> getVector();
 	public void translateNoView(Origin<C> origin);
 	
-
+	public Origin<C> lastMove();
 	public Origin<C> origin();
 }

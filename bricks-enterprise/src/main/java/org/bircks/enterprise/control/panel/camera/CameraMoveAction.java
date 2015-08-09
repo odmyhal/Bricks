@@ -65,7 +65,13 @@ public class CameraMoveAction extends RotationDependAction<Camera, FlowTouchPad>
 		
 		translateTMP.set(moveX, moveY);
 		translateTMP.rotateRad(getRotation());
-		
+/*		
+		if(Float.isNaN(translateTMP.x) || Float.isNaN(translateTMP.x)){
+			System.out.println("Found not a number: " + translateTMP);
+			System.out.println("Move direction: " + moveDirection);
+			System.out.println("Data: " + initData);
+		}
+*/	
 		target.translate(translateTMP.x, translateTMP.y, 0);
 		target.update();
 		
@@ -73,11 +79,25 @@ public class CameraMoveAction extends RotationDependAction<Camera, FlowTouchPad>
 	}
 
 	@Override
-	public void init(FlowTouchPad widget) {
+	public boolean init(FlowTouchPad widget) {
+//		showCameraInfo();
 		tarX = widget.getKnobPercentX() * maxRadius;
 		tarY = widget.getKnobPercentY() * maxRadius;
 //		System.out.println("Init camera move action (" + this + ") to x = " + widget.getKnobPercentX() + " , y = " + widget.getKnobPercentY() + ", maxRadius: " + maxRadius);
+//		initData = String.format("tarX=%.3f, tarY=%.3f || curX=%.3f, curY=%.3f", tarX, tarY, curX, curY);
 		moveDirection.set(tarX - curX, tarY - curY);
-		moveDirection.scl(moveSpeed / moveDirection.len());
+		float len = moveDirection.len();
+		if(len == 0){
+			return false;
+		}
+		moveDirection.scl(moveSpeed / len);
+		return true;
 	}
+/*	
+	private void showCameraInfo(){
+		System.out.println("-----------------------------------------------------");
+		System.out.println("Camera  position " + target.position);
+		System.out.println("Camera direction " + target.direction);
+		System.out.println("Camera        up " + target.up);
+	}*/
 }

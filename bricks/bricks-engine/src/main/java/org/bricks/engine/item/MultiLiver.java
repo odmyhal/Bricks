@@ -1,6 +1,7 @@
 package org.bricks.engine.item;
 
 import java.util.Map;
+import java.util.prefs.Preferences;
 
 import org.bricks.exception.Validate;
 import org.bricks.engine.Engine;
@@ -27,10 +28,12 @@ import org.bricks.engine.tool.Logger;
 import org.bricks.utils.Cache;
 import org.bricks.utils.LinkLoop;
 
-public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C> 
+public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C>
 	extends MultiSubjectEntity<S, P, C> 
 	implements Liver<P>{
-	
+
+    private static final Preferences eventPrefs = Preferences.userRoot().node("events.buffer.size");
+    
 	private Live live;
 	private Logger logger = new Logger();
 	private Map<String, OverlapStrategy> overlapStrategy;
@@ -40,7 +43,7 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C>
 
 	protected MultiLiver() {
 		overlapStrategy = initOverlapStrategy();
-		live = new Live(this);
+		live = new Live(this, eventPrefs.getInt(this.getClass().getCanonicalName(), 32));
 	}
 	
 	public final Map<String, OverlapStrategy> initOverlapStrategy(){

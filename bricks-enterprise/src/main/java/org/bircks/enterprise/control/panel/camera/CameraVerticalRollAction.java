@@ -34,7 +34,7 @@ public class CameraVerticalRollAction extends FlowMutableAction<Camera, HalfRTou
 	}
 
 	@Override
-	public void init(HalfRTouchPad /*CameraVerticalRollPad*/ widget) {
+	public boolean init(HalfRTouchPad /*CameraVerticalRollPad*/ widget) {
 		touchPercentile.set(widget.getKnobPercentX(), widget.getKnobPercentY());
 		touchPercentile.nor();
 		tarRad = (float) AlgebraUtils.trigToRadians(touchPercentile.x, touchPercentile.y);
@@ -44,6 +44,7 @@ public class CameraVerticalRollAction extends FlowMutableAction<Camera, HalfRTou
 		if(diffRad < 0){
 			curSpeed *= -1;
 		}
+		return true;
 	}
 
 	@Override

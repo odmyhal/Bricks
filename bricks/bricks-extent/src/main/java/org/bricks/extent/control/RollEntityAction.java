@@ -39,12 +39,13 @@ public class RollEntityAction extends EventCheckRegAction<Roller, FlowTouchPad>{
 	}
 
 	@Override
-	public void init(FlowTouchPad widget) {
+	public boolean init(FlowTouchPad widget) {
 		touchPercentile.set(widget.getKnobPercentX(), widget.getKnobPercentY());
 		touchPercentile.nor();
 		float targetRad = (float) AlgebraUtils.trigToRadians(touchPercentile.x, touchPercentile.y);
 		
 		initNewRotation(targetRad, rotationProvider.provideRotation());
+		return true;
 	}
 	
 	protected void initNewRotation(float targetRad, float currentRad){

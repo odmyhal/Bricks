@@ -82,7 +82,7 @@ public class CameraRollAction extends FlowMutableAction<Camera, FlowTouchPad>{
 	}
 
 	@Override
-	public void init(FlowTouchPad widget) {
+	public boolean init(FlowTouchPad widget) {
 		touchPercentile = calculateDirectionVector(widget);
 		tarRad = AlgebraUtils.trigToRadians(touchPercentile.x, touchPercentile.y);
 //		System.out.format("Found tar rad: " + tarRad + ", cur is : " + curRad);
@@ -91,6 +91,7 @@ public class CameraRollAction extends FlowMutableAction<Camera, FlowTouchPad>{
 		if( diffRad > Math.PI || (diffRad < 0 && diffRad > - Math.PI)){
 			curSpeed *= -1;
 		}
+		return true;
 	}
 	
 	protected Vector2 calculateDirectionVector(FlowTouchPad widget){
