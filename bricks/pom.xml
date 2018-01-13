@@ -3,22 +3,19 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.odmyhal</groupId>
   <artifactId>bricks</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.2</version>
   <packaging>pom</packaging>
   <name>Bricks</name>
   <description>Base engine for possible games</description>
+  <properties>
+    <gdx.version>1.9.6</gdx.version>
+  </properties>
   <modules>
     <module>bricks-engine</module>
-<!--     <module>bricks-annotations</module>  -->
     <module>bricks-annotation</module>
     <module>bricks-extent</module>
-    <module>../bricks-enterprise</module>
+    <module>bricks-enterprise</module>
   </modules>
   <dependencies>
-<!--   	<dependency>
-  		<groupId>org.apache.commons</groupId>
-  		<artifactId>commons-lang3</artifactId>
-  		<version>3.3.2</version>
-  	</dependency> -->
   </dependencies>
 </project>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/bricks.iml" filepath="$PROJECT_DIR$/bricks.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bricks-annotation/bricks-annotation.iml" filepath="$PROJECT_DIR$/bricks-annotation/bricks-annotation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bricks-engine/bricks-engine.iml" filepath="$PROJECT_DIR$/bricks-engine/bricks-engine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bricks-enterprise/bricks-enterprise.iml" filepath="$PROJECT_DIR$/bricks-enterprise/bricks-enterprise.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bricks-extent/bricks-extent.iml" filepath="$PROJECT_DIR$/bricks-extent/bricks-extent.iml" />
+    </modules>
+  </component>
+</project>

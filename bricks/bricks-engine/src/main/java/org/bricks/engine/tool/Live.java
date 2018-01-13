@@ -19,15 +19,17 @@ public class Live implements Iterable<EventChecker>, AvareTimer{
 	private final Quarantine<Event> events;
 	
 	private final Loop<EventChecker> checkers = new LinkLoop<EventChecker>();
-	private final Quarantine<EventChecker> tmpAddCheckers = new Quarantine<EventChecker>(10);
-	private final Quarantine<EventChecker> tmpDelCheckers = new Quarantine<EventChecker>(5);
+	private final Quarantine<EventChecker> tmpAddCheckers;
+	private final Quarantine<EventChecker> tmpDelCheckers;
 //	private final Map<Integer, Event> eventHistory = new HashMap<Integer, Event>();
 	
 	private final Liver liver;
 	
-	public Live(Liver liver, int eventBufferSize){
+	public Live(Liver liver, int eventBufferSize, int checkerBufferSize){
 		this.liver = liver;
 		events = new Quarantine(eventBufferSize);
+		tmpAddCheckers = new Quarantine<EventChecker>(checkerBufferSize);
+		tmpDelCheckers = new Quarantine<EventChecker>(checkerBufferSize);
 	}
 
 	public void registerEventChecker(EventChecker<? extends Liver> checker) {

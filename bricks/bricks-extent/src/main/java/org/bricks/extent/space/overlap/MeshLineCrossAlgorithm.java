@@ -110,6 +110,13 @@ public abstract class MeshLineCrossAlgorithm<T extends Imprint<? extends Subject
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @param triangle
+	 * @param lineOrigin
+	 * @param lineMove
+	 * @return value in range [0, 1] or Float.NEGATIVE_INFINITY
+	 */
 	private float lineCrossTriangle(Triangle triangle, Vector3 lineOrigin, Vector3 lineMove){
 		float BAX = triangle.B.x - triangle.A.x;
 		float BAY = triangle.B.y - triangle.A.y; 

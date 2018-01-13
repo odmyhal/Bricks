@@ -24,7 +24,7 @@ import javax.lang.model.util.Types;
 import org.bricks.annotation.OverlapCheck;
 
 @SupportedAnnotationTypes("org.bricks.annotation.OverlapCheck")
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
+@SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class OverlapStrategyProcessor extends CreateSourceProcessor {
 	
 	private final String packageName = "org.bricks.engine.overlap";

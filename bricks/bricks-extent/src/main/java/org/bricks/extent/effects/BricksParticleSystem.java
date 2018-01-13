@@ -7,7 +7,11 @@ import com.badlogic.gdx.graphics.g3d.particles.emitters.RegularEmitter;
 
 public class BricksParticleSystem {
 
-	private static final ParticleSystem particleSystem = ParticleSystem.get();
+	private static ParticleSystem particleSystem;
+	
+	public static final void init(){
+		particleSystem = ParticleSystem.get();
+	}
 	
 	public static void addBatch(ParticleBatch batch){
 		particleSystem.add(batch);

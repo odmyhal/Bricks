@@ -91,6 +91,19 @@ public class World {
 		return null;
 	}
 	
+	private boolean hasDistrict(int rowNumber, int colNumber){
+		if(sectors.containsKey(rowNumber)){
+			return sectors.get(rowNumber).containsKey(colNumber);
+		}
+		return false;
+	}
+	
+	public boolean hasDistrictOnPoint(float x, float y){
+		int rowNumber = (int) Math.floor(y / sectorLen);
+		int colNumber = (int) Math.floor(x / sectorLen);
+		return hasDistrict(rowNumber, colNumber);
+	}
+	
 	public District<?> pointSector(Point point){
 		return pointSector(point.getFX(), point.getFY());
 	}

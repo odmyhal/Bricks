@@ -12,9 +12,14 @@ import com.badlogic.gdx.math.Vector3;
 
 public class InteractiveHandler {
 	
-	private static final Loop<Class<? extends EntityCore>> types = new LinkLoop();
-	private static final HashMap<Class<? extends EntityCore>, Interactive> handlers = new HashMap<Class<? extends EntityCore>, Interactive>(1);
+	private static Loop<Class<? extends EntityCore>> types;
+	private static HashMap<Class<? extends EntityCore>, Interactive> handlers;
 	
+	
+	public static final void init(){
+		types = new LinkLoop();
+		handlers = new HashMap<Class<? extends EntityCore>, Interactive>(1);
+	}
 	/**
 	 * 
 	 * @param clazz

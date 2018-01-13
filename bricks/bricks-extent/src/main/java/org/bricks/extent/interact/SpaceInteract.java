@@ -2,6 +2,7 @@ package org.bricks.extent.interact;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.prefs.Preferences;
 
 import org.bricks.core.entity.Fpoint;
 import org.bricks.engine.item.Stone;
@@ -23,6 +24,7 @@ import org.bricks.extent.subject.model.ModelBrickSubject;
 import org.bricks.extent.subject.model.ModelBrick;
 import org.bricks.utils.Cache;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
@@ -39,11 +41,16 @@ public class SpaceInteract extends InputAdapter{
 	private final MeshLineCrossAlgorithm<?, ?> lsAlgorithm = new LineCrossMBAlgorithm();
 	private float[] lenK = new float[4];
 	private DefaultHandler defaultHandler= null;
+	
+	private Vector3 tmp = new Vector3(), tmpTouchPoint = new Vector3();
+	private static final float ratioInitVal = 9f;
+	
+	private static final Preferences interactPrefs = Preferences.userRoot().node("interact.settings");
 //	private Butt activeButt;
 	
 	private Fpoint startHPoint = new Fpoint(), endHPoint = new Fpoint();
 	
-	private static final SpaceInteract instance = new SpaceInteract();
+	private static SpaceInteract instance;
 	
 	private SpaceInteract(){
 		
@@ -55,6 +62,7 @@ public class SpaceInteract extends InputAdapter{
 	}
 	
 	public static final void init(Camera camera, World world){
+		instance = new SpaceInteract();
 		instance.camera = camera;
 		instance.world = world;
 	}
@@ -125,7 +133,7 @@ public class SpaceInteract extends InputAdapter{
 		lastMove.set(endHPoint.x - startHPoint.x, endHPoint.y - startHPoint.y, ray.direction.z * camera.far);
 		rayEnd.set(endHPoint.x, endHPoint.y, ray.origin.z + ray.direction.z * camera.far);
 		EntityCore touchEntity = null;
-		float maxK = 0f;
+		float maxK = 0f, minRatio = ratioInitVal;
 		rowLoop:
 		while(i * rowStep <= endPointRow * rowStep){
 			int j = startPointCol;
@@ -149,6 +157,7 @@ public class SpaceInteract extends InputAdapter{
 										continue areaLoop;
 									}
 									MBPrint mbPrint = ((ModelBrickSubject<?, ?, ?, ?, ModelBrick<? extends MBPrint>>) habitant).linkModelBrick().getSafePrint();
+//
 									Arrays.fill(lenK, 0f);
 									lsAlgorithm.lineCrosSkeletonAll(mbPrint, rayEnd, lastMove, lenK);
 									for(int l = 0; l < lenK.length; l++){
@@ -157,13 +166,33 @@ public class SpaceInteract extends InputAdapter{
 											maxK = lenK[l];
 										}
 									}
+									if(maxK == 0){
+										float inchK = interactPrefs.getFloat(entity.getClass().getCanonicalName(), 0f);
+										if(inchK > 0){
+											float inchLen = inchK * Gdx.graphics.getDensity() * 160;
+											tmp.set(mbPrint.getCenter());
+											camera.project(tmp);
+											float xDiff = tmp.x - screenX;
+											float yDiff = tmp.y - screenY;
+											float screenLen = (float) Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+											if(screenLen < inchLen){
+												float lenRatio = screenLen / inchLen;
+												if(lenRatio < minRatio){
+													minRatio = lenRatio;
+													touchEntity = entity;
+													tmpTouchPoint.set(mbPrint.getCenter());
+												}
+											}
+										}
+									}
+									//
 								}
 							}
 						}
 						if(maxK > 0){
 							break rowLoop;
 						}
-						maxK = 0f;
+//						maxK = 0f;
 						colIntersect = true;
 					}else  if(colIntersect){
 						break colLoop;
@@ -179,8 +208,13 @@ public class SpaceInteract extends InputAdapter{
 			Validate.isFalse(touchEntity == null, "TouchEntity must be set");
 			Interactive interactive = InteractiveHandler.getHandle(touchEntity);
 			Validate.isFalse(interactive == null, "Strange Error: no Handler for " + touchEntity.getClass().getCanonicalName());
-			Vector3 touchPoint = new Vector3(rayEnd.x - lastMove.x * maxK, rayEnd.y - lastMove.y * maxK, rayEnd.z - lastMove.z * maxK);
-			interactive.handleTap(touchEntity, touchPoint);
+			tmpTouchPoint.set(rayEnd.x - lastMove.x * maxK, rayEnd.y - lastMove.y * maxK, rayEnd.z - lastMove.z * maxK);
+			interactive.handleTap(touchEntity, tmpTouchPoint);
+		}else if(minRatio < ratioInitVal){
+			Validate.isFalse(touchEntity == null, "TouchEntity must be set");
+			Interactive interactive = InteractiveHandler.getHandle(touchEntity);
+			Validate.isFalse(interactive == null, "Strange Error: no Handler for " + touchEntity.getClass().getCanonicalName());
+			interactive.handleTap(touchEntity, tmpTouchPoint);
 		}else if(defaultHandler != null){
 			defaultHandler.handleTap(ray);
 		}

@@ -50,8 +50,8 @@ public class SkeletonHelper {
 			FloatBuffer fb = mesh.getVerticesBuffer();
 			ShortBuffer sb = mesh.getIndicesBuffer();
 			
-			short[] meshIndices = new short[meshPart.numVertices];
-			sb.position(meshPart.indexOffset);
+			short[] meshIndices = new short[meshPart.size];
+			sb.position(meshPart.offset);
 //			sb.limit(meshPart.numVertices);
 			sb.get(meshIndices);
 //			sb.get(meshIndices, meshPart.indexOffset, meshPart.numVertices);

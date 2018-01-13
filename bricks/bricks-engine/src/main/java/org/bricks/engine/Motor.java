@@ -10,7 +10,7 @@ import org.bricks.utils.Quarantine;
 
 public class Motor implements Runnable {
 
-	private static final Map<Thread, Motor> threadMotors = new HashMap<Thread, Motor>(8, 1f);
+	private static Map<Thread, Motor> threadMotors = new HashMap<Thread, Motor>(8, 1f);
 	
 	private volatile boolean run = true;
 	private Loop<Motorable> alive = new HashLoop<Motorable>();
@@ -20,6 +20,11 @@ public class Motor implements Runnable {
 	private volatile boolean wait = false;
 
 	private long startTime, hooks;
+/*	
+	public static final void init(){
+		threadMotors = new HashMap<Thread, Motor>(8, 1f);
+	}
+*/	
 	public void run() {
 		synchronized(threadMotors){
 			threadMotors.put(Thread.currentThread(), this);
@@ -62,7 +67,7 @@ public class Motor implements Runnable {
 		}
 		Thread.currentThread().yield();
 /*			try {
-			Thread.currentThread().sleep(3);
+			Thread.currentThread().sleep(4);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -100,5 +105,9 @@ public class Motor implements Runnable {
 
 	public static final Motor getCurrentMotor(){
 		return threadMotors.get(Thread.currentThread());
+	}
+	
+	public static final int motorCount(){
+		return threadMotors.size();
 	}
 }

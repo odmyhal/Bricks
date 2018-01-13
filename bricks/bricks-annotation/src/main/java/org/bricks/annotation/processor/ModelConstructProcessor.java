@@ -24,7 +24,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.bricks.annotation.ConstructModel;
 
 @SupportedAnnotationTypes("org.bricks.annotation.ConstructModel")
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
+@SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class ModelConstructProcessor extends CreateSourceProcessor {
 	
 	private final String constructToolPackage = "org.bricks.enterprise.gen";

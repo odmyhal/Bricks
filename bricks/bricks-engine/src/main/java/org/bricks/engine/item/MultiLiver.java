@@ -33,6 +33,7 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C>
 	implements Liver<P>{
 
     private static final Preferences eventPrefs = Preferences.userRoot().node("events.buffer.size");
+    private static final Preferences checkerPrefs = Preferences.userRoot().node("checker.buffer.size");
     
 	private Live live;
 	private Logger logger = new Logger();
@@ -43,7 +44,8 @@ public abstract class MultiLiver<S extends Subject, P extends EntityPrint, C>
 
 	protected MultiLiver() {
 		overlapStrategy = initOverlapStrategy();
-		live = new Live(this, eventPrefs.getInt(this.getClass().getCanonicalName(), 32));
+		live = new Live(this, eventPrefs.getInt(this.getClass().getCanonicalName(), 32),
+				checkerPrefs.getInt(this.getClass().getCanonicalName(), 8) );
 	}
 	
 	public final Map<String, OverlapStrategy> initOverlapStrategy(){

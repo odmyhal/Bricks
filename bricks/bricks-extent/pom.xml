@@ -3,26 +3,27 @@
   <parent>
     <groupId>com.odmyhal</groupId>
     <artifactId>bricks</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.2</version>
   </parent>
   <artifactId>bricks-extent</artifactId>
   <name>BricksExtent</name>
+    <version>${project.parent.version}</version>
   <description>3d extension of bricks-engine. Also depends on libGDX</description>
   <dependencies>
 	<dependency>
 		<groupId>com.badlogicgames.gdx</groupId>
 		<artifactId>gdx</artifactId>
-		<version>1.6.1</version>
+		<version>${gdx.version}</version>
 	</dependency> 
 	<dependency>
     	<groupId>com.odmyhal</groupId>
 		<artifactId>bricks-engine</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${project.parent.version}</version>
     </dependency> 
     <dependency>
     	<groupId>com.odmyhal</groupId>
 		<artifactId>bricks-enterprise</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${project.parent.version}</version>
     </dependency> 
     <dependency>
       <groupId>junit</groupId>

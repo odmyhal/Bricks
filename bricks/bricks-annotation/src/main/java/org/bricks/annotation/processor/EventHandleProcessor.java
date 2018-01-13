@@ -30,7 +30,7 @@ import org.bricks.annotation.EventHandle;
 import java.util.List;
 
 @SupportedAnnotationTypes("org.bricks.annotation.EventHandle")
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
+@SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class EventHandleProcessor extends CreateSourceProcessor{
 	
 	private final String packageName = "org.bricks.engine.event.handler";

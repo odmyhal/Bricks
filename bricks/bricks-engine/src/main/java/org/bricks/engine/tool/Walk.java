@@ -9,7 +9,7 @@ public abstract class Walk<C> implements AvareTimer{
 //	protected Walker<?, C> owner;
 	protected Origin<C> lastMove;
 
-	protected static final int moveLimit = Engine.preferences.getInt("walk.motion.limin", 10);
+	protected static final int moveLimit = Engine.preferences.getInt("walk.motion.limit", 100);
 	
 	public Walk(/*Walker<?, C> walker*/){
 //		this.owner = walker;
